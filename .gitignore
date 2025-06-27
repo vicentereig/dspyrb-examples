@@ -1,0 +1,46 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+log/
+*.log
+
+# Ruby
+.bundle/
+vendor/bundle/
+.ruby-version
+.ruby-gemset
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+tmp/
+*.tmp
+*.temp
+
+# Coverage reports
+coverage/
+.coverage
+
+# RSpec
+.rspec_status
+
+# Sorbet
+sorbet/rbi/
+sorbet/config
