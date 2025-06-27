@@ -4,6 +4,6 @@ source "https://rubygems.org"
 
 ruby "3.3.5"
 
-gem 'dspy', github: 'vicentereig/dspy.rb'
+gem 'dspy', '~> 0.3.1'
 
 gem 'dotenv'
