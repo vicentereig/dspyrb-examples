@@ -2,6 +2,8 @@
 
 A comprehensive collection of examples demonstrating the power of DSPy.rb - the Ruby framework for programming language models.
 
+Library repo: https://github.com/vicentereig/dspy.rb
+
 ## 📋 Prerequisites
 
 - **Ruby 3.3.5** (specified in Gemfile)
