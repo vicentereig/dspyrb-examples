@@ -2,8 +2,8 @@
 
 source "https://rubygems.org"
 
-ruby "3.3.5"
+ruby "3.3.8"
 
-gem 'dspy', '~> 0.3.1'
+gem 'dspy'
 
 gem 'dotenv'

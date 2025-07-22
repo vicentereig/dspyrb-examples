@@ -3,16 +3,16 @@ GEM
   specs:
     anthropic (1.1.1)
       connection_pool
-    async (2.25.0)
+    async (2.26.0)
       console (~> 1.29)
       fiber-annotation
-      io-event (~> 1.11)
+      io-event (~> 1.12)
       metrics (~> 0.12)
       traces (~> 0.15)
-    base64 (0.3.0)
+    bigdecimal (3.2.2)
     concurrent-ruby (1.3.5)
     connection_pool (2.5.3)
-    console (1.31.0)
+    console (1.32.0)
       fiber-annotation
       fiber-local (~> 1.1)
       json
@@ -32,53 +32,47 @@ GEM
       dry-configurable (~> 1.0, < 2)
       dry-core (~> 1.0, < 2)
       dry-events (~> 1.0, < 2)
-    dspy (0.3.1)
+    dspy (0.11.0)
       anthropic (~> 1.1.0)
       async (~> 2.23)
       dry-configurable (~> 1.0)
       dry-logger (~> 1.0)
       dry-monitor (~> 1.0)
-      openai (~> 0.9.0)
-      ruby_llm (~> 1.0)
+      informers (~> 1.2)
+      openai (~> 0.13.0)
+      polars-df (~> 0.20.0)
       sorbet-runtime (~> 0.5)
       sorbet-schema (~> 0.3)
-    event_stream_parser (1.0.0)
-    faraday (2.13.1)
-      faraday-net_http (>= 2.0, < 3.5)
-      json
-      logger
-    faraday-multipart (1.1.1)
-      multipart-post (~> 2.0)
-    faraday-net_http (3.4.1)
-      net-http (>= 0.5.0)
-    faraday-retry (2.3.2)
-      faraday (~> 2.0)
+    ffi (1.17.2)
+    ffi (1.17.2-arm64-darwin)
     fiber-annotation (0.2.0)
     fiber-local (1.1.0)
       fiber-storage
     fiber-storage (1.0.1)
-    io-event (1.11.0)
-    json (2.12.2)
+    informers (1.2.1)
+      onnxruntime (>= 0.9)
+      tokenizers (>= 0.5.3)
+    io-event (1.12.0)
+    json (2.13.0)
     logger (1.7.0)
-    marcel (1.0.4)
     metrics (0.12.2)
-    multipart-post (2.4.1)
-    net-http (0.6.0)
-      uri
-    openai (0.9.0)
+    onnxruntime (0.10.0)
+      ffi
+    onnxruntime (0.10.0-arm64-darwin)
+      ffi
+    openai (0.13.1)
       connection_pool
-    ruby_llm (1.3.1)
-      base64
-      event_stream_parser (~> 1)
-      faraday (>= 1.10.0)
-      faraday-multipart (>= 1)
-      faraday-net_http (>= 1)
-      faraday-retry (>= 1)
-      marcel (~> 1.0)
-      zeitwerk (~> 2)
-    sorbet-result (1.2.0)
+    polars-df (0.20.0)
+      bigdecimal
+      rb_sys
+    polars-df (0.20.0-arm64-darwin)
+      bigdecimal
+    rake-compiler-dock (1.9.1)
+    rb_sys (0.9.116)
+      rake-compiler-dock (= 1.9.1)
+    sorbet-result (1.4.0)
       sorbet-runtime (~> 0.5)
-    sorbet-runtime (0.5.12204)
+    sorbet-runtime (0.5.12356)
     sorbet-schema (0.9.2)
       sorbet-result (~> 1.1)
       sorbet-runtime (~> 0.5)
@@ -86,8 +80,10 @@ GEM
       zeitwerk (~> 2.6)
     sorbet-struct-comparable (1.3.0)
       sorbet-runtime (>= 0.5)
+    tokenizers (0.5.5)
+      rb_sys
+    tokenizers (0.5.5-arm64-darwin)
     traces (0.15.2)
-    uri (1.0.3)
     zeitwerk (2.7.3)
 
 PLATFORMS
@@ -96,10 +92,10 @@ PLATFORMS
 
 DEPENDENCIES
   dotenv
-  dspy (~> 0.3.1)
+  dspy
 
 RUBY VERSION
-   ruby 3.3.5p100
+   ruby 3.3.8p144
 
 BUNDLED WITH
-   2.5.16
+   2.6.9
