@@ -7,6 +7,22 @@ require 'json'
 require 'fileutils'
 require 'time'
 require_relative 'pricing'
+require_relative 'signatures'
+require_relative 'modules'
+
+# Simple signature for raw prompting
+class RawPromptSignature < DSPy::Signature
+  description "Generate changelog from PRs using provided prompt"
+  
+  input do
+    const :prompt, String, description: "The prompt template"
+    const :pr_data, String, description: "JSON data of PRs"
+  end
+  
+  output do
+    const :changelog, String, description: "Generated changelog in MDX format"
+  end
+end
 
 class MonolithicComparison
   attr_reader :results, :pr_data
@@ -62,7 +78,8 @@ class MonolithicComparison
     # Load the PR data based on month
     filename = @month.downcase == 'may' ? 'may-pull-requests.json' : 'feb-pull-requests.json'
     path = File.join(__dir__, '../fixtures/llm-changelog-generator/data', filename)
-    JSON.parse(File.read(path))
+    # Read with UTF-8 encoding to handle special characters
+    JSON.parse(File.read(path, encoding: 'UTF-8'))
   end
 
   def setup_instrumentation
@@ -111,13 +128,15 @@ class MonolithicComparison
         end
       end
 
-      # Run the generation
-      result = DSPy::LM.chat do |messages|
-        messages.system(prompt)
-        messages.user("Generate a changelog for these PRs:\n\n#{@pr_data.to_json}")
-      end
-
-      @results[name][:output] = result.content
+      # Use Predict with the raw prompt signature
+      generator = DSPy::Predict.new(RawPromptSignature)
+      
+      result = generator.call(
+        prompt: prompt,
+        pr_data: @pr_data.to_json
+      )
+      
+      @results[name][:output] = result.changelog
       @results[name][:success] = true
       @results[name][:end_time] = Time.now
 
@@ -222,9 +241,9 @@ class MonolithicComparison
       f.puts "### By Provider"
       
       anthropic_cost = @results.select { |k, _| k.include?('claude') }
-                              .sum { |_, v| v[:cost][:total] if v[:cost] }.to_f
+                              .sum { |_, v| v[:cost] ? v[:cost][:total] : 0 }
       openai_cost = @results.select { |k, _| k.include?('openai') }
-                           .sum { |_, v| v[:cost][:total] if v[:cost] }.to_f
+                           .sum { |_, v| v[:cost] ? v[:cost][:total] : 0 }
       
       f.puts "- **Anthropic (Claude)**: $#{sprintf('%.4f', anthropic_cost)}"
       f.puts "- **OpenAI**: $#{sprintf('%.4f', openai_cost)}"
