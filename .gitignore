@@ -44,3 +44,4 @@ coverage/
 # Sorbet
 sorbet/rbi/
 sorbet/config
+reports/
