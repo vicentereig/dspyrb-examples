@@ -44,4 +44,7 @@ coverage/
 # Sorbet
 sorbet/rbi/
 sorbet/config
-reports/
+# Keep reports but ignore outputs with sensitive data
+reports/outputs/
+reports/*.md
+!reports/sample_*.md

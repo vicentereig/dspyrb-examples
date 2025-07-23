@@ -5,7 +5,23 @@
 # Updated: January 2025
 module Pricing
   MODELS = {
-    # Anthropic models
+    # Anthropic models - Claude 4 (latest)
+    'anthropic/claude-opus-4-20250514' => {
+      input: 15.00,   # $15 per 1M input tokens
+      output: 75.00   # $75 per 1M output tokens
+    },
+    'anthropic/claude-sonnet-4-20250514' => {
+      input: 3.00,    # $3 per 1M input tokens
+      output: 15.00   # $15 per 1M output tokens
+    },
+    
+    # Anthropic models - Claude 3.5
+    'anthropic/claude-3-5-sonnet-20241022' => {
+      input: 3.00,    # $3 per 1M input tokens
+      output: 15.00   # $15 per 1M output tokens
+    },
+    
+    # Anthropic models - Claude 3
     'anthropic/claude-3-opus-20240229' => {
       input: 15.00,   # $15 per 1M input tokens
       output: 75.00   # $75 per 1M output tokens

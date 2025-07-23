@@ -13,11 +13,11 @@ class MonolithicComparison
 
   MODELS = {
     'claude-opus-4' => {
-      model: 'anthropic/claude-3-opus-20240229',
+      model: 'anthropic/claude-opus-4-20250514',
       prompt_file: 'claude-opus-4-prompt.txt'
     },
     'claude-opus-4-tweak' => {
-      model: 'anthropic/claude-3-opus-20240229', 
+      model: 'anthropic/claude-opus-4-20250514', 
       prompt_file: 'claude-opus-4-tweak-prompt.txt'
     },
     'openai-4o' => {
