@@ -41,7 +41,7 @@ GEM
       dry-configurable (~> 1.0, < 2)
       dry-core (~> 1.0, < 2)
       dry-events (~> 1.0, < 2)
-    dspy (0.11.0)
+    dspy (0.12.0)
       anthropic (~> 1.1.0)
       async (~> 2.23)
       dry-configurable (~> 1.0)
@@ -130,7 +130,7 @@ PLATFORMS
 
 DEPENDENCIES
   dotenv
-  dspy
+  dspy (~> 0.12.0)
   pry
   pry-byebug
   rspec (~> 3.13)

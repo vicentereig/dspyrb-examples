@@ -4,7 +4,7 @@ source "https://rubygems.org"
 
 ruby "3.3.8"
 
-gem 'dspy'
+gem 'dspy', '~> 0.12.0'
 gem 'dotenv'
 
 group :test do

@@ -10,19 +10,7 @@ require_relative 'pricing'
 require_relative 'signatures'
 require_relative 'modules'
 
-# Simple signature for raw prompting
-class RawPromptSignature < DSPy::Signature
-  description "Generate changelog from PRs using provided prompt"
-  
-  input do
-    const :prompt, String, description: "The prompt template"
-    const :pr_data, String, description: "JSON data of PRs"
-  end
-  
-  output do
-    const :changelog, String, description: "Generated changelog in MDX format"
-  end
-end
+# Note: RawPromptSignature removed - using raw_chat API directly
 
 class MonolithicComparison
   attr_reader :results, :pr_data
@@ -79,7 +67,10 @@ class MonolithicComparison
     filename = @month.downcase == 'may' ? 'may-pull-requests.json' : 'feb-pull-requests.json'
     path = File.join(__dir__, '../fixtures/llm-changelog-generator/data', filename)
     # Read with UTF-8 encoding to handle special characters
-    JSON.parse(File.read(path, encoding: 'UTF-8'))
+    content = File.read(path, encoding: 'UTF-8')
+    # Force UTF-8 encoding and remove invalid sequences
+    content = content.encode('UTF-8', invalid: :replace, undef: :replace, replace: '')
+    JSON.parse(content)
   end
 
   def setup_instrumentation
@@ -118,25 +109,30 @@ class MonolithicComparison
       prompt_path = File.join(__dir__, '../fixtures/llm-changelog-generator/prompts', config[:prompt_file])
       prompt = File.read(prompt_path)
 
-      # Configure DSPy with the model
-      DSPy.configure do |c|
-        case config[:model]
-        when /anthropic/
-          c.lm = DSPy::LM.new(config[:model], api_key: ENV['ANTHROPIC_API_KEY'])
-        when /openai/
-          c.lm = DSPy::LM.new(config[:model], api_key: ENV['OPENAI_API_KEY'])
-        end
+      # Create and configure the language model instance
+      lm = case config[:model]
+      when /anthropic/
+        DSPy::LM.new(config[:model], api_key: ENV['ANTHROPIC_API_KEY'])
+      when /openai/
+        DSPy::LM.new(config[:model], api_key: ENV['OPENAI_API_KEY'])
       end
 
-      # Use Predict with the raw prompt signature
-      generator = DSPy::Predict.new(RawPromptSignature)
+      # Configure DSPy with the model
+      DSPy.configure do |c|
+        c.lm = lm
+      end
       
-      result = generator.call(
-        prompt: prompt,
-        pr_data: @pr_data.to_json
-      )
+      # Combine prompt with PR data (append PR data after the prompt)
+      # Ensure proper UTF-8 encoding for the JSON data
+      pr_json = @pr_data.to_json.encode('UTF-8', invalid: :replace, undef: :replace, replace: '')
+      formatted_prompt = "#{prompt}\n\n## Pull Request Data\n\n```json\n#{pr_json}\n```"
       
-      @results[name][:output] = result.changelog
+      # Use raw_chat with array format
+      result = lm.raw_chat([
+        { role: 'user', content: formatted_prompt }
+      ])
+      
+      @results[name][:output] = result
       @results[name][:success] = true
       @results[name][:end_time] = Time.now
 
