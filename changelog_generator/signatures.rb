@@ -140,7 +140,7 @@ module ChangelogGenerator
   end
 
   # Alternative: Single-step changelog generation for comparison
-  class MonolithicChangelogGenerator < DSPy::Signature
+  class ChangelogGenerator < DSPy::Signature
     description "Generate a complete changelog from pull requests in one step (mimics original approach)."
 
     input do

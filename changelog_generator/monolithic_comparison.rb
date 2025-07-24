@@ -6,6 +6,7 @@ require 'dspy'
 require 'json'
 require 'fileutils'
 require 'time'
+require 'optparse'
 require_relative 'pricing'
 require_relative 'signatures'
 require_relative 'modules'
@@ -38,9 +39,10 @@ class MonolithicComparison
     }
   }.freeze
 
-  def initialize(month: 'May', year: 2025)
+  def initialize(month: 'May', year: 2025, pr_limit: nil)
     @month = month
     @year = year
+    @pr_limit = pr_limit
     @results = {}
     @pr_data = load_pr_data
     setup_instrumentation
@@ -70,7 +72,14 @@ class MonolithicComparison
     content = File.read(path, encoding: 'UTF-8')
     # Force UTF-8 encoding and remove invalid sequences
     content = content.encode('UTF-8', invalid: :replace, undef: :replace, replace: '')
-    JSON.parse(content)
+    data = JSON.parse(content)
+    
+    # Apply PR limit if specified
+    if @pr_limit && @pr_limit > 0
+      data = data.first(@pr_limit)
+    end
+    
+    data
   end
 
   def setup_instrumentation
@@ -81,9 +90,9 @@ class MonolithicComparison
 
       @results[current_model][:token_events] ||= []
       @results[current_model][:token_events] << {
-        input_tokens: event.payload[:tokens_input] || 0,
-        output_tokens: event.payload[:tokens_output] || 0,
-        total_tokens: event.payload[:tokens_total] || 0
+        input_tokens: event.payload[:input_tokens] || 0,
+        output_tokens: event.payload[:output_tokens] || 0,
+        total_tokens: event.payload[:total_tokens] || 0
       }
     end
 
@@ -268,6 +277,37 @@ end
 
 # Run if executed directly
 if __FILE__ == $0
-  comparison = MonolithicComparison.new
+  options = {
+    month: 'May',
+    year: 2025,
+    pr_limit: nil
+  }
+
+  OptionParser.new do |opts|
+    opts.banner = "Usage: #{$0} [options]"
+    
+    opts.on("-m", "--month MONTH", "Month to use (May or Feb, default: May)") do |m|
+      options[:month] = m
+    end
+    
+    opts.on("-y", "--year YEAR", Integer, "Year (default: 2025)") do |y|
+      options[:year] = y
+    end
+    
+    opts.on("-l", "--limit N", Integer, "Limit number of PRs to process (for testing)") do |n|
+      options[:pr_limit] = n
+    end
+    
+    opts.on("-h", "--help", "Show this help message") do
+      puts opts
+      exit
+    end
+  end.parse!
+
+  comparison = MonolithicComparison.new(
+    month: options[:month],
+    year: options[:year],
+    pr_limit: options[:pr_limit]
+  )
   comparison.run_comparison
 end

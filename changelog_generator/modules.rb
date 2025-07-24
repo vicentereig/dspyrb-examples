@@ -54,7 +54,7 @@ module ChangelogGenerator
     # Uses Predict to mimic the original approach
     # where a single prompt handles everything
     def initialize
-      super(MonolithicChangelogGenerator)
+      super(ChangelogGenerator)
     end
   end
 
