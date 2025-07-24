@@ -65,7 +65,6 @@ module ChangelogGenerator
     output do
       const :category, PRCategory, description: "Category of the PR (customer-facing available, not released, bug fix, internal)"
       const :service, Service, description: "Service this PR belongs to", default: Service::Other
-      const :reasoning, String, description: "Brief explanation of categorization"
     end
   end
 

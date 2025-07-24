@@ -75,8 +75,8 @@ module ChangelogGenerator
         CategorizedPR.new(
           pull_request: pr,
           category: result.category,
-          service: result.service,
-          reasoning: result.reasoning
+          service: result.service.is_a?(String) ? Service.deserialize(result.service) : result.service,
+          reasoning: result.reasoning || ""  # ChainOfThought provides this
         )
       end
 

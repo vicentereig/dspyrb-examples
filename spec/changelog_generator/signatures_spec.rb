@@ -63,7 +63,6 @@ RSpec.describe 'ChangelogGenerator Signatures' do
       expect(output_descriptors[:category].type).to eq(ChangelogGenerator::PRCategory)
       expect(output_descriptors[:service].type).to eq(ChangelogGenerator::Service)
       expect(output_descriptors[:service].default_value).to eq(ChangelogGenerator::Service::Other)
-      expect(output_descriptors[:reasoning].type).to eq(String)
     end
   end
 

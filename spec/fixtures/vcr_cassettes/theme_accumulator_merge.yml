@@ -1,0 +1,185 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"existing_theme_names\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Names of themes from previous batches\"\n    },\n    \"existing_theme_descriptions\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions of themes from previous batches\"\n    },\n    \"existing_theme_pr_ids\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs for each existing theme\"\n    },\n    \"new_theme_names\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Names of themes from current batch\"\n    },\n    \"new_theme_descriptions\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions of themes from current batch\"\n    },\n    \"new_theme_pr_ids\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs for each new theme\"\n    }\n  },\n  \"required\": [\n    \"existing_theme_names\",\n    \"existing_theme_descriptions\",\n    \"existing_theme_pr_ids\",\n    \"new_theme_names\",\n    \"new_theme_descriptions\",\n    \"new_theme_pr_ids\"\n  ]\n}\n```\nYour
+        output schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"merged_theme_names\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Names of consolidated themes\"\n    },\n    \"merged_theme_descriptions\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions of consolidated themes\"\n    },\n    \"merged_theme_pr_ids\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs for each consolidated theme\"\n    },\n    \"reasoning\": {\n      \"type\":
+        \"string\",\n      \"description\": \"Step by step reasoning process\"\n    }\n  },\n  \"required\":
+        [\n    \"merged_theme_names\",\n    \"merged_theme_descriptions\",\n    \"merged_theme_pr_ids\",\n    \"reasoning\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Merge themes across batches, consolidating similar themes and
+        maintaining coherence. Think step by step."},{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"existing_theme_names\": [\n    \"Managed PostgreSQL\"\n  ],\n  \"existing_theme_descriptions\":
+        [\n    \"Database management improvements\"\n  ],\n  \"existing_theme_pr_ids\":
+        [\n    [\n      3000,\n      3001\n    ]\n  ],\n  \"new_theme_names\": [\n    \"PostgreSQL
+        Enhancements\",\n    \"GitHub Runners\"\n  ],\n  \"new_theme_descriptions\":
+        [\n    \"New PostgreSQL features\",\n    \"Runner improvements\"\n  ],\n  \"new_theme_pr_ids\":
+        [\n    [\n      3170,\n      3202\n    ],\n    [\n      3312,\n      3366\n    ]\n  ]\n}\n```\n\nRespond
+        with the corresponding output schema fields wrapped in a ```json ``` block,\nstarting
+        with the heading `## Output values`.\n\nIMPORTANT: You must respond with valid
+        JSON that matches this structure:\n```json\n{\n  \"merged_theme_names\": [\n    \"example
+        item\"\n  ],\n  \"merged_theme_descriptions\": [\n    \"example item\"\n  ],\n  \"merged_theme_pr_ids\":
+        [\n    \"example item\"\n  ],\n  \"reasoning\": \"Step by step reasoning process\"\n}\n```\n\nRequired
+        fields: merged_theme_names, merged_theme_descriptions, merged_theme_pr_ids,
+        reasoning\n\nEnsure your response:\n1. Is valid JSON (properly quoted strings,
+        no trailing commas)\n2. Includes all required fields\n3. Uses the correct
+        data types for each field\n4. Is wrapped in ```json``` markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '4613'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 24 Jul 2025 18:06:05 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '4390'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '4395'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9997'
+      X-Ratelimit-Remaining-Tokens:
+      - '198981'
+      X-Ratelimit-Reset-Requests:
+      - 19.068s
+      X-Ratelimit-Reset-Tokens:
+      - 305ms
+      X-Request-Id:
+      - req_8aa7b7b94566ba20e137fce32d8bc7e9
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=FrXSfQG_xtrbZjXp5xoPrhDQmlrzuEjGCWDYriyDncA-1753380365-1.0.1.1-Nr_BNFzN7FoWoP1CMKcPfkgJ7bUIGbtw4R5RrjFVd3vYHRlTawH7A92kHrT1PwCxC.c6cuXMOsbyfCcNjnDDUNZbPsTvSinhXPnYoOUwV5c;
+        path=/; expires=Thu, 24-Jul-25 18:36:05 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=W75XxtPOGSsvZllnVMS6Rb4pUTnwU1aOFWQnOe8pjCA-1753380365302-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9645595359590ee6-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-BwucKjPAKoexQAXSIUEIO6LRFUQ3R",
+          "object": "chat.completion",
+          "created": 1753380360,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"merged_theme_names\": [\n    \"Managed PostgreSQL\",\n    \"GitHub Runners\"\n  ],\n  \"merged_theme_descriptions\": [\n    \"Database management improvements\",\n    \"Runner improvements\"\n  ],\n  \"merged_theme_pr_ids\": [\n    [\n      3000,\n      3001\n    ],\n    [\n      3312,\n      3366\n    ]\n  ],\n  \"reasoning\": \"The existing theme 'Managed PostgreSQL' is similar to the new theme 'PostgreSQL Enhancements' as both relate to PostgreSQL improvements. Therefore, we keep 'Managed PostgreSQL' and its description while discarding 'PostgreSQL Enhancements'. The new theme 'GitHub Runners' is distinct and is kept as is. The PR IDs for 'Managed PostgreSQL' are retained, and the PR IDs for 'GitHub Runners' are included.\"\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 1028,
+            "completion_tokens": 191,
+            "total_tokens": 1219,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": null
+        }
+  recorded_at: Thu, 24 Jul 2025 18:06:05 GMT
+recorded_with: VCR 6.3.1
