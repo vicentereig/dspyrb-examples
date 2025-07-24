@@ -5,8 +5,7 @@ require 'bundler/setup'
 require 'dotenv/load'
 require_relative 'changelog_generator/batch_signatures'
 require_relative 'changelog_generator/batch_modules'
-require_relative 'changelog_generator/structured_outputs_comparison'
-require_relative 'changelog_generator/pricing'
+require_relative 'changelog_generator/batch_changelog_generator'
 
 # Sample PRs for comparison
 sample_prs = [
@@ -48,16 +47,31 @@ sample_prs = [
   )
 ]
 
-# Run comparison
-comparison = ChangelogGenerator::Batch::StructuredOutputsComparison.new
-comparison.run_comparison(pull_requests: sample_prs, batch_size: 3)
+# Configure DSPy
+DSPy.configure do |config|
+  config.lm = DSPy::LM.new('openai/gpt-4o-mini', api_key: ENV.fetch('OPENAI_API_KEY'))
+end
 
-puts "\n\n📊 Batch Processing Comparison Complete!"
+# Run batch changelog generation
+puts "🔄 Generating changelog with batch processing..."
+puts "=" * 60
+
+generator = ChangelogGenerator::Batch::BatchChangelogGenerator.new
+themes = generator.generate_themes(pull_requests: sample_prs, batch_size: 3)
+
+puts "\n📊 Themes Discovered:"
+themes.each do |theme|
+  puts "\n## #{theme.name}"
+  puts theme.description
+  puts "PRs: #{theme.pr_ids.join(', ')}"
+end
+
+puts "\n\n✅ Batch Processing Complete!"
 puts "=" * 60
 
 # Additional insights
 puts "\n💡 Key Insights:"
-puts "- Batch processing reduces API calls by grouping multiple PRs"
-puts "- Structured outputs ensure reliable JSON parsing"
-puts "- Token usage varies by provider and model"
-puts "- Cost optimization is significant with larger batches"
+puts "- Processed #{sample_prs.length} PRs in batches of 3"
+puts "- Discovered #{themes.length} themes dynamically"
+puts "- Reduced API calls by ~#{((1 - (sample_prs.length / 3.0).ceil.to_f / sample_prs.length) * 100).round}%"
+puts "- Themes are discovered based on PR content, not predefined categories"

@@ -5807,4 +5807,3265 @@ http_interactions:
           "system_fingerprint": null
         }
   recorded_at: Thu, 24 Jul 2025 18:32:58 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"pr_batch\": {\n      \"type\": \"array\",\n      \"items\":
+        {\n        \"type\": \"object\",\n        \"properties\": {\n          \"_type\":
+        {\n            \"type\": \"string\",\n            \"const\": \"PullRequest\"\n          },\n          \"pr\":
+        {\n            \"type\": \"integer\"\n          },\n          \"title\": {\n            \"type\":
+        \"string\"\n          },\n          \"description\": {\n            \"type\":
+        \"string\"\n          },\n          \"ellipsis_summary\": {\n            \"type\":
+        \"string\"\n          }\n        },\n        \"required\": [\n          \"_type\",\n          \"pr\",\n          \"title\",\n          \"description\",\n          \"ellipsis_summary\"\n        ],\n        \"description\":
+        \"ChangelogGenerator::PullRequest struct\"\n      },\n      \"description\":
+        \"Batch of pull requests to analyze together\"\n    }\n  },\n  \"required\":
+        [\n    \"pr_batch\"\n  ]\n}\n```\nYour output schema fields are:\n```json\n{\n  \"$schema\":
+        \"http://json-schema.org/draft-06/schema#\",\n  \"type\": \"object\",\n  \"properties\":
+        {\n    \"theme_names\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\":
+        \"string\"\n      },\n      \"description\": \"Names of themes discovered
+        from the PR batch\"\n    },\n    \"theme_descriptions\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions for each theme\"\n    },\n    \"theme_pr_ids\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs belonging to each theme\"\n    },\n    \"pr_ids_list\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"integer\"\n      },\n      \"description\":
+        \"List of PR IDs in order\"\n    },\n    \"pr_theme_assignments\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Theme names for each PR ID (parallel to pr_ids_list)\"\n    },\n    \"reasoning\":
+        {\n      \"type\": \"string\",\n      \"description\": \"Step by step reasoning
+        process\"\n    }\n  },\n  \"required\": [\n    \"theme_names\",\n    \"theme_descriptions\",\n    \"theme_pr_ids\",\n    \"pr_ids_list\",\n    \"pr_theme_assignments\",\n    \"reasoning\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Analyze a batch of pull requests to identify themes and relationships.
+        Think step by step."},{"role":"user","content":"## Input Values\n```json\n{\n  \"pr_batch\":
+        [\n    {\n      \"pr\": 2632,\n      \"title\": \"Add kubernetes cluster and
+        node pool upgrades\",\n      \"description\": \"This patch implements the
+        upgrade logic for kubernetes clusters.\\n\\nUpgrade is done sequentially,
+        node-by-node, in the order of creation time.\\nUpgrade operation starts with
+        the CP nodes.\\n\\nNodepools need to \\\"incr_upgrade\\\"d separately to start
+        their upgrade process.\\n\\nFor upgrading a node, it creates a new node with
+        upgraded version of k8s, adds it to\\nthe cluster and drains/removes the corresponding
+        old node. There''s no actual relation\\nbetween the old node and new node
+        in reality.\",\n      \"ellipsis_summary\": \"Adds sequential upgrade logic
+        for Kubernetes clusters and node pools, including new methods and tests for
+        handling node upgrades.\\n> \\n>   - **Behavior**:\\n>     - Implements sequential
+        node upgrade logic for Kubernetes clusters, starting with control plane nodes.\\n>     -
+        Node pools require separate `incr_upgrade` to initiate upgrades.\\n>     -
+        New nodes are created with upgraded Kubernetes versions, old nodes are drained
+        and removed.\\n>   - **Functions**:\\n>     - Adds `version` and `delete_node`
+        methods to `Kubernetes::Client`.\\n>     - Adds `all_vms` and `worker_vms`
+        methods to `KubernetesCluster`.\\n>     - Adds `d_restart` method to `Sshable`.\\n>   -
+        **Programs**:\\n>     - Adds `upgrade` and `wait_upgrade` labels to `KubernetesClusterNexus`
+        and `KubernetesNodepoolNexus`.\\n>     - New `Prog::Kubernetes::UpgradeKubernetesNode`
+        class for handling node upgrades.\\n>   - **Tests**:\\n>     - Adds tests
+        for new methods in `client_spec.rb`, `kubernetes_cluster_spec.rb`, and `sshable_spec.rb`.\\n>     -
+        Adds tests for upgrade logic in `kubernetes_cluster_nexus_spec.rb`, `kubernetes_nodepool_nexus_spec.rb`,
+        and `upgrade_kubernetes_node_spec.rb`.\\n> \\n>\"\n    },\n    {\n      \"pr\":
+        3073,\n      \"title\": \"Rewrite Scheduling::Dispatcher (bin/respirate)\",\n      \"description\":
+        \"Previous, respirate spun up a thread and created 4 IOs per strand run, and
+        used IO.select to handle timeouts.\\r\\n\\r\\nThis changes respirate to use
+        a fixed-size thread pool, fed using a single queue (the strand queue).  The
+        thread pool is made up of pairs of strand/apoptosis threads.  The strand threads
+        pop from the strand queue.  Once they get a strand, the signal their related
+        apoptosis thread via their shared start queue.  The apoptosis thread does
+        a timed pop of the finish queue (timed pop is a new feature added in Ruby
+        3.2).  If the strand thread doesn''t finish the strand run and push to the
+        finish queue before the apoptosis timeout, then the apoptosis thread kills
+        the process.\\r\\n\\r\\nThis changes the database query to get strands to
+        run to use a prepared statement, to save parsing/planning time.  The database
+        query now avoids selecting strands that the thread pool is currently running.\",\n      \"ellipsis_summary\":
+        \"\"\n    }\n  ]\n}\n```\n\nRespond with the corresponding output schema fields
+        wrapped in a ```json ``` block,\nstarting with the heading `## Output values`.\n\nIMPORTANT:
+        You must respond with valid JSON that matches this structure:\n```json\n{\n  \"theme_names\":
+        [\n    \"example item\"\n  ],\n  \"theme_descriptions\": [\n    \"example
+        item\"\n  ],\n  \"theme_pr_ids\": [\n    \"example item\"\n  ],\n  \"pr_ids_list\":
+        [\n    \"example item\"\n  ],\n  \"pr_theme_assignments\": [\n    \"example
+        item\"\n  ],\n  \"reasoning\": \"Step by step reasoning process\"\n}\n```\n\nRequired
+        fields: theme_names, theme_descriptions, theme_pr_ids, pr_ids_list, pr_theme_assignments,
+        reasoning\n\nEnsure your response:\n1. Is valid JSON (properly quoted strings,
+        no trailing commas)\n2. Includes all required fields\n3. Uses the correct
+        data types for each field\n4. Is wrapped in ```json``` markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '6937'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 24 Jul 2025 19:21:38 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '6970'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '6989'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9987'
+      X-Ratelimit-Remaining-Tokens:
+      - '198406'
+      X-Ratelimit-Reset-Requests:
+      - 1m48.715s
+      X-Ratelimit-Reset-Tokens:
+      - 478ms
+      X-Request-Id:
+      - req_d29c20a6b898792262f74dc5468fd5fe
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=0raAyGC_D2pJIGmEs.Ety447FB5sz7KOJsx9m.rzjyI-1753384898-1.0.1.1-ubCvQ6ABF2ROML50taOI3mSJEfFcQFINIUAh0mP9Np.ReWZsz36sxfzjt64IgSYr1hWRX9Vketj4Q7gOoMMCd8Ikbto4tW.NpEiHVmOFHfg;
+        path=/; expires=Thu, 24-Jul-25 19:51:38 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=dJNpUw8KMrT4L77L1vSUwirWS1X0.SPsSA8hC0X5KuY-1753384898488-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9645c7e64dba8c73-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-BwvnPst9HWRI8q90xqoWZQFBxRFEc",
+          "object": "chat.completion",
+          "created": 1753384891,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"theme_names\": [\n    \"Kubernetes Upgrades\",\n    \"Thread Pool Management\"\n  ],\n  \"theme_descriptions\": [\n    \"Implements sequential upgrade logic for Kubernetes clusters and node pools, focusing on control plane nodes and node management.\",\n    \"Refactors the scheduling dispatcher to utilize a fixed-size thread pool for improved performance and resource management.\"\n  ],\n  \"theme_pr_ids\": [\n    [\n      2632\n    ],\n    [\n      3073\n    ]\n  ],\n  \"pr_ids_list\": [\n    2632,\n    3073\n  ],\n  \"pr_theme_assignments\": [\n    \"Kubernetes Upgrades\",\n    \"Thread Pool Management\"\n  ],\n  \"reasoning\": \"The first pull request (PR 2632) focuses on Kubernetes upgrades, detailing the upgrade process for clusters and node pools, which fits the theme of 'Kubernetes Upgrades'. The second pull request (PR 3073) discusses a significant rewrite of the scheduling dispatcher to implement a thread pool, aligning with the theme of 'Thread Pool Management'. Each PR is assigned to its respective theme based on the content and focus of the changes made.\"\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 1569,
+            "completion_tokens": 248,
+            "total_tokens": 1817,
+            "prompt_tokens_details": {
+              "cached_tokens": 1536,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": null
+        }
+  recorded_at: Thu, 24 Jul 2025 19:21:38 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"pr_batch\": {\n      \"type\": \"array\",\n      \"items\":
+        {\n        \"type\": \"object\",\n        \"properties\": {\n          \"_type\":
+        {\n            \"type\": \"string\",\n            \"const\": \"PullRequest\"\n          },\n          \"pr\":
+        {\n            \"type\": \"integer\"\n          },\n          \"title\": {\n            \"type\":
+        \"string\"\n          },\n          \"description\": {\n            \"type\":
+        \"string\"\n          },\n          \"ellipsis_summary\": {\n            \"type\":
+        \"string\"\n          }\n        },\n        \"required\": [\n          \"_type\",\n          \"pr\",\n          \"title\",\n          \"description\",\n          \"ellipsis_summary\"\n        ],\n        \"description\":
+        \"ChangelogGenerator::PullRequest struct\"\n      },\n      \"description\":
+        \"Batch of pull requests to analyze together\"\n    }\n  },\n  \"required\":
+        [\n    \"pr_batch\"\n  ]\n}\n```\nYour output schema fields are:\n```json\n{\n  \"$schema\":
+        \"http://json-schema.org/draft-06/schema#\",\n  \"type\": \"object\",\n  \"properties\":
+        {\n    \"theme_names\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\":
+        \"string\"\n      },\n      \"description\": \"Names of themes discovered
+        from the PR batch\"\n    },\n    \"theme_descriptions\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions for each theme\"\n    },\n    \"theme_pr_ids\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs belonging to each theme\"\n    },\n    \"pr_ids_list\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"integer\"\n      },\n      \"description\":
+        \"List of PR IDs in order\"\n    },\n    \"pr_theme_assignments\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Theme names for each PR ID (parallel to pr_ids_list)\"\n    },\n    \"reasoning\":
+        {\n      \"type\": \"string\",\n      \"description\": \"Step by step reasoning
+        process\"\n    }\n  },\n  \"required\": [\n    \"theme_names\",\n    \"theme_descriptions\",\n    \"theme_pr_ids\",\n    \"pr_ids_list\",\n    \"pr_theme_assignments\",\n    \"reasoning\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Analyze a batch of pull requests to identify themes and relationships.
+        Think step by step."},{"role":"user","content":"## Input Values\n```json\n{\n  \"pr_batch\":
+        [\n    {\n      \"pr\": 3083,\n      \"title\": \"Handle case when user attempts
+        to add a user to a project when they already have access\",\n      \"description\":
+        \"This raises Sequel::UniqueConstraintViolation, so rescue that and show an
+        appropriate error message.  As the specs use transactions, you need to use
+        a savepoint in the specs to avoid issues.  This uses the savepoint: :only
+        option, so it will open a savepoint during the specs, but not create a new
+        transaction outside of the specs.\",\n      \"ellipsis_summary\": \"\"\n    },\n    {\n      \"pr\":
+        3102,\n      \"title\": \"bin/respirate improvements\",\n      \"description\":
+        \"* Fix default thread pool size\\r\\n* Allow custom thread pool sizes\\r\\n*
+        Checkout connection per thread\\r\\n* Only select strand.id in scan query\\r\\n*
+        Use FOR UPDATE SKIP LOCKED in scan query\",\n      \"ellipsis_summary\": \"\"\n    }\n  ]\n}\n```\n\nRespond
+        with the corresponding output schema fields wrapped in a ```json ``` block,\nstarting
+        with the heading `## Output values`.\n\nIMPORTANT: You must respond with valid
+        JSON that matches this structure:\n```json\n{\n  \"theme_names\": [\n    \"example
+        item\"\n  ],\n  \"theme_descriptions\": [\n    \"example item\"\n  ],\n  \"theme_pr_ids\":
+        [\n    \"example item\"\n  ],\n  \"pr_ids_list\": [\n    \"example item\"\n  ],\n  \"pr_theme_assignments\":
+        [\n    \"example item\"\n  ],\n  \"reasoning\": \"Step by step reasoning process\"\n}\n```\n\nRequired
+        fields: theme_names, theme_descriptions, theme_pr_ids, pr_ids_list, pr_theme_assignments,
+        reasoning\n\nEnsure your response:\n1. Is valid JSON (properly quoted strings,
+        no trailing commas)\n2. Includes all required fields\n3. Uses the correct
+        data types for each field\n4. Is wrapped in ```json``` markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '4892'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 24 Jul 2025 19:21:44 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '5793'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '5797'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9987'
+      X-Ratelimit-Remaining-Tokens:
+      - '198910'
+      X-Ratelimit-Reset-Requests:
+      - 1m50.24s
+      X-Ratelimit-Reset-Tokens:
+      - 327ms
+      X-Request-Id:
+      - 7ce3a452-36e4-47e4-8ecd-ccc0fd95f699
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=OypY28OUxOY1OvJ_yg4r6A9H3UABdd8zf5c2tnMSaK4-1753384904-1.0.1.1-ptvKWj0YiciKRJP44CI_tKzCQ7t3CnSr8R.SrMoZVZd5vsZbo2YP_nDqQlpJoLCOK98qyXngBJSFxfQvS5jXK8r7SM2KktY3bcqEFPOzoos;
+        path=/; expires=Thu, 24-Jul-25 19:51:44 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=LIX08Thc8jenlVRJuEIuTTTKGoLTo44sDHL6fAtyngc-1753384904376-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9645c81fbbf18c73-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-BwvnWihCaJNzfRLJuzAGi9i4svP5Y",
+          "object": "chat.completion",
+          "created": 1753384898,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"theme_names\": [\n    \"Error Handling\",\n    \"Performance Improvements\"\n  ],\n  \"theme_descriptions\": [\n    \"Improvements related to handling errors when adding users to projects.\",\n    \"Enhancements to the performance of the application through better resource management.\"\n  ],\n  \"theme_pr_ids\": [\n    [3083],\n    [3102]\n  ],\n  \"pr_ids_list\": [\n    3083,\n    3102\n  ],\n  \"pr_theme_assignments\": [\n    \"Error Handling\",\n    \"Performance Improvements\"\n  ],\n  \"reasoning\": \"The first pull request (PR 3083) focuses on error handling when a user with existing access tries to be added to a project, which falls under the theme of 'Error Handling'. The second pull request (PR 3102) includes various improvements to the performance of the application, such as thread pool management, which aligns with the theme of 'Performance Improvements'. Each PR is assigned to its respective theme based on its content.\"\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 1078,
+            "completion_tokens": 217,
+            "total_tokens": 1295,
+            "prompt_tokens_details": {
+              "cached_tokens": 1024,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": null
+        }
+  recorded_at: Thu, 24 Jul 2025 19:21:44 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"existing_theme_names\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Names of themes from previous batches\"\n    },\n    \"existing_theme_descriptions\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions of themes from previous batches\"\n    },\n    \"existing_theme_pr_ids\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs for each existing theme\"\n    },\n    \"new_theme_names\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Names of themes from current batch\"\n    },\n    \"new_theme_descriptions\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions of themes from current batch\"\n    },\n    \"new_theme_pr_ids\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs for each new theme\"\n    }\n  },\n  \"required\": [\n    \"existing_theme_names\",\n    \"existing_theme_descriptions\",\n    \"existing_theme_pr_ids\",\n    \"new_theme_names\",\n    \"new_theme_descriptions\",\n    \"new_theme_pr_ids\"\n  ]\n}\n```\nYour
+        output schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"merged_theme_names\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Names of consolidated themes\"\n    },\n    \"merged_theme_descriptions\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions of consolidated themes\"\n    },\n    \"merged_theme_pr_ids\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs for each consolidated theme\"\n    },\n    \"reasoning\": {\n      \"type\":
+        \"string\",\n      \"description\": \"Step by step reasoning process\"\n    }\n  },\n  \"required\":
+        [\n    \"merged_theme_names\",\n    \"merged_theme_descriptions\",\n    \"merged_theme_pr_ids\",\n    \"reasoning\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Merge themes across batches, consolidating similar themes and
+        maintaining coherence. Think step by step."},{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"existing_theme_names\": [\n    \"Kubernetes
+        Upgrades\",\n    \"Thread Pool Management\"\n  ],\n  \"existing_theme_descriptions\":
+        [\n    \"Implements sequential upgrade logic for Kubernetes clusters and node
+        pools, focusing on control plane nodes and node management.\",\n    \"Refactors
+        the scheduling dispatcher to utilize a fixed-size thread pool for improved
+        performance and resource management.\"\n  ],\n  \"existing_theme_pr_ids\":
+        [\n    [\n      2632\n    ],\n    [\n      3073\n    ]\n  ],\n  \"new_theme_names\":
+        [\n    \"Error Handling\",\n    \"Performance Improvements\"\n  ],\n  \"new_theme_descriptions\":
+        [\n    \"Improvements related to handling errors when adding users to projects.\",\n    \"Enhancements
+        to the performance of the application through better resource management.\"\n  ],\n  \"new_theme_pr_ids\":
+        [\n    [\n      3083\n    ],\n    [\n      3102\n    ]\n  ]\n}\n```\n\nRespond
+        with the corresponding output schema fields wrapped in a ```json ``` block,\nstarting
+        with the heading `## Output values`.\n\nIMPORTANT: You must respond with valid
+        JSON that matches this structure:\n```json\n{\n  \"merged_theme_names\": [\n    \"example
+        item\"\n  ],\n  \"merged_theme_descriptions\": [\n    \"example item\"\n  ],\n  \"merged_theme_pr_ids\":
+        [\n    \"example item\"\n  ],\n  \"reasoning\": \"Step by step reasoning process\"\n}\n```\n\nRequired
+        fields: merged_theme_names, merged_theme_descriptions, merged_theme_pr_ids,
+        reasoning\n\nEnsure your response:\n1. Is valid JSON (properly quoted strings,
+        no trailing commas)\n2. Includes all required fields\n3. Uses the correct
+        data types for each field\n4. Is wrapped in ```json``` markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '4978'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 24 Jul 2025 19:21:48 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '3927'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '3930'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9986'
+      X-Ratelimit-Remaining-Tokens:
+      - '198892'
+      X-Ratelimit-Reset-Requests:
+      - 1m52.886s
+      X-Ratelimit-Reset-Tokens:
+      - 332ms
+      X-Request-Id:
+      - req_9430ad72e07627abe2aa4a25c52b5cc6
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=xeZWCiCNYwsP0CNpVB6UKA68A6cjzUFC9hErI942eIo-1753384908-1.0.1.1-vGo.RWdcRMip6TkJ5dXtT1zjasTi4ctcQ60n8xXenUVQOT7AKflXfb9YqB_k5WuM7GLeqJJv4p4HdCVSAb4lyTrac2KCVsxZplp_07ic6mI;
+        path=/; expires=Thu, 24-Jul-25 19:51:48 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=_g0dgdodE7CB_fbtI4dbEuxVHPlMlmee7GNe7W8oUz0-1753384908498-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9645c844fa218c73-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-BwvncanCtC7KvP5lTjOvNG6jrTfiE",
+          "object": "chat.completion",
+          "created": 1753384904,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"merged_theme_names\": [\n    \"Kubernetes Upgrades\",\n    \"Thread Pool Management\",\n    \"Error Handling\",\n    \"Performance Improvements\"\n  ],\n  \"merged_theme_descriptions\": [\n    \"Implements sequential upgrade logic for Kubernetes clusters and node pools, focusing on control plane nodes and node management.\",\n    \"Refactors the scheduling dispatcher to utilize a fixed-size thread pool for improved performance and resource management.\",\n    \"Improvements related to handling errors when adding users to projects.\",\n    \"Enhancements to the performance of the application through better resource management.\"\n  ],\n  \"merged_theme_pr_ids\": [\n    [\n      2632\n    ],\n    [\n      3073\n    ],\n    [\n      3083\n    ],\n    [\n      3102\n    ]\n  ],\n  \"reasoning\": \"The existing themes 'Kubernetes Upgrades' and 'Thread Pool Management' were retained as they are distinct topics. The new themes 'Error Handling' and 'Performance Improvements' were added as they also represent unique areas of focus. Each theme's description and PR IDs were included without merging any themes, as they do not overlap in content.\"\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 1079,
+            "completion_tokens": 245,
+            "total_tokens": 1324,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": null
+        }
+  recorded_at: Thu, 24 Jul 2025 19:21:48 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"pr_batch\": {\n      \"type\": \"array\",\n      \"items\":
+        {\n        \"type\": \"object\",\n        \"properties\": {\n          \"_type\":
+        {\n            \"type\": \"string\",\n            \"const\": \"PullRequest\"\n          },\n          \"pr\":
+        {\n            \"type\": \"integer\"\n          },\n          \"title\": {\n            \"type\":
+        \"string\"\n          },\n          \"description\": {\n            \"type\":
+        \"string\"\n          },\n          \"ellipsis_summary\": {\n            \"type\":
+        \"string\"\n          }\n        },\n        \"required\": [\n          \"_type\",\n          \"pr\",\n          \"title\",\n          \"description\",\n          \"ellipsis_summary\"\n        ],\n        \"description\":
+        \"ChangelogGenerator::PullRequest struct\"\n      },\n      \"description\":
+        \"Batch of pull requests to analyze together\"\n    }\n  },\n  \"required\":
+        [\n    \"pr_batch\"\n  ]\n}\n```\nYour output schema fields are:\n```json\n{\n  \"$schema\":
+        \"http://json-schema.org/draft-06/schema#\",\n  \"type\": \"object\",\n  \"properties\":
+        {\n    \"theme_names\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\":
+        \"string\"\n      },\n      \"description\": \"Names of themes discovered
+        from the PR batch\"\n    },\n    \"theme_descriptions\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions for each theme\"\n    },\n    \"theme_pr_ids\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs belonging to each theme\"\n    },\n    \"pr_ids_list\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"integer\"\n      },\n      \"description\":
+        \"List of PR IDs in order\"\n    },\n    \"pr_theme_assignments\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Theme names for each PR ID (parallel to pr_ids_list)\"\n    },\n    \"reasoning\":
+        {\n      \"type\": \"string\",\n      \"description\": \"Step by step reasoning
+        process\"\n    }\n  },\n  \"required\": [\n    \"theme_names\",\n    \"theme_descriptions\",\n    \"theme_pr_ids\",\n    \"pr_ids_list\",\n    \"pr_theme_assignments\",\n    \"reasoning\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Analyze a batch of pull requests to identify themes and relationships.
+        Think step by step."},{"role":"user","content":"## Input Values\n```json\n{\n  \"pr_batch\":
+        [\n    {\n      \"pr\": 3139,\n      \"title\": \"Rewrite first part of DEVELOPERS.md
+        to use mise\",\n      \"description\": \"Note: We should delete `.envrc` after
+        a transition period. If `asdf`\\nis uninstalled but `direnv` remains active,
+        it will complain that `use\\nasdf` doesn''t work. This emits an annoying message,
+        but has no other\\nharmful effects.\\n\\nMotivation for this rewrite:\\n\\n`asdf-direnv`
+        has not been updated for the Go-rewritten version of\\n`asdf`. This creates
+        problems for anyone following these\\ninstructions. I originally used `asdf-direnv`
+        because some programs\\n(if memory serves, the `pq` gem compilation running
+        `pg_config`) don''t\\nwork when shimmed. I also preferred the speed of `$PATH`
+        manipulation\\nover using shim programs.\\n\\nThe author of `asdf-direnv`
+        stopped maintaining it months ago, since\\n`mise` offers a similar model to
+        `asdf` but is based on `$PATH` rather\\nthan shims. As a result, he switched
+        to `mise`, and now so are we.\\n\\nThere are generally fewer steps when using
+        `mise`, but I made\\n`DEVELOPERS.md` a bit longer to include shell activation
+        instructions\\nand system dependencies, so the instructions have grown slightly\\noverall.
+        Hopefully, this will speed up the process, since it is less\\nnecessary to
+        visit other manual pages.\\n\\nAnother major difference is that `mise install`
+        tries to download and\\ninstall *every* dependency, so it’s necessary to set
+        up system\\ndependencies first. This required some reordering and restructuring.\\n\\nFinally,
+        while it was theoretically possible to manage Postgres by\\nother means, having
+        it in `.tool-versions` made this awkward and often\\npainful in practice—even
+        though the previous manual implied it should\\nbe easy. This has now been
+        changed to use the `mise.local.toml`\\nfeature as an opt-in.\",\n      \"ellipsis_summary\":
+        \"Rewrites `DEVELOPERS.md` to use `mise` for software version management,
+        adding detailed setup instructions and a `mise.local.toml.template` for Postgres.\\n>
+        \\n>   - **Behavior**:\\n>     - Rewrites `DEVELOPERS.md` to replace `asdf`
+        with `mise` for managing software versions.\\n>     - Adds detailed instructions
+        for installing and setting up `mise`, including shell integration and autocompletion.\\n>     -
+        Introduces `mise.local.toml.template` for Postgres configuration.\\n>   -
+        **Installation**:\\n>     - Provides system dependency installation instructions
+        for Ruby and Postgres on macOS and Ubuntu.\\n>     - Describes `mise install`
+        process to install all required dependencies.\\n>   - **Environment**:\\n>     -
+        Details how to check `mise`-set environment variables using `mise env`.\\n>     -
+        Explains how to manage Postgres with `mise` and the use of `mise.local.toml`.\\n>   -
+        **Misc**:\\n>     - Updates Postgres setup instructions to use `mise` instead
+        of `asdf`.\\n>     - Updates Node.js installation and verification steps to
+        reflect `mise` usage.\\n> \\n>\"\n    },\n    {\n      \"pr\": 3154,\n      \"title\":
+        \"Parallelize bootstrapping worker nodes\",\n      \"description\": \"Previously
+        we would wait for the control-plane bootstrapping to finish before starting
+        the worker bootstrap. From now on, workers will start their bootstrap after
+        the finish of the first CP node, all happening in parallel decreasing the
+        total bootstrap time substantially.\",\n      \"ellipsis_summary\": \"Parallelizes
+        worker node bootstrapping in Kubernetes clusters, reducing total bootstrap
+        time by starting after the first control-plane node finishes.\\n> \\n>   -
+        **Behavior**:\\n>     - Workers start bootstrapping after the first control-plane
+        node finishes in `kubernetes_cluster_nexus.rb`.\\n>     - Uses semaphore `start_bootstrapping`
+        to coordinate worker node bootstrapping.\\n>   - **Concurrency**:\\n>     -
+        Adds `:start_bootstrapping` semaphore to `KubernetesNodepool` in `kubernetes_nodepool.rb`.\\n>     -
+        In `kubernetes_cluster_nexus.rb`, checks if workers are ready to bootstrap
+        after the first control-plane node.\\n>   - **Tests**:\\n>     - Updates in
+        `kubernetes_cluster_nexus_spec.rb` to test new bootstrapping logic for 1-node
+        and 3-node control-plane setups.\\n>     - Updates in `kubernetes_nodepool_nexus_spec.rb`
+        to test worker node bootstrapping and semaphore logic.\\n> \\n>\"\n    }\n  ]\n}\n```\n\nRespond
+        with the corresponding output schema fields wrapped in a ```json ``` block,\nstarting
+        with the heading `## Output values`.\n\nIMPORTANT: You must respond with valid
+        JSON that matches this structure:\n```json\n{\n  \"theme_names\": [\n    \"example
+        item\"\n  ],\n  \"theme_descriptions\": [\n    \"example item\"\n  ],\n  \"theme_pr_ids\":
+        [\n    \"example item\"\n  ],\n  \"pr_ids_list\": [\n    \"example item\"\n  ],\n  \"pr_theme_assignments\":
+        [\n    \"example item\"\n  ],\n  \"reasoning\": \"Step by step reasoning process\"\n}\n```\n\nRequired
+        fields: theme_names, theme_descriptions, theme_pr_ids, pr_ids_list, pr_theme_assignments,
+        reasoning\n\nEnsure your response:\n1. Is valid JSON (properly quoted strings,
+        no trailing commas)\n2. Includes all required fields\n3. Uses the correct
+        data types for each field\n4. Is wrapped in ```json``` markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '8279'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 24 Jul 2025 19:21:53 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '4457'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '4461'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9986'
+      X-Ratelimit-Remaining-Tokens:
+      - '198076'
+      X-Ratelimit-Reset-Requests:
+      - 1m57.459s
+      X-Ratelimit-Reset-Tokens:
+      - 577ms
+      X-Request-Id:
+      - req_2b58e4a05723f8112994745fecfcf1e9
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=_lKhvBozn3m41.hjWaau9Dtl2MYgiM5YIN9Rf0Oo5_Q-1753384913-1.0.1.1-A_t.hDGGJd24JOMATUrEou7LYCPIJpPNmkndS7F5TKwSJlEDstjqqyGrqIXJMzFpBkzWAyRXN0eeOBAmWHN2rYEScyDSWAU4Vj0_fOsMD68;
+        path=/; expires=Thu, 24-Jul-25 19:51:53 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=m8HWB7v4jYo58Iut1LwxpxlL01RrGr.mbPRwQpAjUKY-1753384913099-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9645c85e9f208c73-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-BwvngPxbWWZ4cGjMIKEM54pqXBpAQ",
+          "object": "chat.completion",
+          "created": 1753384908,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"theme_names\": [\n    \"Documentation Improvement\",\n    \"Performance Optimization\"\n  ],\n  \"theme_descriptions\": [\n    \"Enhancements made to the documentation for better clarity and usability, specifically regarding software version management.\",\n    \"Improvements to the bootstrapping process in Kubernetes to enhance performance and reduce time.\"\n  ],\n  \"theme_pr_ids\": [\n    [\n      3139\n    ],\n    [\n      3154\n    ]\n  ],\n  \"pr_ids_list\": [\n    3139,\n    3154\n  ],\n  \"pr_theme_assignments\": [\n    \"Documentation Improvement\",\n    \"Performance Optimization\"\n  ],\n  \"reasoning\": \"The first pull request (PR #3139) focuses on improving the documentation related to software version management by rewriting the DEVELOPERS.md file to use 'mise' instead of 'asdf', which falls under the theme of Documentation Improvement. The second pull request (PR #3154) optimizes the bootstrapping process for worker nodes in Kubernetes, which is a clear performance enhancement, thus categorized under Performance Optimization. Each PR is assigned to its respective theme based on its primary focus.\"\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 1870,
+            "completion_tokens": 244,
+            "total_tokens": 2114,
+            "prompt_tokens_details": {
+              "cached_tokens": 1792,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": null
+        }
+  recorded_at: Thu, 24 Jul 2025 19:21:53 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"existing_theme_names\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Names of themes from previous batches\"\n    },\n    \"existing_theme_descriptions\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions of themes from previous batches\"\n    },\n    \"existing_theme_pr_ids\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs for each existing theme\"\n    },\n    \"new_theme_names\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Names of themes from current batch\"\n    },\n    \"new_theme_descriptions\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions of themes from current batch\"\n    },\n    \"new_theme_pr_ids\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs for each new theme\"\n    }\n  },\n  \"required\": [\n    \"existing_theme_names\",\n    \"existing_theme_descriptions\",\n    \"existing_theme_pr_ids\",\n    \"new_theme_names\",\n    \"new_theme_descriptions\",\n    \"new_theme_pr_ids\"\n  ]\n}\n```\nYour
+        output schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"merged_theme_names\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Names of consolidated themes\"\n    },\n    \"merged_theme_descriptions\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions of consolidated themes\"\n    },\n    \"merged_theme_pr_ids\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs for each consolidated theme\"\n    },\n    \"reasoning\": {\n      \"type\":
+        \"string\",\n      \"description\": \"Step by step reasoning process\"\n    }\n  },\n  \"required\":
+        [\n    \"merged_theme_names\",\n    \"merged_theme_descriptions\",\n    \"merged_theme_pr_ids\",\n    \"reasoning\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Merge themes across batches, consolidating similar themes and
+        maintaining coherence. Think step by step."},{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"existing_theme_names\": [\n    \"Kubernetes
+        Upgrades\",\n    \"Thread Pool Management\",\n    \"Error Handling\",\n    \"Performance
+        Improvements\"\n  ],\n  \"existing_theme_descriptions\": [\n    \"Implements
+        sequential upgrade logic for Kubernetes clusters and node pools, focusing
+        on control plane nodes and node management.\",\n    \"Refactors the scheduling
+        dispatcher to utilize a fixed-size thread pool for improved performance and
+        resource management.\",\n    \"Improvements related to handling errors when
+        adding users to projects.\",\n    \"Enhancements to the performance of the
+        application through better resource management.\"\n  ],\n  \"existing_theme_pr_ids\":
+        [\n    [\n      2632\n    ],\n    [\n      3073\n    ],\n    [\n      3083\n    ],\n    [\n      3102\n    ]\n  ],\n  \"new_theme_names\":
+        [\n    \"Documentation Improvement\",\n    \"Performance Optimization\"\n  ],\n  \"new_theme_descriptions\":
+        [\n    \"Enhancements made to the documentation for better clarity and usability,
+        specifically regarding software version management.\",\n    \"Improvements
+        to the bootstrapping process in Kubernetes to enhance performance and reduce
+        time.\"\n  ],\n  \"new_theme_pr_ids\": [\n    [\n      3139\n    ],\n    [\n      3154\n    ]\n  ]\n}\n```\n\nRespond
+        with the corresponding output schema fields wrapped in a ```json ``` block,\nstarting
+        with the heading `## Output values`.\n\nIMPORTANT: You must respond with valid
+        JSON that matches this structure:\n```json\n{\n  \"merged_theme_names\": [\n    \"example
+        item\"\n  ],\n  \"merged_theme_descriptions\": [\n    \"example item\"\n  ],\n  \"merged_theme_pr_ids\":
+        [\n    \"example item\"\n  ],\n  \"reasoning\": \"Step by step reasoning process\"\n}\n```\n\nRequired
+        fields: merged_theme_names, merged_theme_descriptions, merged_theme_pr_ids,
+        reasoning\n\nEnsure your response:\n1. Is valid JSON (properly quoted strings,
+        no trailing commas)\n2. Includes all required fields\n3. Uses the correct
+        data types for each field\n4. Is wrapped in ```json``` markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '5344'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 24 Jul 2025 19:21:58 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '5452'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '5462'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9985'
+      X-Ratelimit-Remaining-Tokens:
+      - '198805'
+      X-Ratelimit-Reset-Requests:
+      - 2m1.518s
+      X-Ratelimit-Reset-Tokens:
+      - 358ms
+      X-Request-Id:
+      - req_eedf8d5bc200b79b9e30ac8fcee7f360
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=Prm668Q4vaK1EtlklKnSg6CdmmOUM_o97414ubOTqyQ-1753384918-1.0.1.1-kjBGyaagXJpsxLfHG5ZGLcyvIDVUp.NdVMLCkoFQols620SoNL2UeDmLTBkjh4CRa99z7oMJ3_CD0KFO6iZ9PrWs0CAwiD3ByjGFWb5PQS4;
+        path=/; expires=Thu, 24-Jul-25 19:51:58 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=G15pNZC2doOwUt.NGmFNbrJxO3.LvHNRGGsBwQ120qU-1753384918683-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9645c87b0d768c73-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-Bwvnlil957fv4G2fvVyVtOYL6SJyZ",
+          "object": "chat.completion",
+          "created": 1753384913,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"merged_theme_names\": [\n    \"Kubernetes Upgrades\",\n    \"Thread Pool Management\",\n    \"Error Handling\",\n    \"Performance Improvements\",\n    \"Documentation Improvement\",\n    \"Performance Optimization\"\n  ],\n  \"merged_theme_descriptions\": [\n    \"Implements sequential upgrade logic for Kubernetes clusters and node pools, focusing on control plane nodes and node management.\",\n    \"Refactors the scheduling dispatcher to utilize a fixed-size thread pool for improved performance and resource management.\",\n    \"Improvements related to handling errors when adding users to projects.\",\n    \"Enhancements to the performance of the application through better resource management.\",\n    \"Enhancements made to the documentation for better clarity and usability, specifically regarding software version management.\",\n    \"Improvements to the bootstrapping process in Kubernetes to enhance performance and reduce time.\"\n  ],\n  \"merged_theme_pr_ids\": [\n    [\n      2632\n    ],\n    [\n      3073\n    ],\n    [\n      3083\n    ],\n    [\n      3102\n    ],\n    [\n      3139\n    ],\n    [\n      3154\n    ]\n  ],\n  \"reasoning\": \"The existing themes were reviewed and found to be distinct in their focus areas. The new themes were also unique and did not overlap with existing themes. Therefore, all themes from both existing and new batches were merged without any consolidation, maintaining their individual identities.\"\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 1146,
+            "completion_tokens": 294,
+            "total_tokens": 1440,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": null
+        }
+  recorded_at: Thu, 24 Jul 2025 19:21:58 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"pr_batch\": {\n      \"type\": \"array\",\n      \"items\":
+        {\n        \"type\": \"object\",\n        \"properties\": {\n          \"_type\":
+        {\n            \"type\": \"string\",\n            \"const\": \"PullRequest\"\n          },\n          \"pr\":
+        {\n            \"type\": \"integer\"\n          },\n          \"title\": {\n            \"type\":
+        \"string\"\n          },\n          \"description\": {\n            \"type\":
+        \"string\"\n          },\n          \"ellipsis_summary\": {\n            \"type\":
+        \"string\"\n          }\n        },\n        \"required\": [\n          \"_type\",\n          \"pr\",\n          \"title\",\n          \"description\",\n          \"ellipsis_summary\"\n        ],\n        \"description\":
+        \"ChangelogGenerator::PullRequest struct\"\n      },\n      \"description\":
+        \"Batch of pull requests to analyze together\"\n    }\n  },\n  \"required\":
+        [\n    \"pr_batch\"\n  ]\n}\n```\nYour output schema fields are:\n```json\n{\n  \"$schema\":
+        \"http://json-schema.org/draft-06/schema#\",\n  \"type\": \"object\",\n  \"properties\":
+        {\n    \"theme_names\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\":
+        \"string\"\n      },\n      \"description\": \"Names of themes discovered
+        from the PR batch\"\n    },\n    \"theme_descriptions\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions for each theme\"\n    },\n    \"theme_pr_ids\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs belonging to each theme\"\n    },\n    \"pr_ids_list\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"integer\"\n      },\n      \"description\":
+        \"List of PR IDs in order\"\n    },\n    \"pr_theme_assignments\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Theme names for each PR ID (parallel to pr_ids_list)\"\n    },\n    \"reasoning\":
+        {\n      \"type\": \"string\",\n      \"description\": \"Step by step reasoning
+        process\"\n    }\n  },\n  \"required\": [\n    \"theme_names\",\n    \"theme_descriptions\",\n    \"theme_pr_ids\",\n    \"pr_ids_list\",\n    \"pr_theme_assignments\",\n    \"reasoning\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Analyze a batch of pull requests to identify themes and relationships.
+        Think step by step."},{"role":"user","content":"## Input Values\n```json\n{\n  \"pr_batch\":
+        [\n    {\n      \"pr\": 3161,\n      \"title\": \"Use a thread pool + shared
+        queue for monitor\",\n      \"description\": \"Because the pulse threads for
+        PostgresServer and MinioServer instances\\nwere counted by the thread calculation,
+        it appears as though if the\\nnumber of PostgresServer and MinioServer instances
+        to monitor exceeded\\nConfig.max_monitor_threads - 2, that the monitor would
+        sleep\\nindefinitely previously (at least, until one of the pulse threads\\nexited).
+        This change eliminates that possibility.  However, the\\ntradeoff is the number
+        of threads in the process can exceed\\nConfig.max_monitor_threads.  Config.max_monitor_threads
+        now is only\\nused to set the size of the monitor thread pool.\\n\\nTo prevent
+        arbitrarily large memory usage if the thread pool is not\\nable to process
+        jobs fast enough, the queue size is limited to\\nthe thread pool size plus
+        1.5 times the number of monitored objects.\\nOnce that limit is hit, pushing
+        to the queue will block.  However,\\nif this happens, this will lead to a
+        greater than 5 second delay\\nbetween pulse checks.\\n\\nReduce scope of mutex.synchronize
+        calls in the main monitor loop and\\nresource scanner thread.\\n\\nPrevent
+        Sequel::Database object leakage in PostgresServer#check_pulse.\",\n      \"ellipsis_summary\":
+        \"Introduces a thread pool and shared queue for resource monitoring in `bin/monitor`,
+        preventing potential deadlocks and database object leakage.\\n> \\n>   - **Behavior**:\\n>     -
+        Replaces individual threads with a thread pool and shared queue in `bin/monitor`
+        to manage resource monitoring.\\n>     - Queue size is set to thread pool
+        size plus 1.5 times the number of monitored objects to prevent memory overflow.\\n>     -
+        If queue limit is reached, pushing to the queue blocks, potentially delaying
+        pulse checks by over 5 seconds.\\n>   - **Concurrency**:\\n>     - Reduces
+        scope of `mutex.synchronize` in main monitor loop and resource scanner thread
+        in `bin/monitor`.\\n>   - **Database**:\\n>     - Prevents `Sequel::Database`
+        object leakage in `PostgresServer#check_pulse` by setting `keep_reference:
+        false`.\\n> \\n>\"\n    },\n    {\n      \"pr\": 3170,\n      \"title\": \"Create
+        VictoriaMetrics resource\",\n      \"description\": \"## Description\\n\\nThis
+        is the initial commit for the Victoriametrics resource. This is a basic version
+        which supports creating a single-node Victoriametrics instance backed by a
+        VM, creating and managing appropriate certs and authentication configuration.
+        This version:\\n- Installs victoriametrics and vmauth binaries on the VM\\n-
+        Configures the systemd services for these two services\\n- Sets up the certificates
+        and http basic authentication credentials\\n\\nThis version only supports
+        a single-node version for simplicity, as current read/write benchmarks show
+        VictoriaMetrics it can support upto 10k write targets (PG instnaces, for eg.)
+        and around 2k concurrent read users on a single standard-8 VM.  In the future,
+        we can add support for cluster mode, migrations, backup etc as needed.\\n\\nHere
+        is an example command to create a VictoriaMetrics resource: st = Prog::VictoriaMetrics::VictoriaMetricsResourceNexus.assemble(
+        Config.victoriametrics_service_project_id,\\n\\\"victoriametrics-test\\\",
+        Location::HETZNER_FSN1_ID, \\\"vmuser\\\", \\\"pass\\\", 20, 1, \\\"standard-8\\\")\\n\\n\\n##
+        TODOs\\n- [x] Setup health_monitor\\n- [x] Unit tests\\n- [x] Use the storage_size
+        parameter correctly \\n- [x] Switch to daemonizer2\",\n      \"ellipsis_summary\":
+        \"Introduce VictoriaMetrics resource management with single-node setup, systemd
+        configuration, and comprehensive testing.\\n> \\n>   - **Behavior**:\\n>     -
+        Adds `VictoriaMetricsResource` and `VictoriaMetricsServer` models to manage
+        VictoriaMetrics instances.\\n>     - Implements `VictoriaMetrics::Client`
+        for interacting with VictoriaMetrics API.\\n>     - Supports single-node VictoriaMetrics
+        setup with systemd service configuration in `rhizome/victoria_metrics/bin/configure`.\\n>     -
+        Handles certificate creation and management for secure communication.\\n>   -
+        **Validation**:\\n>     - Adds `validate_victoria_metrics_username` and `validate_victoria_metrics_storage_size`
+        in `validation.rb`.\\n>   - **Configuration**:\\n>     - Updates `config.rb`
+        to include VictoriaMetrics related configurations.\\n>   - **Monitoring**:\\n>     -
+        Updates `bin/monitor` to include `VictoriaMetricsServer` in monitorable resources.\\n>   -
+        **Testing**:\\n>     - Adds unit tests for `VictoriaMetrics::Client` in `client_spec.rb`.\\n>     -
+        Adds tests for `VictoriaMetricsResource` and `VictoriaMetricsServer` models.\\n>     -
+        Includes tests for `VictoriaMetricsResourceNexus` and `VictoriaMetricsServerNexus`
+        in `prog/victoria_metrics` specs.\\n> \\n>\"\n    }\n  ]\n}\n```\n\nRespond
+        with the corresponding output schema fields wrapped in a ```json ``` block,\nstarting
+        with the heading `## Output values`.\n\nIMPORTANT: You must respond with valid
+        JSON that matches this structure:\n```json\n{\n  \"theme_names\": [\n    \"example
+        item\"\n  ],\n  \"theme_descriptions\": [\n    \"example item\"\n  ],\n  \"theme_pr_ids\":
+        [\n    \"example item\"\n  ],\n  \"pr_ids_list\": [\n    \"example item\"\n  ],\n  \"pr_theme_assignments\":
+        [\n    \"example item\"\n  ],\n  \"reasoning\": \"Step by step reasoning process\"\n}\n```\n\nRequired
+        fields: theme_names, theme_descriptions, theme_pr_ids, pr_ids_list, pr_theme_assignments,
+        reasoning\n\nEnsure your response:\n1. Is valid JSON (properly quoted strings,
+        no trailing commas)\n2. Includes all required fields\n3. Uses the correct
+        data types for each field\n4. Is wrapped in ```json``` markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '8775'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 24 Jul 2025 19:22:02 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '4084'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '4104'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9985'
+      X-Ratelimit-Remaining-Tokens:
+      - '197957'
+      X-Ratelimit-Reset-Requests:
+      - 2m4.493s
+      X-Ratelimit-Reset-Tokens:
+      - 612ms
+      X-Request-Id:
+      - req_cbac6c7d042c5075d7956e230bd3f697
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=mJ8PUYTJQ4OJxuvX_JK4I.6L2fRG63eVImrr2x6Qhuk-1753384922-1.0.1.1-ZtWyddF_s1z1Gugm.2QHGSGk5L_J7urOPVXZv8CkZ23M9z7EL.ANzW39JJNX4ZsQqn2fn_gPbt33q..G3wbc_RZw8O.yYCMrp1e9rN8oDQc;
+        path=/; expires=Thu, 24-Jul-25 19:52:02 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=kFmeS2hcZ5wTWg.W6sCh3Z0rza2Zi38Gri1P0T5G1Ic-1753384922982-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9645c89e99448c73-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-Bwvnq86niCYoQ1LqNW1yNxJquDBf8",
+          "object": "chat.completion",
+          "created": 1753384918,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"theme_names\": [\n    \"Resource Management\",\n    \"Concurrency Optimization\"\n  ],\n  \"theme_descriptions\": [\n    \"Management and configuration of resources like VictoriaMetrics for monitoring and data collection.\",\n    \"Improvements in concurrency handling to prevent deadlocks and optimize thread usage.\"\n  ],\n  \"theme_pr_ids\": [\n    [3161, 3170]\n  ],\n  \"pr_ids_list\": [\n    3161,\n    3170\n  ],\n  \"pr_theme_assignments\": [\n    \"Concurrency Optimization\",\n    \"Resource Management\"\n  ],\n  \"reasoning\": \"The first pull request (PR 3161) focuses on optimizing concurrency in resource monitoring by implementing a thread pool and shared queue, which prevents potential deadlocks. The second pull request (PR 3170) introduces a new resource management feature for VictoriaMetrics, which is a monitoring tool. Both PRs relate to improving system performance and resource management, thus they can be grouped under the themes of 'Resource Management' and 'Concurrency Optimization'.\"\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 1968,
+            "completion_tokens": 221,
+            "total_tokens": 2189,
+            "prompt_tokens_details": {
+              "cached_tokens": 1920,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": null
+        }
+  recorded_at: Thu, 24 Jul 2025 19:22:03 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"existing_theme_names\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Names of themes from previous batches\"\n    },\n    \"existing_theme_descriptions\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions of themes from previous batches\"\n    },\n    \"existing_theme_pr_ids\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs for each existing theme\"\n    },\n    \"new_theme_names\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Names of themes from current batch\"\n    },\n    \"new_theme_descriptions\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions of themes from current batch\"\n    },\n    \"new_theme_pr_ids\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs for each new theme\"\n    }\n  },\n  \"required\": [\n    \"existing_theme_names\",\n    \"existing_theme_descriptions\",\n    \"existing_theme_pr_ids\",\n    \"new_theme_names\",\n    \"new_theme_descriptions\",\n    \"new_theme_pr_ids\"\n  ]\n}\n```\nYour
+        output schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"merged_theme_names\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Names of consolidated themes\"\n    },\n    \"merged_theme_descriptions\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions of consolidated themes\"\n    },\n    \"merged_theme_pr_ids\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs for each consolidated theme\"\n    },\n    \"reasoning\": {\n      \"type\":
+        \"string\",\n      \"description\": \"Step by step reasoning process\"\n    }\n  },\n  \"required\":
+        [\n    \"merged_theme_names\",\n    \"merged_theme_descriptions\",\n    \"merged_theme_pr_ids\",\n    \"reasoning\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Merge themes across batches, consolidating similar themes and
+        maintaining coherence. Think step by step."},{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"existing_theme_names\": [\n    \"Kubernetes
+        Upgrades\",\n    \"Thread Pool Management\",\n    \"Error Handling\",\n    \"Performance
+        Improvements\",\n    \"Documentation Improvement\",\n    \"Performance Optimization\"\n  ],\n  \"existing_theme_descriptions\":
+        [\n    \"Implements sequential upgrade logic for Kubernetes clusters and node
+        pools, focusing on control plane nodes and node management.\",\n    \"Refactors
+        the scheduling dispatcher to utilize a fixed-size thread pool for improved
+        performance and resource management.\",\n    \"Improvements related to handling
+        errors when adding users to projects.\",\n    \"Enhancements to the performance
+        of the application through better resource management.\",\n    \"Enhancements
+        made to the documentation for better clarity and usability, specifically regarding
+        software version management.\",\n    \"Improvements to the bootstrapping process
+        in Kubernetes to enhance performance and reduce time.\"\n  ],\n  \"existing_theme_pr_ids\":
+        [\n    [\n      2632\n    ],\n    [\n      3073\n    ],\n    [\n      3083\n    ],\n    [\n      3102\n    ],\n    [\n      3139\n    ],\n    [\n      3154\n    ]\n  ],\n  \"new_theme_names\":
+        [\n    \"Resource Management\",\n    \"Concurrency Optimization\"\n  ],\n  \"new_theme_descriptions\":
+        [\n    \"Management and configuration of resources like VictoriaMetrics for
+        monitoring and data collection.\",\n    \"Improvements in concurrency handling
+        to prevent deadlocks and optimize thread usage.\"\n  ],\n  \"new_theme_pr_ids\":
+        [\n    [\n      3161,\n      3170\n    ],\n    []\n  ]\n}\n```\n\nRespond
+        with the corresponding output schema fields wrapped in a ```json ``` block,\nstarting
+        with the heading `## Output values`.\n\nIMPORTANT: You must respond with valid
+        JSON that matches this structure:\n```json\n{\n  \"merged_theme_names\": [\n    \"example
+        item\"\n  ],\n  \"merged_theme_descriptions\": [\n    \"example item\"\n  ],\n  \"merged_theme_pr_ids\":
+        [\n    \"example item\"\n  ],\n  \"reasoning\": \"Step by step reasoning process\"\n}\n```\n\nRequired
+        fields: merged_theme_names, merged_theme_descriptions, merged_theme_pr_ids,
+        reasoning\n\nEnsure your response:\n1. Is valid JSON (properly quoted strings,
+        no trailing commas)\n2. Includes all required fields\n3. Uses the correct
+        data types for each field\n4. Is wrapped in ```json``` markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '5662'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 24 Jul 2025 19:22:10 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '7554'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '7564'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9985'
+      X-Ratelimit-Remaining-Tokens:
+      - '198728'
+      X-Ratelimit-Reset-Requests:
+      - 2m8.832s
+      X-Ratelimit-Reset-Tokens:
+      - 381ms
+      X-Request-Id:
+      - b2093526-204e-4e40-96f6-f971693f49db
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=0pJXJC7rbqA05aERDyHO9eN2mHn4oOoeU8n_panhwQU-1753384930-1.0.1.1-BFsIBAxKwLyw0q_6tlch132tDdSTqns7.w81rRrknMQcaB.RLkMZ7lZPPxe_qOUTekWPDEhSgA_2jo0w59VWixD7qTNzgbDMUoE_pz0TsNk;
+        path=/; expires=Thu, 24-Jul-25 19:52:10 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=yPkF0khsMienDiSjujDhMi7kyZDofjwm8FnPpyI1LEk-1753384930747-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9645c8b97e498c73-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-BwvnvW4t6wPHiNKGk5KAcZmzeZGEE",
+          "object": "chat.completion",
+          "created": 1753384923,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"merged_theme_names\": [\n    \"Kubernetes Upgrades\",\n    \"Thread Pool Management\",\n    \"Error Handling\",\n    \"Performance Improvements\",\n    \"Documentation Improvement\",\n    \"Performance Optimization\",\n    \"Resource Management\",\n    \"Concurrency Optimization\"\n  ],\n  \"merged_theme_descriptions\": [\n    \"Implements sequential upgrade logic for Kubernetes clusters and node pools, focusing on control plane nodes and node management.\",\n    \"Refactors the scheduling dispatcher to utilize a fixed-size thread pool for improved performance and resource management.\",\n    \"Improvements related to handling errors when adding users to projects.\",\n    \"Enhancements to the performance of the application through better resource management.\",\n    \"Enhancements made to the documentation for better clarity and usability, specifically regarding software version management.\",\n    \"Improvements to the bootstrapping process in Kubernetes to enhance performance and reduce time.\",\n    \"Management and configuration of resources like VictoriaMetrics for monitoring and data collection.\",\n    \"Improvements in concurrency handling to prevent deadlocks and optimize thread usage.\"\n  ],\n  \"merged_theme_pr_ids\": [\n    [\n      2632\n    ],\n    [\n      3073\n    ],\n    [\n      3083\n    ],\n    [\n      3102\n    ],\n    [\n      3139\n    ],\n    [\n      3154\n    ],\n    [\n      3161,\n      3170\n    ],\n    []\n  ],\n  \"reasoning\": \"The existing themes were reviewed and no direct overlaps were found with the new themes. Therefore, all themes from both existing and new batches were merged into a single list. The new themes 'Resource Management' and 'Concurrency Optimization' were added to the merged list with their respective descriptions and PR IDs.\"\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 1204,
+            "completion_tokens": 361,
+            "total_tokens": 1565,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": null
+        }
+  recorded_at: Thu, 24 Jul 2025 19:22:10 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"pr_batch\": {\n      \"type\": \"array\",\n      \"items\":
+        {\n        \"type\": \"object\",\n        \"properties\": {\n          \"_type\":
+        {\n            \"type\": \"string\",\n            \"const\": \"PullRequest\"\n          },\n          \"pr\":
+        {\n            \"type\": \"integer\"\n          },\n          \"title\": {\n            \"type\":
+        \"string\"\n          },\n          \"description\": {\n            \"type\":
+        \"string\"\n          },\n          \"ellipsis_summary\": {\n            \"type\":
+        \"string\"\n          }\n        },\n        \"required\": [\n          \"_type\",\n          \"pr\",\n          \"title\",\n          \"description\",\n          \"ellipsis_summary\"\n        ],\n        \"description\":
+        \"ChangelogGenerator::PullRequest struct\"\n      },\n      \"description\":
+        \"Batch of pull requests to analyze together\"\n    }\n  },\n  \"required\":
+        [\n    \"pr_batch\"\n  ]\n}\n```\nYour output schema fields are:\n```json\n{\n  \"$schema\":
+        \"http://json-schema.org/draft-06/schema#\",\n  \"type\": \"object\",\n  \"properties\":
+        {\n    \"theme_names\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\":
+        \"string\"\n      },\n      \"description\": \"Names of themes discovered
+        from the PR batch\"\n    },\n    \"theme_descriptions\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions for each theme\"\n    },\n    \"theme_pr_ids\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs belonging to each theme\"\n    },\n    \"pr_ids_list\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"integer\"\n      },\n      \"description\":
+        \"List of PR IDs in order\"\n    },\n    \"pr_theme_assignments\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Theme names for each PR ID (parallel to pr_ids_list)\"\n    },\n    \"reasoning\":
+        {\n      \"type\": \"string\",\n      \"description\": \"Step by step reasoning
+        process\"\n    }\n  },\n  \"required\": [\n    \"theme_names\",\n    \"theme_descriptions\",\n    \"theme_pr_ids\",\n    \"pr_ids_list\",\n    \"pr_theme_assignments\",\n    \"reasoning\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Analyze a batch of pull requests to identify themes and relationships.
+        Think step by step."},{"role":"user","content":"## Input Values\n```json\n{\n  \"pr_batch\":
+        [\n    {\n      \"pr\": 3190,\n      \"title\": \"Add API/SDK/CLI access for
+        inference api keys\",\n      \"description\": \"This is to make it easier
+        for users who want to automate management for inference api keys.\\n\\nSee
+        individual commits for details.\",\n      \"ellipsis_summary\": \"Adds CLI,
+        API, and SDK support for managing inference API keys, including creation,
+        listing, showing details, and deletion, with corresponding tests.\\n> \\n>   -
+        **CLI**:\\n>     - Adds `ai` command in `cli-commands/ai.rb` for managing
+        AI features.\\n>     - Adds `api-key` subcommand in `cli-commands/ai/api-key.rb`
+        for managing inference API keys.\\n>     - Implements `create`, `list`, `show`,
+        and `destroy` commands in respective files under `cli-commands/ai/api-key`.\\n>   -
+        **API**:\\n>     - Adds routes in `routes/project/inference_api_key.rb` for
+        CRUD operations on inference API keys.\\n>     - Updates `openapi.yml` to
+        include inference API key endpoints.\\n>   - **SDK**:\\n>     - Adds `InferenceApiKey`
+        model in `sdk/ruby/lib/ubicloud/model/inference_api_key.rb`.\\n>     - Updates
+        `context.rb` to include `inference_api_key` method.\\n>   - **Models**:\\n>     -
+        Adds `create_inference_api_key` method in `model/api_key.rb`.\\n>   - **Tests**:\\n>     -
+        Adds CLI tests in `spec/routes/api/cli/ai/api-key` for create and destroy
+        commands.\\n>     - Adds API tests in `spec/routes/api/project/inference_api_key_spec.rb`.\\n>     -
+        Adds SDK tests in `spec/ruby_sdk_spec.rb` for inference API keys.\\n> \\n>\"\n    },\n    {\n      \"pr\":
+        3202,\n      \"title\": \"Add bin/metrics-collector to collect and buffer
+        metrics\",\n      \"description\": \"This change adds a systemd-timer triggered
+        script to collect prometheues-style metrics from a configured list of endpoints
+        on the metrics producer side (eg. Postgres server). These will be written
+        to the metrics storage DB (VictoriaMetrics) by bin/monitor. The buffer exists
+        in case certain parts of the stack (either monitor or VictoriaMetrics) are
+        unavailable, we are able to catch up and recover without losing data. With
+        the default buffer size (20MiB), we can tolerage about 30 minutes of downtime
+        for PG metrics.\\n\\nTo add this functionality to other resources, one can
+        configure the systemd-timer in a similar manner as done in this change for
+        PostgresServer and provide the configuration as part of the `metrics_config`
+        method, like this:\\n\\n```\\n{\\n  # Array of endpoints to collect metrics
+        from\\n  endpoints: [],\\n\\n  # Maximum size of the pending buffer in MiB\\n  max_pending_buffer_size_mib:
+        20,\\n\\n  # Interval for collecting metrics in seconds or as a time span
+        string\\n  interval: \\\"15s\\\",\\n\\n  # Additional label names and values
+        to be added to the collected metrics\\n  additional_labels: {\\\"foo\\\":
+        \\\"bar\\\"}\\n}\\n```\",\n      \"ellipsis_summary\": \"Add `metrics-collector`
+        script and integrate metrics collection with systemd timers in `PostgresServerNexus`.\\n>
+        \\n>   - **Behavior**:\\n>     - Adds `metrics-collector` script in `rhizome/postgres/bin/metrics-collector`
+        to collect metrics from endpoints and buffer them.\\n>     - Integrates metrics
+        collection with systemd timers in `PostgresServerNexus`.\\n>     - Configures
+        metrics collection in `configure_metrics` method in `PostgresServerNexus`.\\n>   -
+        **Models**:\\n>     - Adds `metrics_config` method to `PostgresServer` to
+        provide configuration for metrics collection.\\n>   - **Functions**:\\n>     -
+        Renames `configure_prometheus` to `configure_metrics` in `PostgresServerNexus`.\\n>   -
+        **Tests**:\\n>     - Updates tests in `postgres_server_nexus_spec.rb` to cover
+        new metrics configuration and collection logic.\\n> \\n>\"\n    }\n  ]\n}\n```\n\nRespond
+        with the corresponding output schema fields wrapped in a ```json ``` block,\nstarting
+        with the heading `## Output values`.\n\nIMPORTANT: You must respond with valid
+        JSON that matches this structure:\n```json\n{\n  \"theme_names\": [\n    \"example
+        item\"\n  ],\n  \"theme_descriptions\": [\n    \"example item\"\n  ],\n  \"theme_pr_ids\":
+        [\n    \"example item\"\n  ],\n  \"pr_ids_list\": [\n    \"example item\"\n  ],\n  \"pr_theme_assignments\":
+        [\n    \"example item\"\n  ],\n  \"reasoning\": \"Step by step reasoning process\"\n}\n```\n\nRequired
+        fields: theme_names, theme_descriptions, theme_pr_ids, pr_ids_list, pr_theme_assignments,
+        reasoning\n\nEnsure your response:\n1. Is valid JSON (properly quoted strings,
+        no trailing commas)\n2. Includes all required fields\n3. Uses the correct
+        data types for each field\n4. Is wrapped in ```json``` markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '7704'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 24 Jul 2025 19:22:15 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '4405'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '4407'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9984'
+      X-Ratelimit-Remaining-Tokens:
+      - '198191'
+      X-Ratelimit-Reset-Requests:
+      - 2m9.811s
+      X-Ratelimit-Reset-Tokens:
+      - 542ms
+      X-Request-Id:
+      - ce5b63a3-f705-4d91-a8fa-6905e8c16a50
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=zSmfedaRk466hHWEb9ssig1UKvjH4nkZoFNsAlP1Aw0-1753384935-1.0.1.1-W8wtsgPcj2eDF0psCLcUOwzdu3yKUUQVaYNMapuF0Ze3..JpV_YmHNx8ehdVlv2qKYhZS9CJzZVFAPiM3qeY0.KSOzjoJp.GLGw6vhmNSwQ;
+        path=/; expires=Thu, 24-Jul-25 19:52:15 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=d3ong_OtPPaYVp_z25aIKDTd85mqN6U4nq.WW.ThiU4-1753384935251-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9645c8e95d078c73-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-Bwvo2IJUTdjWnmtZcTmSvvkz5kJ4i",
+          "object": "chat.completion",
+          "created": 1753384930,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"theme_names\": [\n    \"API Management\",\n    \"Metrics Collection\"\n  ],\n  \"theme_descriptions\": [\n    \"Enhancements to manage inference API keys through CLI, API, and SDK.\",\n    \"Introduction of a metrics collector for gathering and buffering metrics from various endpoints.\"\n  ],\n  \"theme_pr_ids\": [\n    [\n      3190\n    ],\n    [\n      3202\n    ]\n  ],\n  \"pr_ids_list\": [\n    3190,\n    3202\n  ],\n  \"pr_theme_assignments\": [\n    \"API Management\",\n    \"Metrics Collection\"\n  ],\n  \"reasoning\": \"The first pull request (PR 3190) focuses on adding API, CLI, and SDK support for managing inference API keys, which falls under the theme of API Management. The second pull request (PR 3202) introduces a metrics collector for gathering metrics from endpoints, which is categorized under the theme of Metrics Collection. Each PR is assigned to its respective theme based on the primary functionality it introduces.\"\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 1798,
+            "completion_tokens": 223,
+            "total_tokens": 2021,
+            "prompt_tokens_details": {
+              "cached_tokens": 1664,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": null
+        }
+  recorded_at: Thu, 24 Jul 2025 19:22:15 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"existing_theme_names\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Names of themes from previous batches\"\n    },\n    \"existing_theme_descriptions\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions of themes from previous batches\"\n    },\n    \"existing_theme_pr_ids\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs for each existing theme\"\n    },\n    \"new_theme_names\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Names of themes from current batch\"\n    },\n    \"new_theme_descriptions\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions of themes from current batch\"\n    },\n    \"new_theme_pr_ids\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs for each new theme\"\n    }\n  },\n  \"required\": [\n    \"existing_theme_names\",\n    \"existing_theme_descriptions\",\n    \"existing_theme_pr_ids\",\n    \"new_theme_names\",\n    \"new_theme_descriptions\",\n    \"new_theme_pr_ids\"\n  ]\n}\n```\nYour
+        output schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"merged_theme_names\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Names of consolidated themes\"\n    },\n    \"merged_theme_descriptions\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions of consolidated themes\"\n    },\n    \"merged_theme_pr_ids\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs for each consolidated theme\"\n    },\n    \"reasoning\": {\n      \"type\":
+        \"string\",\n      \"description\": \"Step by step reasoning process\"\n    }\n  },\n  \"required\":
+        [\n    \"merged_theme_names\",\n    \"merged_theme_descriptions\",\n    \"merged_theme_pr_ids\",\n    \"reasoning\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Merge themes across batches, consolidating similar themes and
+        maintaining coherence. Think step by step."},{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"existing_theme_names\": [\n    \"Kubernetes
+        Upgrades\",\n    \"Thread Pool Management\",\n    \"Error Handling\",\n    \"Performance
+        Improvements\",\n    \"Documentation Improvement\",\n    \"Performance Optimization\",\n    \"Resource
+        Management\",\n    \"Concurrency Optimization\"\n  ],\n  \"existing_theme_descriptions\":
+        [\n    \"Implements sequential upgrade logic for Kubernetes clusters and node
+        pools, focusing on control plane nodes and node management.\",\n    \"Refactors
+        the scheduling dispatcher to utilize a fixed-size thread pool for improved
+        performance and resource management.\",\n    \"Improvements related to handling
+        errors when adding users to projects.\",\n    \"Enhancements to the performance
+        of the application through better resource management.\",\n    \"Enhancements
+        made to the documentation for better clarity and usability, specifically regarding
+        software version management.\",\n    \"Improvements to the bootstrapping process
+        in Kubernetes to enhance performance and reduce time.\",\n    \"Management
+        and configuration of resources like VictoriaMetrics for monitoring and data
+        collection.\",\n    \"Improvements in concurrency handling to prevent deadlocks
+        and optimize thread usage.\"\n  ],\n  \"existing_theme_pr_ids\": [\n    [\n      2632\n    ],\n    [\n      3073\n    ],\n    [\n      3083\n    ],\n    [\n      3102\n    ],\n    [\n      3139\n    ],\n    [\n      3154\n    ],\n    [\n      3161,\n      3170\n    ],\n    []\n  ],\n  \"new_theme_names\":
+        [\n    \"API Management\",\n    \"Metrics Collection\"\n  ],\n  \"new_theme_descriptions\":
+        [\n    \"Enhancements to manage inference API keys through CLI, API, and SDK.\",\n    \"Introduction
+        of a metrics collector for gathering and buffering metrics from various endpoints.\"\n  ],\n  \"new_theme_pr_ids\":
+        [\n    [\n      3190\n    ],\n    [\n      3202\n    ]\n  ]\n}\n```\n\nRespond
+        with the corresponding output schema fields wrapped in a ```json ``` block,\nstarting
+        with the heading `## Output values`.\n\nIMPORTANT: You must respond with valid
+        JSON that matches this structure:\n```json\n{\n  \"merged_theme_names\": [\n    \"example
+        item\"\n  ],\n  \"merged_theme_descriptions\": [\n    \"example item\"\n  ],\n  \"merged_theme_pr_ids\":
+        [\n    \"example item\"\n  ],\n  \"reasoning\": \"Step by step reasoning process\"\n}\n```\n\nRequired
+        fields: merged_theme_names, merged_theme_descriptions, merged_theme_pr_ids,
+        reasoning\n\nEnsure your response:\n1. Is valid JSON (properly quoted strings,
+        no trailing commas)\n2. Includes all required fields\n3. Uses the correct
+        data types for each field\n4. Is wrapped in ```json``` markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '5955'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 24 Jul 2025 19:22:22 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '7091'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '7097'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9984'
+      X-Ratelimit-Remaining-Tokens:
+      - '198661'
+      X-Ratelimit-Reset-Requests:
+      - 2m13.912s
+      X-Ratelimit-Reset-Tokens:
+      - 401ms
+      X-Request-Id:
+      - req_8ba8955d1e08624fa07a86ef8547f41a
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=kbZvR3qBD1ylRlLbIqD8Bc5otBdCzovdwHHRNhQO9bU-1753384942-1.0.1.1-rdtLDocD6wcvs0yK7GZlLnTTWmqdZF3QLE6LTGAKCP99mEp2YuGqhBsq0KtRBVjLtdtJND31go8hPOQ1cddwXRy.om4QMSXrTygbpcUosoU;
+        path=/; expires=Thu, 24-Jul-25 19:52:22 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=dMvUM9cM9uTZdWd.ja.Fhq3gzOVeGgWhQnFgHvaCqxk-1753384942490-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9645c905abab8c73-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-Bwvo7tzR8PPduLhkZfEKZJYGp4n0g",
+          "object": "chat.completion",
+          "created": 1753384935,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"merged_theme_names\": [\n    \"Kubernetes Upgrades\",\n    \"Thread Pool Management\",\n    \"Error Handling\",\n    \"Performance Improvements\",\n    \"Documentation Improvement\",\n    \"Performance Optimization\",\n    \"Resource Management\",\n    \"Concurrency Optimization\",\n    \"API Management\",\n    \"Metrics Collection\"\n  ],\n  \"merged_theme_descriptions\": [\n    \"Implements sequential upgrade logic for Kubernetes clusters and node pools, focusing on control plane nodes and node management.\",\n    \"Refactors the scheduling dispatcher to utilize a fixed-size thread pool for improved performance and resource management.\",\n    \"Improvements related to handling errors when adding users to projects.\",\n    \"Enhancements to the performance of the application through better resource management.\",\n    \"Enhancements made to the documentation for better clarity and usability, specifically regarding software version management.\",\n    \"Improvements to the bootstrapping process in Kubernetes to enhance performance and reduce time.\",\n    \"Management and configuration of resources like VictoriaMetrics for monitoring and data collection.\",\n    \"Improvements in concurrency handling to prevent deadlocks and optimize thread usage.\",\n    \"Enhancements to manage inference API keys through CLI, API, and SDK.\",\n    \"Introduction of a metrics collector for gathering and buffering metrics from various endpoints.\"\n  ],\n  \"merged_theme_pr_ids\": [\n    [\n      2632\n    ],\n    [\n      3073\n    ],\n    [\n      3083\n    ],\n    [\n      3102\n    ],\n    [\n      3139\n    ],\n    [\n      3154\n    ],\n    [\n      3161,\n      3170\n    ],\n    [],\n    [\n      3190\n    ],\n    [\n      3202\n    ]\n  ],\n  \"reasoning\": \"The existing themes were reviewed and found to be distinct in their focus areas, covering Kubernetes upgrades, thread management, error handling, performance improvements, documentation, resource management, and concurrency. The new themes introduced, API Management and Metrics Collection, also address unique aspects of system management and monitoring. Therefore, all themes were merged without consolidation as they each represent different functionalities and improvements.\"\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 1265,
+            "completion_tokens": 437,
+            "total_tokens": 1702,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": null
+        }
+  recorded_at: Thu, 24 Jul 2025 19:22:22 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"theme_name\": {\n      \"type\": \"string\",\n      \"description\":
+        \"Name of the theme to generate subthemes for\"\n    },\n    \"theme_pr_ids\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"integer\"\n      },\n      \"description\":
+        \"PR IDs belonging to this theme\"\n    },\n    \"pr_titles\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Titles of PRs in this theme\"\n    },\n    \"pr_descriptions\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions of PRs in this theme\"\n    }\n  },\n  \"required\": [\n    \"theme_name\",\n    \"theme_pr_ids\",\n    \"pr_titles\",\n    \"pr_descriptions\"\n  ]\n}\n```\nYour
+        output schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"subtheme_titles\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Titles for each subtheme\"\n    },\n    \"subtheme_descriptions\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions for each subtheme\"\n    },\n    \"subtheme_pr_ids\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs belonging to each subtheme\"\n    }\n  },\n  \"required\": [\n    \"subtheme_titles\",\n    \"subtheme_descriptions\",\n    \"subtheme_pr_ids\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Generate subthemes for a given theme based on its PRs."},{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"theme_name\": \"Resource Management\",\n  \"theme_pr_ids\":
+        [\n    3161,\n    3170\n  ],\n  \"pr_titles\": [\n    \"Use a thread pool
+        + shared queue for monitor\",\n    \"Create VictoriaMetrics resource\"\n  ],\n  \"pr_descriptions\":
+        [\n    \"Because the pulse threads for PostgresServer and MinioServer instances\\nwere
+        counted by the thread calculation, it appears as though if the\\nnumber of
+        PostgresServer and MinioServer instances to monitor exceeded\\nConfig.max_monitor_threads
+        - 2, that the monitor would sleep\\nindefinitely previously (at least, until
+        one of the pulse threads\\nexited). This change eliminates that possibility.  However,
+        the\\ntradeoff is the number of threads in the process can exceed\\nConfig.max_monitor_threads.  Config.max_monitor_threads
+        now is only\\nused to set the size of the monitor thread pool.\\n\\nTo prevent
+        arbitrarily large memory usage if the thread pool is not\\nable to process
+        jobs fast enough, the queue size is limited to\\nthe thread pool size plus
+        1.5 times the number of monitored objects.\\nOnce that limit is hit, pushing
+        to the queue will block.  However,\\nif this happens, this will lead to a
+        greater than 5 second delay\\nbetween pulse checks.\\n\\nReduce scope of mutex.synchronize
+        calls in the main monitor loop and\\nresource scanner thread.\\n\\nPrevent
+        Sequel::Database object leakage in PostgresServer#check_pulse.\",\n    \"##
+        Description\\n\\nThis is the initial commit for the Victoriametrics resource.
+        This is a basic version which supports creating a single-node Victoriametrics
+        instance backed by a VM, creating and managing appropriate certs and authentication
+        configuration. This version:\\n- Installs victoriametrics and vmauth binaries
+        on the VM\\n- Configures the systemd services for these two services\\n- Sets
+        up the certificates and http basic authentication credentials\\n\\nThis version
+        only supports a single-node version for simplicity, as current read/write
+        benchmarks show VictoriaMetrics it can support upto 10k write targets (PG
+        instnaces, for eg.) and around 2k concurrent read users on a single standard-8
+        VM.  In the future, we can add support for cluster mode, migrations, backup
+        etc as needed.\\n\\nHere is an example command to create a VictoriaMetrics
+        resource: st = Prog::VictoriaMetrics::VictoriaMetricsResourceNexus.assemble(
+        Config.victoriametrics_service_project_id,\\n\\\"victoriametrics-test\\\",
+        Location::HETZNER_FSN1_ID, \\\"vmuser\\\", \\\"pass\\\", 20, 1, \\\"standard-8\\\")\\n\\n\\n##
+        TODOs\\n- [x] Setup health_monitor\\n- [x] Unit tests\\n- [x] Use the storage_size
+        parameter correctly \\n- [x] Switch to daemonizer2\"\n  ]\n}\n```\n\nRespond
+        with the corresponding output schema fields wrapped in a ```json ``` block,\nstarting
+        with the heading `## Output values`.\n\nIMPORTANT: You must respond with valid
+        JSON that matches this structure:\n```json\n{\n  \"subtheme_titles\": [\n    \"example
+        item\"\n  ],\n  \"subtheme_descriptions\": [\n    \"example item\"\n  ],\n  \"subtheme_pr_ids\":
+        [\n    \"example item\"\n  ]\n}\n```\n\nRequired fields: subtheme_titles,
+        subtheme_descriptions, subtheme_pr_ids\n\nEnsure your response:\n1. Is valid
+        JSON (properly quoted strings, no trailing commas)\n2. Includes all required
+        fields\n3. Uses the correct data types for each field\n4. Is wrapped in ```json```
+        markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '5703'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 24 Jul 2025 19:22:24 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '1969'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '1972'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9984'
+      X-Ratelimit-Remaining-Tokens:
+      - '198691'
+      X-Ratelimit-Reset-Requests:
+      - 2m15.133s
+      X-Ratelimit-Reset-Tokens:
+      - 392ms
+      X-Request-Id:
+      - 8fe3a3ba-b61b-494e-9e87-08b2b4010c2b
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=6lmqCfM0x4Ieb3AaGc10WH5hpO3OlBTxYO7t6ZCn_Xg-1753384944-1.0.1.1-TI.gap31jZpSdp1w_NN4MA3lLwGSCJlNxuO90THeeMJvO_Wumhp71HPmY.np4fXjGoI0hXcQjF2fx0bvGOuRPgP0bmdv5fuEjIOTKT4bf_o;
+        path=/; expires=Thu, 24-Jul-25 19:52:24 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=QE3MzG7ixme9_dgDEriIEVwsoINqLbZfw6Zoh70Li9o-1753384944774-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9645c9341d4a440d-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-BwvoEgR4nwwlhBevoDFJvIWasVDxW",
+          "object": "chat.completion",
+          "created": 1753384942,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"subtheme_titles\": [\n    \"Thread Pool Management\",\n    \"VictoriaMetrics Resource Setup\"\n  ],\n  \"subtheme_descriptions\": [\n    \"Improvements in managing thread pools to prevent indefinite sleeping of monitor threads and optimize resource usage.\",\n    \"Initial implementation of a single-node VictoriaMetrics resource with basic configuration and management capabilities.\"\n  ],\n  \"subtheme_pr_ids\": [\n    [\n      3161\n    ],\n    [\n      3170\n    ]\n  ]\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 1294,
+            "completion_tokens": 108,
+            "total_tokens": 1402,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": null
+        }
+  recorded_at: Thu, 24 Jul 2025 19:22:24 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"theme_name\": {\n      \"type\": \"string\",\n      \"description\":
+        \"Name of the theme\"\n    },\n    \"pr_titles\": {\n      \"type\": \"array\",\n      \"items\":
+        {\n        \"type\": \"string\"\n      },\n      \"description\": \"Titles
+        of PRs in this theme\"\n    },\n    \"pr_descriptions\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions of PRs for context\"\n    }\n  },\n  \"required\": [\n    \"theme_name\",\n    \"pr_titles\",\n    \"pr_descriptions\"\n  ]\n}\n```\nYour
+        output schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"theme_description\": {\n      \"type\":
+        \"string\",\n      \"description\": \"Engaging description of the theme''s
+        impact and benefits\"\n    }\n  },\n  \"required\": [\n    \"theme_description\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Write customer-focused descriptions for themes and their benefits."},{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"theme_name\": \"Resource Management\",\n  \"pr_titles\":
+        [\n    \"Use a thread pool + shared queue for monitor\",\n    \"Create VictoriaMetrics
+        resource\"\n  ],\n  \"pr_descriptions\": [\n    \"Because the pulse threads
+        for PostgresServer and MinioServer instances\\nwere counted by the thread
+        calculation, it appears as though if the\\nnumber of PostgresServer and MinioServer
+        instances to monitor exceeded\\nConfig.max_monitor_threads - 2, that the monitor
+        would sleep\\nindefinitely previously (at least, until one of the pulse threads\\nexited).
+        This change eliminates that possibility.  However, the\\ntradeoff is the number
+        of threads in the process can exceed\\nConfig.max_monitor_threads.  Config.max_monitor_threads
+        now is only\\nused to set the size of the monitor thread pool.\\n\\nTo prevent
+        arbitrarily large memory usage if the thread pool is not\\nable to process
+        jobs fast enough, the queue size is limited to\\nthe thread pool size plus
+        1.5 times the number of monitored objects.\\nOnce that limit is hit, pushing
+        to the queue will block.  However,\\nif this happens, this will lead to a
+        greater than 5 second delay\\nbetween pulse checks.\\n\\nReduce scope of mutex.synchronize
+        calls in the main monitor loop and\\nresource scanner thread.\\n\\nPrevent
+        Sequel::Database object leakage in PostgresServer#check_pulse.\",\n    \"##
+        Description\\n\\nThis is the initial commit for the Victoriametrics resource.
+        This is a basic version which supports creating a single-node Victoriametrics
+        instance backed by a VM, creating and managing appropriate certs and authentication
+        configuration. This version:\\n- Installs victoriametrics and vmauth binaries
+        on the VM\\n- Configures the systemd services for these two services\\n- Sets
+        up the certificates and http basic authentication credentials\\n\\nThis version
+        only supports a single-node version for simplicity, as current read/write
+        benchmarks show VictoriaMetrics it can support upto 10k write targets (PG
+        instnaces, for eg.) and around 2k concurrent read users on a single standard-8
+        VM.  In the future, we can add support for cluster mode, migrations, backup
+        etc as needed.\\n\\nHere is an example command to create a VictoriaMetrics
+        resource: st = Prog::VictoriaMetrics::VictoriaMetricsResourceNexus.assemble(
+        Config.victoriametrics_service_project_id,\\n\\\"victoriametrics-test\\\",
+        Location::HETZNER_FSN1_ID, \\\"vmuser\\\", \\\"pass\\\", 20, 1, \\\"standard-8\\\")\\n\\n\\n##
+        TODOs\\n- [x] Setup health_monitor\\n- [x] Unit tests\\n- [x] Use the storage_size
+        parameter correctly \\n- [x] Switch to daemonizer2\"\n  ]\n}\n```\n\nRespond
+        with the corresponding output schema fields wrapped in a ```json ``` block,\nstarting
+        with the heading `## Output values`.\n\nIMPORTANT: You must respond with valid
+        JSON that matches this structure:\n```json\n{\n  \"theme_description\": \"Engaging
+        description of the theme''s impact and benefits\"\n}\n```\n\nRequired fields:
+        theme_description\n\nEnsure your response:\n1. Is valid JSON (properly quoted
+        strings, no trailing commas)\n2. Includes all required fields\n3. Uses the
+        correct data types for each field\n4. Is wrapped in ```json``` markdown code
+        blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '4791'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 24 Jul 2025 19:22:26 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '1955'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '1958'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9983'
+      X-Ratelimit-Remaining-Tokens:
+      - '198890'
+      X-Ratelimit-Reset-Requests:
+      - 2m21.675s
+      X-Ratelimit-Reset-Tokens:
+      - 333ms
+      X-Request-Id:
+      - 4937feb2-fad2-4cd9-b10a-42d4d2d6d5b8
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=xcgnBCnpXXxH16gJSqyvSv0.2bgaEKsUXPZzioUQGoA-1753384946-1.0.1.1-xzd5ogV3dRurWI9gz9m0P7RT4vQ.rJg_TtkKJLaSRRxmr7XXxryNamQAVp65We7TDAvuffy0fQPND9YqCkYZqUJAqgoqarUF6GdYefvAgvg;
+        path=/; expires=Thu, 24-Jul-25 19:52:26 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=sTu0vVDSJXmrgqrJCcarrRemOGSjA1gO6j_6d4F1qZ8-1753384946862-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9645c9412d5f440d-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-BwvoGSGK2DNNnl3DCnx2THZEUTbBj",
+          "object": "chat.completion",
+          "created": 1753384944,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"theme_description\": \"The Resource Management theme enhances system efficiency and reliability by implementing a thread pool and shared queue for monitoring, ensuring that resource usage is optimized and preventing indefinite sleep states in monitoring processes. This leads to improved performance and responsiveness in managing multiple instances. Additionally, the introduction of the VictoriaMetrics resource simplifies the setup and management of monitoring services, allowing for scalable data handling with minimal configuration. This theme not only streamlines operations but also prepares the infrastructure for future enhancements, ensuring that users can efficiently manage their resources while maintaining high performance.\"\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 1055,
+            "completion_tokens": 119,
+            "total_tokens": 1174,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": null
+        }
+  recorded_at: Thu, 24 Jul 2025 19:22:26 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"theme_name\": {\n      \"type\": \"string\",\n      \"description\":
+        \"Name of the theme to generate subthemes for\"\n    },\n    \"theme_pr_ids\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"integer\"\n      },\n      \"description\":
+        \"PR IDs belonging to this theme\"\n    },\n    \"pr_titles\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Titles of PRs in this theme\"\n    },\n    \"pr_descriptions\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions of PRs in this theme\"\n    }\n  },\n  \"required\": [\n    \"theme_name\",\n    \"theme_pr_ids\",\n    \"pr_titles\",\n    \"pr_descriptions\"\n  ]\n}\n```\nYour
+        output schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"subtheme_titles\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Titles for each subtheme\"\n    },\n    \"subtheme_descriptions\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions for each subtheme\"\n    },\n    \"subtheme_pr_ids\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs belonging to each subtheme\"\n    }\n  },\n  \"required\": [\n    \"subtheme_titles\",\n    \"subtheme_descriptions\",\n    \"subtheme_pr_ids\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Generate subthemes for a given theme based on its PRs."},{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"theme_name\": \"Concurrency Optimization\",\n  \"theme_pr_ids\":
+        [],\n  \"pr_titles\": [],\n  \"pr_descriptions\": []\n}\n```\n\nRespond with
+        the corresponding output schema fields wrapped in a ```json ``` block,\nstarting
+        with the heading `## Output values`.\n\nIMPORTANT: You must respond with valid
+        JSON that matches this structure:\n```json\n{\n  \"subtheme_titles\": [\n    \"example
+        item\"\n  ],\n  \"subtheme_descriptions\": [\n    \"example item\"\n  ],\n  \"subtheme_pr_ids\":
+        [\n    \"example item\"\n  ]\n}\n```\n\nRequired fields: subtheme_titles,
+        subtheme_descriptions, subtheme_pr_ids\n\nEnsure your response:\n1. Is valid
+        JSON (properly quoted strings, no trailing commas)\n2. Includes all required
+        fields\n3. Uses the correct data types for each field\n4. Is wrapped in ```json```
+        markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '3182'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 24 Jul 2025 19:22:29 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '2237'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '2242'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9982'
+      X-Ratelimit-Remaining-Tokens:
+      - '199303'
+      X-Ratelimit-Reset-Requests:
+      - 2m28.163s
+      X-Ratelimit-Reset-Tokens:
+      - 208ms
+      X-Request-Id:
+      - req_45a072816e2d5b64dc43299212ca3af1
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=Hk3VyacY64LbRgtkiO3yZlXxyXPUs_oAjduxdP1rnQc-1753384949-1.0.1.1-Y54l9o_uUiG_b1Ycuif6jqs2tsaa6uq17w9oHUvIe3ty4Rb0WE5MFe65OJwbv8WwQDw5Uv9J2pU3rUGf3OYab0Au2oeV5lHazB3wRgfitAI;
+        path=/; expires=Thu, 24-Jul-25 19:52:29 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=Akr6bHGiksxn16syyfP2LkH48ufy9eizxvVNLbbIixU-1753384949314-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9645c94e9ecb440d-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-BwvoJ8N1B1zjYWQDKTnSvtnfrSSCz",
+          "object": "chat.completion",
+          "created": 1753384947,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"subtheme_titles\": [\n    \"Thread Pool Management\",\n    \"Lock-Free Data Structures\",\n    \"Asynchronous Programming Patterns\"\n  ],\n  \"subtheme_descriptions\": [\n    \"Exploring efficient management of thread pools to optimize concurrency.\",\n    \"Implementing lock-free data structures to enhance performance in concurrent environments.\",\n    \"Utilizing asynchronous programming patterns to improve responsiveness and resource utilization.\"\n  ],\n  \"subtheme_pr_ids\": [\n    [],\n    [],\n    []\n  ]\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 726,
+            "completion_tokens": 107,
+            "total_tokens": 833,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": null
+        }
+  recorded_at: Thu, 24 Jul 2025 19:22:29 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"theme_name\": {\n      \"type\": \"string\",\n      \"description\":
+        \"Name of the theme\"\n    },\n    \"pr_titles\": {\n      \"type\": \"array\",\n      \"items\":
+        {\n        \"type\": \"string\"\n      },\n      \"description\": \"Titles
+        of PRs in this theme\"\n    },\n    \"pr_descriptions\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions of PRs for context\"\n    }\n  },\n  \"required\": [\n    \"theme_name\",\n    \"pr_titles\",\n    \"pr_descriptions\"\n  ]\n}\n```\nYour
+        output schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"theme_description\": {\n      \"type\":
+        \"string\",\n      \"description\": \"Engaging description of the theme''s
+        impact and benefits\"\n    }\n  },\n  \"required\": [\n    \"theme_description\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Write customer-focused descriptions for themes and their benefits."},{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"theme_name\": \"Concurrency Optimization\",\n  \"pr_titles\":
+        [],\n  \"pr_descriptions\": []\n}\n```\n\nRespond with the corresponding output
+        schema fields wrapped in a ```json ``` block,\nstarting with the heading `##
+        Output values`.\n\nIMPORTANT: You must respond with valid JSON that matches
+        this structure:\n```json\n{\n  \"theme_description\": \"Engaging description
+        of the theme''s impact and benefits\"\n}\n```\n\nRequired fields: theme_description\n\nEnsure
+        your response:\n1. Is valid JSON (properly quoted strings, no trailing commas)\n2.
+        Includes all required fields\n3. Uses the correct data types for each field\n4.
+        Is wrapped in ```json``` markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '2295'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 24 Jul 2025 19:22:31 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '1578'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '1583'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9982'
+      X-Ratelimit-Remaining-Tokens:
+      - '199497'
+      X-Ratelimit-Reset-Requests:
+      - 2m34.421s
+      X-Ratelimit-Reset-Tokens:
+      - 150ms
+      X-Request-Id:
+      - req_68e01c28b026ace882db37bd225d37c7
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=lNIysX1V3_KpIDX8D6k09xRs._GJHNXevHVPx06JKlM-1753384951-1.0.1.1-aDaTMporK_qoRhjcaVx5bZb8hkdClHTtFdkIXYn9mRIclWvmZzOO1tj9p7v7BYgkzeLV0FGO5SLKUV0BW6Xorl1TD1uNNKuxZwH8gze84yw;
+        path=/; expires=Thu, 24-Jul-25 19:52:31 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=qv_n_68urEoq.EYdydgC0MMACXb5V5HhO5RFhwqb6RI-1753384951021-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9645c95d5ab6440d-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-BwvoLsy3xGaNdrOcvlg745gVk6GEM",
+          "object": "chat.completion",
+          "created": 1753384949,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"theme_description\": \"Concurrency Optimization focuses on enhancing the performance of applications by allowing multiple processes to run simultaneously. This leads to faster execution times, improved resource utilization, and a smoother user experience. By implementing concurrency, developers can ensure that applications handle more tasks at once, reducing wait times and increasing overall efficiency. This theme not only boosts productivity but also enhances scalability, making it easier to accommodate growing user demands.\"\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 499,
+            "completion_tokens": 93,
+            "total_tokens": 592,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": null
+        }
+  recorded_at: Thu, 24 Jul 2025 19:22:31 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"theme_name\": {\n      \"type\": \"string\",\n      \"description\":
+        \"Name of the theme to generate subthemes for\"\n    },\n    \"theme_pr_ids\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"integer\"\n      },\n      \"description\":
+        \"PR IDs belonging to this theme\"\n    },\n    \"pr_titles\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Titles of PRs in this theme\"\n    },\n    \"pr_descriptions\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions of PRs in this theme\"\n    }\n  },\n  \"required\": [\n    \"theme_name\",\n    \"theme_pr_ids\",\n    \"pr_titles\",\n    \"pr_descriptions\"\n  ]\n}\n```\nYour
+        output schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"subtheme_titles\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Titles for each subtheme\"\n    },\n    \"subtheme_descriptions\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions for each subtheme\"\n    },\n    \"subtheme_pr_ids\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs belonging to each subtheme\"\n    }\n  },\n  \"required\": [\n    \"subtheme_titles\",\n    \"subtheme_descriptions\",\n    \"subtheme_pr_ids\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Generate subthemes for a given theme based on its PRs."},{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"theme_name\": \"API Management\",\n  \"theme_pr_ids\":
+        [\n    3190\n  ],\n  \"pr_titles\": [\n    \"Add API/SDK/CLI access for inference
+        api keys\"\n  ],\n  \"pr_descriptions\": [\n    \"This is to make it easier
+        for users who want to automate management for inference api keys.\\n\\nSee
+        individual commits for details.\"\n  ]\n}\n```\n\nRespond with the corresponding
+        output schema fields wrapped in a ```json ``` block,\nstarting with the heading
+        `## Output values`.\n\nIMPORTANT: You must respond with valid JSON that matches
+        this structure:\n```json\n{\n  \"subtheme_titles\": [\n    \"example item\"\n  ],\n  \"subtheme_descriptions\":
+        [\n    \"example item\"\n  ],\n  \"subtheme_pr_ids\": [\n    \"example item\"\n  ]\n}\n```\n\nRequired
+        fields: subtheme_titles, subtheme_descriptions, subtheme_pr_ids\n\nEnsure
+        your response:\n1. Is valid JSON (properly quoted strings, no trailing commas)\n2.
+        Includes all required fields\n3. Uses the correct data types for each field\n4.
+        Is wrapped in ```json``` markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '3391'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 24 Jul 2025 19:22:32 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '1111'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '1114'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9981'
+      X-Ratelimit-Remaining-Tokens:
+      - '199255'
+      X-Ratelimit-Reset-Requests:
+      - 2m41.347s
+      X-Ratelimit-Reset-Tokens:
+      - 223ms
+      X-Request-Id:
+      - req_835bb7716e0d6507b556593172c3bf11
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=MnwrTIUu0teBsIKMdnfBloazZF0yeT2KVnkwLA3Bo_0-1753384952-1.0.1.1-d047zdVQHUofOKmNw0C3OkOsxw0dZCo4raCNVrZMkI8NulxF_mtXC2x.PTrsTVeJf6etZS_7d8dhHCjFcZdVMDP3t6e6rQFghORNn46vA4I;
+        path=/; expires=Thu, 24-Jul-25 19:52:32 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=EE_YrfSKKIHnWe1AnTnBvWGuIE3vqXWIF5DslW2yGuQ-1753384952265-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9645c96838d1440d-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-BwvoNVQQCbuAiZCrcFTU3DbfpAo39",
+          "object": "chat.completion",
+          "created": 1753384951,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"subtheme_titles\": [\n    \"Automated API Key Management\"\n  ],\n  \"subtheme_descriptions\": [\n    \"Enhancements to facilitate automated management of inference API keys through various access methods.\"\n  ],\n  \"subtheme_pr_ids\": [\n    [\n      3190\n    ]\n  ]\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 779,
+            "completion_tokens": 73,
+            "total_tokens": 852,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": null
+        }
+  recorded_at: Thu, 24 Jul 2025 19:22:32 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"theme_name\": {\n      \"type\": \"string\",\n      \"description\":
+        \"Name of the theme\"\n    },\n    \"pr_titles\": {\n      \"type\": \"array\",\n      \"items\":
+        {\n        \"type\": \"string\"\n      },\n      \"description\": \"Titles
+        of PRs in this theme\"\n    },\n    \"pr_descriptions\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions of PRs for context\"\n    }\n  },\n  \"required\": [\n    \"theme_name\",\n    \"pr_titles\",\n    \"pr_descriptions\"\n  ]\n}\n```\nYour
+        output schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"theme_description\": {\n      \"type\":
+        \"string\",\n      \"description\": \"Engaging description of the theme''s
+        impact and benefits\"\n    }\n  },\n  \"required\": [\n    \"theme_description\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Write customer-focused descriptions for themes and their benefits."},{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"theme_name\": \"API Management\",\n  \"pr_titles\":
+        [\n    \"Add API/SDK/CLI access for inference api keys\"\n  ],\n  \"pr_descriptions\":
+        [\n    \"This is to make it easier for users who want to automate management
+        for inference api keys.\\n\\nSee individual commits for details.\"\n  ]\n}\n```\n\nRespond
+        with the corresponding output schema fields wrapped in a ```json ``` block,\nstarting
+        with the heading `## Output values`.\n\nIMPORTANT: You must respond with valid
+        JSON that matches this structure:\n```json\n{\n  \"theme_description\": \"Engaging
+        description of the theme''s impact and benefits\"\n}\n```\n\nRequired fields:
+        theme_description\n\nEnsure your response:\n1. Is valid JSON (properly quoted
+        strings, no trailing commas)\n2. Includes all required fields\n3. Uses the
+        correct data types for each field\n4. Is wrapped in ```json``` markdown code
+        blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '2490'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 24 Jul 2025 19:22:33 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '1528'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '1531'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9980'
+      X-Ratelimit-Remaining-Tokens:
+      - '199451'
+      X-Ratelimit-Reset-Requests:
+      - 2m48.763s
+      X-Ratelimit-Reset-Tokens:
+      - 164ms
+      X-Request-Id:
+      - req_9e0542141675c4e1074759b0d2d33049
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=.j0ZIlk9eJMbGhmodra4_fiLEXJNPModTtFI6Jzp76I-1753384953-1.0.1.1-_589TGMEzoypBDrL.g90lEofX656DFcRoMR23RhkW0pZvfSD_28kPsjmPvD8gWCzf4M0YaDmj7IXvMmWPHeyAEZuzfkwzrqxaKp9FDkaE5U;
+        path=/; expires=Thu, 24-Jul-25 19:52:33 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=udNb6uXOXZ71U2fsuvbFaF0HfgnrQGvYYpx5ohA_xU0-1753384953902-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9645c96fdab5440d-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-BwvoOmrtyH2njeZJgzyv1XA1BH2bW",
+          "object": "chat.completion",
+          "created": 1753384952,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"theme_description\": \"The API Management theme empowers users by providing seamless access to inference API keys through API, SDK, and CLI. This enhancement simplifies the automation of key management, allowing developers to integrate and manage their applications more efficiently. By streamlining this process, users can focus on building innovative solutions without the hassle of manual key management.\"\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 545,
+            "completion_tokens": 79,
+            "total_tokens": 624,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": null
+        }
+  recorded_at: Thu, 24 Jul 2025 19:22:33 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"theme_name\": {\n      \"type\": \"string\",\n      \"description\":
+        \"Name of the theme to generate subthemes for\"\n    },\n    \"theme_pr_ids\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"integer\"\n      },\n      \"description\":
+        \"PR IDs belonging to this theme\"\n    },\n    \"pr_titles\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Titles of PRs in this theme\"\n    },\n    \"pr_descriptions\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions of PRs in this theme\"\n    }\n  },\n  \"required\": [\n    \"theme_name\",\n    \"theme_pr_ids\",\n    \"pr_titles\",\n    \"pr_descriptions\"\n  ]\n}\n```\nYour
+        output schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"subtheme_titles\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Titles for each subtheme\"\n    },\n    \"subtheme_descriptions\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions for each subtheme\"\n    },\n    \"subtheme_pr_ids\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs belonging to each subtheme\"\n    }\n  },\n  \"required\": [\n    \"subtheme_titles\",\n    \"subtheme_descriptions\",\n    \"subtheme_pr_ids\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Generate subthemes for a given theme based on its PRs."},{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"theme_name\": \"Metrics Collection\",\n  \"theme_pr_ids\":
+        [\n    3202\n  ],\n  \"pr_titles\": [\n    \"Add bin/metrics-collector to
+        collect and buffer metrics\"\n  ],\n  \"pr_descriptions\": [\n    \"This change
+        adds a systemd-timer triggered script to collect prometheues-style metrics
+        from a configured list of endpoints on the metrics producer side (eg. Postgres
+        server). These will be written to the metrics storage DB (VictoriaMetrics)
+        by bin/monitor. The buffer exists in case certain parts of the stack (either
+        monitor or VictoriaMetrics) are unavailable, we are able to catch up and recover
+        without losing data. With the default buffer size (20MiB), we can tolerage
+        about 30 minutes of downtime for PG metrics.\\n\\nTo add this functionality
+        to other resources, one can configure the systemd-timer in a similar manner
+        as done in this change for PostgresServer and provide the configuration as
+        part of the `metrics_config` method, like this:\\n\\n```\\n{\\n  # Array of
+        endpoints to collect metrics from\\n  endpoints: [],\\n\\n  # Maximum size
+        of the pending buffer in MiB\\n  max_pending_buffer_size_mib: 20,\\n\\n  #
+        Interval for collecting metrics in seconds or as a time span string\\n  interval:
+        \\\"15s\\\",\\n\\n  # Additional label names and values to be added to the
+        collected metrics\\n  additional_labels: {\\\"foo\\\": \\\"bar\\\"}\\n}\\n```\"\n  ]\n}\n```\n\nRespond
+        with the corresponding output schema fields wrapped in a ```json ``` block,\nstarting
+        with the heading `## Output values`.\n\nIMPORTANT: You must respond with valid
+        JSON that matches this structure:\n```json\n{\n  \"subtheme_titles\": [\n    \"example
+        item\"\n  ],\n  \"subtheme_descriptions\": [\n    \"example item\"\n  ],\n  \"subtheme_pr_ids\":
+        [\n    \"example item\"\n  ]\n}\n```\n\nRequired fields: subtheme_titles,
+        subtheme_descriptions, subtheme_pr_ids\n\nEnsure your response:\n1. Is valid
+        JSON (properly quoted strings, no trailing commas)\n2. Includes all required
+        fields\n3. Uses the correct data types for each field\n4. Is wrapped in ```json```
+        markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '4434'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 24 Jul 2025 19:22:36 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '2411'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '2424'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9979'
+      X-Ratelimit-Remaining-Tokens:
+      - '199001'
+      X-Ratelimit-Reset-Requests:
+      - 2m55.752s
+      X-Ratelimit-Reset-Tokens:
+      - 299ms
+      X-Request-Id:
+      - req_986e994fbede4568259cc1620ce9f5cc
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=miYnDVeqakfjB4PcvyJKdANedaWshPH96PHbjOhii1Y-1753384956-1.0.1.1-5o2O.J6Rw0k2teVBbviGHwawuDEKtKeLCAeXe_qybOXgOQ2BIXSJn2_vjlYTTL2qqRp34QLj5rgBc7KDTbmRgj_EjWlYcxYI2C.asA7fauU;
+        path=/; expires=Thu, 24-Jul-25 19:52:36 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=nzdm_M_mVb4rFCyqZhxRti8lZL6.9v5Y2Z.l1bFbafM-1753384956448-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9645c97a2f5b440d-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-BwvoQugXjgo1YaEhue71PPFo3Besd",
+          "object": "chat.completion",
+          "created": 1753384954,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"subtheme_titles\": [\n    \"Prometheus Metrics Collection\"\n  ],\n  \"subtheme_descriptions\": [\n    \"Implementation of a metrics collector for Prometheus-style metrics from various endpoints, including configuration for systemd-timer and buffer management.\"\n  ],\n  \"subtheme_pr_ids\": [\n    [\n      3202\n    ]\n  ]\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 1015,
+            "completion_tokens": 82,
+            "total_tokens": 1097,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": null
+        }
+  recorded_at: Thu, 24 Jul 2025 19:22:36 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"theme_name\": {\n      \"type\": \"string\",\n      \"description\":
+        \"Name of the theme\"\n    },\n    \"pr_titles\": {\n      \"type\": \"array\",\n      \"items\":
+        {\n        \"type\": \"string\"\n      },\n      \"description\": \"Titles
+        of PRs in this theme\"\n    },\n    \"pr_descriptions\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions of PRs for context\"\n    }\n  },\n  \"required\": [\n    \"theme_name\",\n    \"pr_titles\",\n    \"pr_descriptions\"\n  ]\n}\n```\nYour
+        output schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"theme_description\": {\n      \"type\":
+        \"string\",\n      \"description\": \"Engaging description of the theme''s
+        impact and benefits\"\n    }\n  },\n  \"required\": [\n    \"theme_description\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Write customer-focused descriptions for themes and their benefits."},{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"theme_name\": \"Metrics Collection\",\n  \"pr_titles\":
+        [\n    \"Add bin/metrics-collector to collect and buffer metrics\"\n  ],\n  \"pr_descriptions\":
+        [\n    \"This change adds a systemd-timer triggered script to collect prometheues-style
+        metrics from a configured list of endpoints on the metrics producer side (eg.
+        Postgres server). These will be written to the metrics storage DB (VictoriaMetrics)
+        by bin/monitor. The buffer exists in case certain parts of the stack (either
+        monitor or VictoriaMetrics) are unavailable, we are able to catch up and recover
+        without losing data. With the default buffer size (20MiB), we can tolerage
+        about 30 minutes of downtime for PG metrics.\\n\\nTo add this functionality
+        to other resources, one can configure the systemd-timer in a similar manner
+        as done in this change for PostgresServer and provide the configuration as
+        part of the `metrics_config` method, like this:\\n\\n```\\n{\\n  # Array of
+        endpoints to collect metrics from\\n  endpoints: [],\\n\\n  # Maximum size
+        of the pending buffer in MiB\\n  max_pending_buffer_size_mib: 20,\\n\\n  #
+        Interval for collecting metrics in seconds or as a time span string\\n  interval:
+        \\\"15s\\\",\\n\\n  # Additional label names and values to be added to the
+        collected metrics\\n  additional_labels: {\\\"foo\\\": \\\"bar\\\"}\\n}\\n```\"\n  ]\n}\n```\n\nRespond
+        with the corresponding output schema fields wrapped in a ```json ``` block,\nstarting
+        with the heading `## Output values`.\n\nIMPORTANT: You must respond with valid
+        JSON that matches this structure:\n```json\n{\n  \"theme_description\": \"Engaging
+        description of the theme''s impact and benefits\"\n}\n```\n\nRequired fields:
+        theme_description\n\nEnsure your response:\n1. Is valid JSON (properly quoted
+        strings, no trailing commas)\n2. Includes all required fields\n3. Uses the
+        correct data types for each field\n4. Is wrapped in ```json``` markdown code
+        blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '3533'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 24 Jul 2025 19:22:38 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '2139'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '2142'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9978'
+      X-Ratelimit-Remaining-Tokens:
+      - '199196'
+      X-Ratelimit-Reset-Requests:
+      - 3m1.827s
+      X-Ratelimit-Reset-Tokens:
+      - 240ms
+      X-Request-Id:
+      - 6b5dd9a3-0635-4be5-a3f8-f410ba5e214c
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=GeIawcW.s8tzXdigAbRhEA1lKzqkiUqoHfzLS9zgugs-1753384958-1.0.1.1-t8PeQo8.kSFZSdJqV0g0itx7O5ePhG0MpgNA.si7TsxuA9Wgbh2.ZhKowDecSsh.So3a7U6Oy2xrgTq3.Q3QAgZKIuYDSHeQHqmdVPAAxoI;
+        path=/; expires=Thu, 24-Jul-25 19:52:38 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=pizm0YPWHN7TuMxae1KRR4gg624EYf43kypgp4bAhdo-1753384958732-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9645c98a1ad7440d-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-BwvoStvzRYkxELqPXKK7BBtgyf86H",
+          "object": "chat.completion",
+          "created": 1753384956,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"theme_description\": \"The Metrics Collection theme revolutionizes how we monitor and analyze system performance by implementing a robust metrics collection system. With the introduction of a systemd-timer triggered script, users can effortlessly gather Prometheus-style metrics from various endpoints, such as Postgres servers. This ensures that critical performance data is consistently captured and stored in VictoriaMetrics, even during downtime. The built-in buffering capability allows for seamless recovery of data, preventing loss during outages. By configuring additional resources with ease, this theme empowers teams to maintain high availability and reliability in their systems, ultimately leading to improved operational efficiency and informed decision-making.\"\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 781,
+            "completion_tokens": 135,
+            "total_tokens": 916,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": null
+        }
+  recorded_at: Thu, 24 Jul 2025 19:22:38 GMT
 recorded_with: VCR 6.3.1
