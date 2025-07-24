@@ -3,49 +3,62 @@
 
 require 'bundler/setup'
 require 'dotenv/load'
+require 'json'
+require 'optparse'
 require_relative 'changelog_generator/batch_signatures'
 require_relative 'changelog_generator/batch_modules'
-require_relative 'changelog_generator/batch_changelog_generator'
 
-# Sample PRs for comparison
-sample_prs = [
+# Parse command line options
+options = {
+  limit: nil,
+  file: 'fixtures/llm-changelog-generator/data/feb-pull-requests.json'
+}
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: ruby run_batch_comparison.rb [options]"
+  
+  opts.on("-l", "--limit LIMIT", Integer, "Limit the number of PRs to process") do |limit|
+    options[:limit] = limit
+  end
+  
+  opts.on("-f", "--file FILE", "JSON file with PR data (default: fixtures/llm-changelog-generator/data/feb-pull-requests.json)") do |file|
+    options[:file] = file
+  end
+  
+  opts.on("-h", "--help", "Show this help message") do
+    puts opts
+    exit
+  end
+end.parse!
+
+# Load PR data from fixtures
+begin
+  pr_data = JSON.parse(File.read(options[:file], encoding: 'UTF-8'))
+rescue Errno::ENOENT
+  puts "Error: File not found: #{options[:file]}"
+  exit 1
+rescue JSON::ParserError => e
+  puts "Error parsing JSON: #{e.message}"
+  exit 1
+end
+
+# Apply limit if specified
+if options[:limit]
+  pr_data = pr_data.first(options[:limit])
+  puts "📌 Limited to #{options[:limit]} PRs"
+end
+
+# Convert JSON data to PullRequest objects
+sample_prs = pr_data.map do |pr|
   ChangelogGenerator::PullRequest.new(
-    pr: 3170,
-    title: "Add PostgreSQL metrics dashboard",
-    description: "Implements built-in metrics for CPU, memory, and disk usage tracking",
-    ellipsis_summary: "Added comprehensive metrics dashboard for PostgreSQL instances"
-  ),
-  ChangelogGenerator::PullRequest.new(
-    pr: 3202,
-    title: "Enhance metrics API endpoints",
-    description: "Adds new API endpoints for retrieving PostgreSQL performance metrics",
-    ellipsis_summary: "Extended metrics API with additional endpoints"
-  ),
-  ChangelogGenerator::PullRequest.new(
-    pr: 3312,
-    title: "GitHub runner performance improvements",
-    description: "Optimizes runner startup time and resource allocation",
-    ellipsis_summary: "Faster GitHub runner provisioning"
-  ),
-  ChangelogGenerator::PullRequest.new(
-    pr: 3366,
-    title: "Add runner location preferences",
-    description: "Allows users to specify preferred geographic locations for runners",
-    ellipsis_summary: "Geographic preference support for runners"
-  ),
-  ChangelogGenerator::PullRequest.new(
-    pr: 3401,
-    title: "Fix database connection pooling",
-    description: "Resolves issues with connection pool exhaustion under high load",
-    ellipsis_summary: "Database connection pool fixes"
-  ),
-  ChangelogGenerator::PullRequest.new(
-    pr: 3425,
-    title: "Implement auto-scaling for workers",
-    description: "Adds automatic scaling based on queue depth and processing time",
-    ellipsis_summary: "Auto-scaling worker implementation"
+    pr: pr["pr"],
+    title: pr["title"],
+    description: pr["description"],
+    ellipsis_summary: pr["ellipsis_summary"]
   )
-]
+end
+
+puts "📄 Loaded #{sample_prs.length} PRs from #{options[:file]}"
 
 # Configure DSPy
 DSPy.configure do |config|
@@ -57,21 +70,17 @@ puts "🔄 Generating changelog with batch processing..."
 puts "=" * 60
 
 generator = ChangelogGenerator::Batch::BatchChangelogGenerator.new
-themes = generator.generate_themes(pull_requests: sample_prs, batch_size: 3)
+result = generator.call(pull_requests: sample_prs, month: "July", year: 2025, batch_size: 3)
 
-puts "\n📊 Themes Discovered:"
-themes.each do |theme|
-  puts "\n## #{theme.name}"
-  puts theme.description
-  puts "PRs: #{theme.pr_ids.join(', ')}"
-end
+puts "\n📊 Generated MDX Changelog:"
+puts "=" * 60
+puts result.mdx_content
+puts "=" * 60
 
 puts "\n\n✅ Batch Processing Complete!"
-puts "=" * 60
 
 # Additional insights
 puts "\n💡 Key Insights:"
 puts "- Processed #{sample_prs.length} PRs in batches of 3"
-puts "- Discovered #{themes.length} themes dynamically"
 puts "- Reduced API calls by ~#{((1 - (sample_prs.length / 3.0).ceil.to_f / sample_prs.length) * 100).round}%"
-puts "- Themes are discovered based on PR content, not predefined categories"
+puts "- Themes are discovered dynamically based on PR content"
