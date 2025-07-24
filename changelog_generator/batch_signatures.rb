@@ -36,8 +36,12 @@ module ChangelogGenerator
               description: "Descriptions for each theme"
         const :theme_pr_ids, T::Array[T::Array[Integer]],
               description: "PR IDs belonging to each theme"
-        const :pr_theme_mapping, T::Hash[String, String],
-              description: "Mapping of PR ID (as string) to theme name"
+        # OpenAI structured outputs doesn't support T::Hash with dynamic keys
+        # Using parallel arrays instead for PR-to-theme mapping
+        const :pr_ids_list, T::Array[Integer],
+              description: "List of PR IDs in order"
+        const :pr_theme_assignments, T::Array[String],
+              description: "Theme names for each PR ID (parallel to pr_ids_list)"
       end
     end
 

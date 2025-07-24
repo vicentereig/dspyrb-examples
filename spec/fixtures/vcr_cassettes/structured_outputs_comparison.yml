@@ -1,0 +1,1380 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"pr_batch\": {\n      \"type\": \"array\",\n      \"items\":
+        {\n        \"type\": \"object\",\n        \"properties\": {\n          \"_type\":
+        {\n            \"type\": \"string\",\n            \"const\": \"PullRequest\"\n          },\n          \"pr\":
+        {\n            \"type\": \"integer\"\n          },\n          \"title\": {\n            \"type\":
+        \"string\"\n          },\n          \"description\": {\n            \"type\":
+        \"string\"\n          },\n          \"ellipsis_summary\": {\n            \"type\":
+        \"string\"\n          }\n        },\n        \"required\": [\n          \"_type\",\n          \"pr\",\n          \"title\",\n          \"description\",\n          \"ellipsis_summary\"\n        ],\n        \"description\":
+        \"ChangelogGenerator::PullRequest struct\"\n      },\n      \"description\":
+        \"Batch of pull requests to analyze together\"\n    }\n  },\n  \"required\":
+        [\n    \"pr_batch\"\n  ]\n}\n```\nYour output schema fields are:\n```json\n{\n  \"$schema\":
+        \"http://json-schema.org/draft-06/schema#\",\n  \"type\": \"object\",\n  \"properties\":
+        {\n    \"theme_names\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\":
+        \"string\"\n      },\n      \"description\": \"Names of themes discovered
+        from the PR batch\"\n    },\n    \"theme_descriptions\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions for each theme\"\n    },\n    \"theme_pr_ids\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs belonging to each theme\"\n    },\n    \"pr_ids_list\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"integer\"\n      },\n      \"description\":
+        \"List of PR IDs in order\"\n    },\n    \"pr_theme_assignments\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Theme names for each PR ID (parallel to pr_ids_list)\"\n    },\n    \"reasoning\":
+        {\n      \"type\": \"string\",\n      \"description\": \"Step by step reasoning
+        process\"\n    }\n  },\n  \"required\": [\n    \"theme_names\",\n    \"theme_descriptions\",\n    \"theme_pr_ids\",\n    \"pr_ids_list\",\n    \"pr_theme_assignments\",\n    \"reasoning\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Analyze a batch of pull requests to identify themes and relationships.
+        Think step by step."},{"role":"user","content":"## Input Values\n```json\n{\n  \"pr_batch\":
+        [\n    {\n      \"pr\": 3170,\n      \"title\": \"Add PostgreSQL metrics dashboard\",\n      \"description\":
+        \"Implements built-in metrics for CPU, memory, and disk usage tracking\",\n      \"ellipsis_summary\":
+        \"Added comprehensive metrics dashboard for PostgreSQL instances\"\n    },\n    {\n      \"pr\":
+        3202,\n      \"title\": \"Enhance metrics API endpoints\",\n      \"description\":
+        \"Adds new API endpoints for retrieving PostgreSQL performance metrics\",\n      \"ellipsis_summary\":
+        \"Extended metrics API with additional endpoints\"\n    }\n  ]\n}\n```\n\nRespond
+        with the corresponding output schema fields wrapped in a ```json ``` block,\nstarting
+        with the heading `## Output values`."}],"temperature":0.0,"response_format":{"type":"json_schema","json_schema":{"name":"dspy_output_1753384390","strict":true,"schema":{"type":"object","properties":{"theme_names":{"type":"array","items":{"type":"string"},"description":"Names
+        of themes discovered from the PR batch"},"theme_descriptions":{"type":"array","items":{"type":"string"},"description":"Descriptions
+        for each theme"},"theme_pr_ids":{"type":"array","items":{"type":"array","items":{"type":"integer"}},"description":"PR
+        IDs belonging to each theme"},"pr_ids_list":{"type":"array","items":{"type":"integer"},"description":"List
+        of PR IDs in order"},"pr_theme_assignments":{"type":"array","items":{"type":"string"},"description":"Theme
+        names for each PR ID (parallel to pr_ids_list)"},"reasoning":{"type":"string","description":"Step
+        by step reasoning process"}},"required":["theme_names","theme_descriptions","theme_pr_ids","pr_ids_list","pr_theme_assignments","reasoning"],"additionalProperties":false}}}}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '4760'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 24 Jul 2025 19:13:21 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '4399'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '4402'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9998'
+      X-Ratelimit-Remaining-Tokens:
+      - '199166'
+      X-Ratelimit-Reset-Requests:
+      - 10.529s
+      X-Ratelimit-Reset-Tokens:
+      - 250ms
+      X-Request-Id:
+      - 93d8a65f-a221-4c81-b18d-0c138d667bfb
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=dex4WEJgjzzj65LbZVi9M10m8OxHPuy1Q3tMOBiXCQY-1753384401-1.0.1.1-cpYGvpGn1jz2UHb2nwZQ3kSm6uB8gso7exCot0_3S4GcdyQ2laGr2DeLfiB3UCqt5rd301OWNUHVBh.t_ccvBgaiAabG0.vtEOysMS7UV.8;
+        path=/; expires=Thu, 24-Jul-25 19:43:21 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=EfpfTmFosBdR7_K1l1Izu06iDWbT9ErutujzNwazlJs-1753384401857-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9645bbe369fe06a1-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-BwvfRCXWBlUJAqLl5tFyJ9C6vL3EN",
+          "object": "chat.completion",
+          "created": 1753384397,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "{\"theme_names\":[\"PostgreSQL Metrics\",\"API Enhancements\"],\"theme_descriptions\":[\"Improvements related to monitoring PostgreSQL performance metrics through a dashboard.\",\"Enhancements to the API for better access to PostgreSQL metrics.\"],\"theme_pr_ids\":[[3170],[3202]],\"pr_ids_list\":[3170,3202],\"pr_theme_assignments\":[\"PostgreSQL Metrics\",\"API Enhancements\"],\"reasoning\":\"The first PR focuses on creating a metrics dashboard for PostgreSQL, which falls under the theme of PostgreSQL Metrics. The second PR enhances the API to retrieve these metrics, which aligns with the theme of API Enhancements. Each PR is assigned to its respective theme based on its title and description.\"}",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 999,
+            "completion_tokens": 145,
+            "total_tokens": 1144,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": null
+        }
+  recorded_at: Thu, 24 Jul 2025 19:13:21 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"pr_batch\": {\n      \"type\": \"array\",\n      \"items\":
+        {\n        \"type\": \"object\",\n        \"properties\": {\n          \"_type\":
+        {\n            \"type\": \"string\",\n            \"const\": \"PullRequest\"\n          },\n          \"pr\":
+        {\n            \"type\": \"integer\"\n          },\n          \"title\": {\n            \"type\":
+        \"string\"\n          },\n          \"description\": {\n            \"type\":
+        \"string\"\n          },\n          \"ellipsis_summary\": {\n            \"type\":
+        \"string\"\n          }\n        },\n        \"required\": [\n          \"_type\",\n          \"pr\",\n          \"title\",\n          \"description\",\n          \"ellipsis_summary\"\n        ],\n        \"description\":
+        \"ChangelogGenerator::PullRequest struct\"\n      },\n      \"description\":
+        \"Batch of pull requests to analyze together\"\n    }\n  },\n  \"required\":
+        [\n    \"pr_batch\"\n  ]\n}\n```\nYour output schema fields are:\n```json\n{\n  \"$schema\":
+        \"http://json-schema.org/draft-06/schema#\",\n  \"type\": \"object\",\n  \"properties\":
+        {\n    \"theme_names\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\":
+        \"string\"\n      },\n      \"description\": \"Names of themes discovered
+        from the PR batch\"\n    },\n    \"theme_descriptions\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions for each theme\"\n    },\n    \"theme_pr_ids\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs belonging to each theme\"\n    },\n    \"pr_ids_list\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"integer\"\n      },\n      \"description\":
+        \"List of PR IDs in order\"\n    },\n    \"pr_theme_assignments\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Theme names for each PR ID (parallel to pr_ids_list)\"\n    },\n    \"reasoning\":
+        {\n      \"type\": \"string\",\n      \"description\": \"Step by step reasoning
+        process\"\n    }\n  },\n  \"required\": [\n    \"theme_names\",\n    \"theme_descriptions\",\n    \"theme_pr_ids\",\n    \"pr_ids_list\",\n    \"pr_theme_assignments\",\n    \"reasoning\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Analyze a batch of pull requests to identify themes and relationships.
+        Think step by step."},{"role":"user","content":"## Input Values\n```json\n{\n  \"pr_batch\":
+        [\n    {\n      \"pr\": 3312,\n      \"title\": \"GitHub runner performance
+        improvements\",\n      \"description\": \"Optimizes runner startup time and
+        resource allocation\",\n      \"ellipsis_summary\": \"Faster GitHub runner
+        provisioning\"\n    },\n    {\n      \"pr\": 3366,\n      \"title\": \"Add
+        runner location preferences\",\n      \"description\": \"Allows users to specify
+        preferred geographic locations for runners\",\n      \"ellipsis_summary\":
+        \"Geographic preference support for runners\"\n    }\n  ]\n}\n```\n\nRespond
+        with the corresponding output schema fields wrapped in a ```json ``` block,\nstarting
+        with the heading `## Output values`."}],"temperature":0.0,"response_format":{"type":"json_schema","json_schema":{"name":"dspy_output_1753384390","strict":true,"schema":{"type":"object","properties":{"theme_names":{"type":"array","items":{"type":"string"},"description":"Names
+        of themes discovered from the PR batch"},"theme_descriptions":{"type":"array","items":{"type":"string"},"description":"Descriptions
+        for each theme"},"theme_pr_ids":{"type":"array","items":{"type":"array","items":{"type":"integer"}},"description":"PR
+        IDs belonging to each theme"},"pr_ids_list":{"type":"array","items":{"type":"integer"},"description":"List
+        of PR IDs in order"},"pr_theme_assignments":{"type":"array","items":{"type":"string"},"description":"Theme
+        names for each PR ID (parallel to pr_ids_list)"},"reasoning":{"type":"string","description":"Step
+        by step reasoning process"}},"required":["theme_names","theme_descriptions","theme_pr_ids","pr_ids_list","pr_theme_assignments","reasoning"],"additionalProperties":false}}}}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '4717'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 24 Jul 2025 19:13:27 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '5346'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '5352'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9998'
+      X-Ratelimit-Remaining-Tokens:
+      - '199176'
+      X-Ratelimit-Reset-Requests:
+      - 14.662s
+      X-Ratelimit-Reset-Tokens:
+      - 247ms
+      X-Request-Id:
+      - 5da1b758-1234-489b-9401-98fb0c673387
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=OP_FYhXdC_xG4Wc4cPwMaGfcv8bcEp.9oac0BDODYVs-1753384407-1.0.1.1-UBk5HKUbxI7NhvebU2f9XRpUtvI5sEvAtsxxvcVQu88W52c0iWyEmlMxbvFhf438q_UVTfgiRzbikECsm2EPB5moo_AxNiJ1GP_WP1RTBUM;
+        path=/; expires=Thu, 24-Jul-25 19:43:27 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=FmENiO6YaOpjwbcIFD3M6foC.NNmcDi3.vkAHE9mb8o-1753384407310-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9645bbffdbd906a1-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-BwvfWfWKAdhyoeSfia06NDo7gY8j3",
+          "object": "chat.completion",
+          "created": 1753384402,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "{\"theme_names\":[\"Performance Improvements\",\"Geographic Preferences\"],\"theme_descriptions\":[\"Enhancements aimed at improving the speed and efficiency of GitHub runners.\",\"Features that allow users to choose the location of their GitHub runners.\"],\"theme_pr_ids\":[[3312],[3366]],\"pr_ids_list\":[3312,3366],\"pr_theme_assignments\":[\"Performance Improvements\",\"Geographic Preferences\"],\"reasoning\":\"The first pull request focuses on improving the performance of GitHub runners, which can be categorized under 'Performance Improvements'. The second pull request introduces a feature for specifying geographic preferences for runners, which fits under 'Geographic Preferences'. Each PR is assigned to its respective theme based on the content of the title and description.\"}",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 989,
+            "completion_tokens": 147,
+            "total_tokens": 1136,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": null
+        }
+  recorded_at: Thu, 24 Jul 2025 19:13:27 GMT
+- request:
+    method: post
+    uri: https://api.anthropic.com/v1/messages
+    body:
+      encoding: UTF-8
+      string: '{"model":"claude-3-5-haiku-latest","messages":[{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"pr_batch\": [\n    {\n      \"pr\": 3170,\n      \"title\":
+        \"Add PostgreSQL metrics dashboard\",\n      \"description\": \"Implements
+        built-in metrics for CPU, memory, and disk usage tracking\",\n      \"ellipsis_summary\":
+        \"Added comprehensive metrics dashboard for PostgreSQL instances\"\n    },\n    {\n      \"pr\":
+        3202,\n      \"title\": \"Enhance metrics API endpoints\",\n      \"description\":
+        \"Adds new API endpoints for retrieving PostgreSQL performance metrics\",\n      \"ellipsis_summary\":
+        \"Extended metrics API with additional endpoints\"\n    }\n  ]\n}\n```\n\nRespond
+        with the corresponding output schema fields wrapped in a ```json ``` block,\nstarting
+        with the heading `## Output values`.\n\nIMPORTANT: Respond with ONLY valid
+        JSON. No markdown formatting, no code blocks, no explanations. Start your
+        response with ''{'' and end with ''}''."}],"max_tokens":4096,"temperature":0.0,"system":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"pr_batch\": {\n      \"type\": \"array\",\n      \"items\":
+        {\n        \"type\": \"object\",\n        \"properties\": {\n          \"_type\":
+        {\n            \"type\": \"string\",\n            \"const\": \"PullRequest\"\n          },\n          \"pr\":
+        {\n            \"type\": \"integer\"\n          },\n          \"title\": {\n            \"type\":
+        \"string\"\n          },\n          \"description\": {\n            \"type\":
+        \"string\"\n          },\n          \"ellipsis_summary\": {\n            \"type\":
+        \"string\"\n          }\n        },\n        \"required\": [\n          \"_type\",\n          \"pr\",\n          \"title\",\n          \"description\",\n          \"ellipsis_summary\"\n        ],\n        \"description\":
+        \"ChangelogGenerator::PullRequest struct\"\n      },\n      \"description\":
+        \"Batch of pull requests to analyze together\"\n    }\n  },\n  \"required\":
+        [\n    \"pr_batch\"\n  ]\n}\n```\nYour output schema fields are:\n```json\n{\n  \"$schema\":
+        \"http://json-schema.org/draft-06/schema#\",\n  \"type\": \"object\",\n  \"properties\":
+        {\n    \"theme_names\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\":
+        \"string\"\n      },\n      \"description\": \"Names of themes discovered
+        from the PR batch\"\n    },\n    \"theme_descriptions\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions for each theme\"\n    },\n    \"theme_pr_ids\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs belonging to each theme\"\n    },\n    \"pr_ids_list\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"integer\"\n      },\n      \"description\":
+        \"List of PR IDs in order\"\n    },\n    \"pr_theme_assignments\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Theme names for each PR ID (parallel to pr_ids_list)\"\n    },\n    \"reasoning\":
+        {\n      \"type\": \"string\",\n      \"description\": \"Step by step reasoning
+        process\"\n    }\n  },\n  \"required\": [\n    \"theme_names\",\n    \"theme_descriptions\",\n    \"theme_pr_ids\",\n    \"pr_ids_list\",\n    \"pr_theme_assignments\",\n    \"reasoning\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Analyze a batch of pull requests to identify themes and relationships.
+        Think step by step."}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.anthropic.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 1.1.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Anthropic-Version:
+      - '2023-06-01'
+      X-Api-Key:
+      - "<ANTHROPIC_API_KEY>"
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '3966'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 24 Jul 2025 19:13:30 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Anthropic-Ratelimit-Input-Tokens-Limit:
+      - '100000'
+      Anthropic-Ratelimit-Input-Tokens-Remaining:
+      - '100000'
+      Anthropic-Ratelimit-Input-Tokens-Reset:
+      - '2025-07-24T19:13:28Z'
+      Anthropic-Ratelimit-Output-Tokens-Limit:
+      - '20000'
+      Anthropic-Ratelimit-Output-Tokens-Remaining:
+      - '20000'
+      Anthropic-Ratelimit-Output-Tokens-Reset:
+      - '2025-07-24T19:13:31Z'
+      Anthropic-Ratelimit-Requests-Limit:
+      - '1000'
+      Anthropic-Ratelimit-Requests-Remaining:
+      - '999'
+      Anthropic-Ratelimit-Requests-Reset:
+      - '2025-07-24T19:13:27Z'
+      Anthropic-Ratelimit-Tokens-Limit:
+      - '120000'
+      Anthropic-Ratelimit-Tokens-Remaining:
+      - '120000'
+      Anthropic-Ratelimit-Tokens-Reset:
+      - '2025-07-24T19:13:28Z'
+      Request-Id:
+      - req_011CRSNnJgTWkKdEgqGsfDuu
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Anthropic-Organization-Id:
+      - '008b8384-4ae5-436d-a319-c5a07111a158'
+      Via:
+      - 1.1 google
+      Cf-Cache-Status:
+      - DYNAMIC
+      X-Robots-Tag:
+      - none
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9645bc22bbe9f02b-EWR
+    body:
+      encoding: ASCII-8BIT
+      string: '{"id":"msg_01WUeL7dqX8QzRcMFRKGz1uc","type":"message","role":"assistant","model":"claude-3-5-haiku-20241022","content":[{"type":"text","text":"##
+        Output values\n```json\n{\n    \"theme_names\": [\"PostgreSQL Metrics Monitoring\"],\n    \"theme_descriptions\":
+        [\"Comprehensive metrics and monitoring capabilities for PostgreSQL instances\"],\n    \"theme_pr_ids\":
+        [[3170, 3202]],\n    \"pr_ids_list\": [3170, 3202],\n    \"pr_theme_assignments\":
+        [\"PostgreSQL Metrics Monitoring\", \"PostgreSQL Metrics Monitoring\"],\n    \"reasoning\":
+        \"Both PRs focus on enhancing PostgreSQL metrics tracking: PR 3170 adds a
+        metrics dashboard, while PR 3202 extends the metrics API endpoints. These
+        are closely related improvements to monitoring and performance tracking, forming
+        a cohesive theme of PostgreSQL metrics monitoring.\"\n}\n```"}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":1016,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"output_tokens":172,"service_tier":"standard"}}'
+  recorded_at: Thu, 24 Jul 2025 19:13:30 GMT
+- request:
+    method: post
+    uri: https://api.anthropic.com/v1/messages
+    body:
+      encoding: UTF-8
+      string: '{"model":"claude-3-5-haiku-latest","messages":[{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"pr_batch\": [\n    {\n      \"pr\": 3312,\n      \"title\":
+        \"GitHub runner performance improvements\",\n      \"description\": \"Optimizes
+        runner startup time and resource allocation\",\n      \"ellipsis_summary\":
+        \"Faster GitHub runner provisioning\"\n    },\n    {\n      \"pr\": 3366,\n      \"title\":
+        \"Add runner location preferences\",\n      \"description\": \"Allows users
+        to specify preferred geographic locations for runners\",\n      \"ellipsis_summary\":
+        \"Geographic preference support for runners\"\n    }\n  ]\n}\n```\n\nRespond
+        with the corresponding output schema fields wrapped in a ```json ``` block,\nstarting
+        with the heading `## Output values`.\n\nIMPORTANT: Respond with ONLY valid
+        JSON. No markdown formatting, no code blocks, no explanations. Start your
+        response with ''{'' and end with ''}''."}],"max_tokens":4096,"temperature":0.0,"system":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"pr_batch\": {\n      \"type\": \"array\",\n      \"items\":
+        {\n        \"type\": \"object\",\n        \"properties\": {\n          \"_type\":
+        {\n            \"type\": \"string\",\n            \"const\": \"PullRequest\"\n          },\n          \"pr\":
+        {\n            \"type\": \"integer\"\n          },\n          \"title\": {\n            \"type\":
+        \"string\"\n          },\n          \"description\": {\n            \"type\":
+        \"string\"\n          },\n          \"ellipsis_summary\": {\n            \"type\":
+        \"string\"\n          }\n        },\n        \"required\": [\n          \"_type\",\n          \"pr\",\n          \"title\",\n          \"description\",\n          \"ellipsis_summary\"\n        ],\n        \"description\":
+        \"ChangelogGenerator::PullRequest struct\"\n      },\n      \"description\":
+        \"Batch of pull requests to analyze together\"\n    }\n  },\n  \"required\":
+        [\n    \"pr_batch\"\n  ]\n}\n```\nYour output schema fields are:\n```json\n{\n  \"$schema\":
+        \"http://json-schema.org/draft-06/schema#\",\n  \"type\": \"object\",\n  \"properties\":
+        {\n    \"theme_names\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\":
+        \"string\"\n      },\n      \"description\": \"Names of themes discovered
+        from the PR batch\"\n    },\n    \"theme_descriptions\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions for each theme\"\n    },\n    \"theme_pr_ids\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs belonging to each theme\"\n    },\n    \"pr_ids_list\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"integer\"\n      },\n      \"description\":
+        \"List of PR IDs in order\"\n    },\n    \"pr_theme_assignments\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Theme names for each PR ID (parallel to pr_ids_list)\"\n    },\n    \"reasoning\":
+        {\n      \"type\": \"string\",\n      \"description\": \"Step by step reasoning
+        process\"\n    }\n  },\n  \"required\": [\n    \"theme_names\",\n    \"theme_descriptions\",\n    \"theme_pr_ids\",\n    \"pr_ids_list\",\n    \"pr_theme_assignments\",\n    \"reasoning\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Analyze a batch of pull requests to identify themes and relationships.
+        Think step by step."}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.anthropic.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 1.1.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Anthropic-Version:
+      - '2023-06-01'
+      X-Api-Key:
+      - "<ANTHROPIC_API_KEY>"
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '3923'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 24 Jul 2025 19:13:33 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Anthropic-Ratelimit-Input-Tokens-Limit:
+      - '100000'
+      Anthropic-Ratelimit-Input-Tokens-Remaining:
+      - '100000'
+      Anthropic-Ratelimit-Input-Tokens-Reset:
+      - '2025-07-24T19:13:31Z'
+      Anthropic-Ratelimit-Output-Tokens-Limit:
+      - '20000'
+      Anthropic-Ratelimit-Output-Tokens-Remaining:
+      - '20000'
+      Anthropic-Ratelimit-Output-Tokens-Reset:
+      - '2025-07-24T19:13:34Z'
+      Anthropic-Ratelimit-Requests-Limit:
+      - '1000'
+      Anthropic-Ratelimit-Requests-Remaining:
+      - '999'
+      Anthropic-Ratelimit-Requests-Reset:
+      - '2025-07-24T19:13:30Z'
+      Anthropic-Ratelimit-Tokens-Limit:
+      - '120000'
+      Anthropic-Ratelimit-Tokens-Remaining:
+      - '120000'
+      Anthropic-Ratelimit-Tokens-Reset:
+      - '2025-07-24T19:13:31Z'
+      Request-Id:
+      - req_011CRSNnY5rqk3KzkWPhzNBX
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Anthropic-Organization-Id:
+      - '008b8384-4ae5-436d-a319-c5a07111a158'
+      Via:
+      - 1.1 google
+      Cf-Cache-Status:
+      - DYNAMIC
+      X-Robots-Tag:
+      - none
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9645bc36596ff02b-EWR
+    body:
+      encoding: ASCII-8BIT
+      string: '{"id":"msg_013aH5JBMwVkyoD6fshx7GdU","type":"message","role":"assistant","model":"claude-3-5-haiku-20241022","content":[{"type":"text","text":"##
+        Output values\n```json\n{\n    \"theme_names\": [\"GitHub Runner Configuration\"],\n    \"theme_descriptions\":
+        [\"Enhancements to GitHub runner infrastructure and user control\"],\n    \"theme_pr_ids\":
+        [[3312, 3366]],\n    \"pr_ids_list\": [3312, 3366],\n    \"pr_theme_assignments\":
+        [\"GitHub Runner Configuration\", \"GitHub Runner Configuration\"],\n    \"reasoning\":
+        \"Both PRs focus on improving GitHub runner capabilities: one optimizing performance
+        and the other adding geographic location preferences. These changes are closely
+        related to runner infrastructure and user control, forming a cohesive theme
+        of GitHub Runner Configuration.\"\n}\n```"}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":1003,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"output_tokens":152,"service_tier":"standard"}}'
+  recorded_at: Thu, 24 Jul 2025 19:13:33 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"pr_batch\": {\n      \"type\": \"array\",\n      \"items\":
+        {\n        \"type\": \"object\",\n        \"properties\": {\n          \"_type\":
+        {\n            \"type\": \"string\",\n            \"const\": \"PullRequest\"\n          },\n          \"pr\":
+        {\n            \"type\": \"integer\"\n          },\n          \"title\": {\n            \"type\":
+        \"string\"\n          },\n          \"description\": {\n            \"type\":
+        \"string\"\n          },\n          \"ellipsis_summary\": {\n            \"type\":
+        \"string\"\n          }\n        },\n        \"required\": [\n          \"_type\",\n          \"pr\",\n          \"title\",\n          \"description\",\n          \"ellipsis_summary\"\n        ],\n        \"description\":
+        \"ChangelogGenerator::PullRequest struct\"\n      },\n      \"description\":
+        \"Batch of pull requests to analyze together\"\n    }\n  },\n  \"required\":
+        [\n    \"pr_batch\"\n  ]\n}\n```\nYour output schema fields are:\n```json\n{\n  \"$schema\":
+        \"http://json-schema.org/draft-06/schema#\",\n  \"type\": \"object\",\n  \"properties\":
+        {\n    \"theme_names\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\":
+        \"string\"\n      },\n      \"description\": \"Names of themes discovered
+        from the PR batch\"\n    },\n    \"theme_descriptions\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions for each theme\"\n    },\n    \"theme_pr_ids\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs belonging to each theme\"\n    },\n    \"pr_ids_list\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"integer\"\n      },\n      \"description\":
+        \"List of PR IDs in order\"\n    },\n    \"pr_theme_assignments\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Theme names for each PR ID (parallel to pr_ids_list)\"\n    },\n    \"reasoning\":
+        {\n      \"type\": \"string\",\n      \"description\": \"Step by step reasoning
+        process\"\n    }\n  },\n  \"required\": [\n    \"theme_names\",\n    \"theme_descriptions\",\n    \"theme_pr_ids\",\n    \"pr_ids_list\",\n    \"pr_theme_assignments\",\n    \"reasoning\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Analyze a batch of pull requests to identify themes and relationships.
+        Think step by step."},{"role":"user","content":"## Input Values\n```json\n{\n  \"pr_batch\":
+        [\n    {\n      \"pr\": 3170,\n      \"title\": \"Add PostgreSQL metrics dashboard\",\n      \"description\":
+        \"Implements built-in metrics for CPU, memory, and disk usage tracking\",\n      \"ellipsis_summary\":
+        \"Added comprehensive metrics dashboard for PostgreSQL instances\"\n    },\n    {\n      \"pr\":
+        3202,\n      \"title\": \"Enhance metrics API endpoints\",\n      \"description\":
+        \"Adds new API endpoints for retrieving PostgreSQL performance metrics\",\n      \"ellipsis_summary\":
+        \"Extended metrics API with additional endpoints\"\n    }\n  ]\n}\n```\n\nRespond
+        with the corresponding output schema fields wrapped in a ```json ``` block,\nstarting
+        with the heading `## Output values`."}],"temperature":0.0,"response_format":{"type":"json_schema","json_schema":{"name":"dspy_output_1753384474","strict":true,"schema":{"type":"object","properties":{"theme_names":{"type":"array","items":{"type":"string"},"description":"Names
+        of themes discovered from the PR batch"},"theme_descriptions":{"type":"array","items":{"type":"string"},"description":"Descriptions
+        for each theme"},"theme_pr_ids":{"type":"array","items":{"type":"array","items":{"type":"integer"}},"description":"PR
+        IDs belonging to each theme"},"pr_ids_list":{"type":"array","items":{"type":"integer"},"description":"List
+        of PR IDs in order"},"pr_theme_assignments":{"type":"array","items":{"type":"string"},"description":"Theme
+        names for each PR ID (parallel to pr_ids_list)"},"reasoning":{"type":"string","description":"Step
+        by step reasoning process"}},"required":["theme_names","theme_descriptions","theme_pr_ids","pr_ids_list","pr_theme_assignments","reasoning"],"additionalProperties":false}}}}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '4760'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 24 Jul 2025 19:14:42 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '2495'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '2498'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9997'
+      X-Ratelimit-Remaining-Tokens:
+      - '199166'
+      X-Ratelimit-Reset-Requests:
+      - 20.936s
+      X-Ratelimit-Reset-Tokens:
+      - 250ms
+      X-Request-Id:
+      - cfb7c3e1-7beb-4654-b854-a56b3dc676a3
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=la8hbvLrlpJ4ohiauJQPUmyFez7X9O3DWx777jgHY2w-1753384482-1.0.1.1-i6OKHFztI_RorK4NPXXQvvyc4y9ezpFT9Vof0J0lTzZpVcaDpUH0voZ7bfNn1XHlxd4f67Du9zy6uPKsR3K1jCrHlsJtQ5pYLv7u5AMBWxI;
+        path=/; expires=Thu, 24-Jul-25 19:44:42 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=TgUZsuaZQuA17yqviiDBJBm5yUhEPYntOqxASTDtIlQ-1753384482631-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9645bde85afb8c36-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-Bwvgm8FPNscCmSziXIFTkykn8lDCg",
+          "object": "chat.completion",
+          "created": 1753384480,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "{\"theme_names\":[\"PostgreSQL Metrics\",\"API Enhancements\"],\"theme_descriptions\":[\"Improvements related to monitoring and metrics for PostgreSQL databases.\",\"Enhancements to the API for better performance metrics retrieval.\"],\"theme_pr_ids\":[[3170],[3202]],\"pr_ids_list\":[3170,3202],\"pr_theme_assignments\":[\"PostgreSQL Metrics\",\"API Enhancements\"],\"reasoning\":\"The first PR (3170) focuses on adding a metrics dashboard for PostgreSQL, which falls under the theme of PostgreSQL Metrics. The second PR (3202) enhances the API endpoints for retrieving performance metrics, which aligns with the theme of API Enhancements. Each PR is assigned to its respective theme based on its title and description.\"}",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 999,
+            "completion_tokens": 151,
+            "total_tokens": 1150,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": null
+        }
+  recorded_at: Thu, 24 Jul 2025 19:14:42 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"pr_batch\": {\n      \"type\": \"array\",\n      \"items\":
+        {\n        \"type\": \"object\",\n        \"properties\": {\n          \"_type\":
+        {\n            \"type\": \"string\",\n            \"const\": \"PullRequest\"\n          },\n          \"pr\":
+        {\n            \"type\": \"integer\"\n          },\n          \"title\": {\n            \"type\":
+        \"string\"\n          },\n          \"description\": {\n            \"type\":
+        \"string\"\n          },\n          \"ellipsis_summary\": {\n            \"type\":
+        \"string\"\n          }\n        },\n        \"required\": [\n          \"_type\",\n          \"pr\",\n          \"title\",\n          \"description\",\n          \"ellipsis_summary\"\n        ],\n        \"description\":
+        \"ChangelogGenerator::PullRequest struct\"\n      },\n      \"description\":
+        \"Batch of pull requests to analyze together\"\n    }\n  },\n  \"required\":
+        [\n    \"pr_batch\"\n  ]\n}\n```\nYour output schema fields are:\n```json\n{\n  \"$schema\":
+        \"http://json-schema.org/draft-06/schema#\",\n  \"type\": \"object\",\n  \"properties\":
+        {\n    \"theme_names\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\":
+        \"string\"\n      },\n      \"description\": \"Names of themes discovered
+        from the PR batch\"\n    },\n    \"theme_descriptions\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions for each theme\"\n    },\n    \"theme_pr_ids\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs belonging to each theme\"\n    },\n    \"pr_ids_list\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"integer\"\n      },\n      \"description\":
+        \"List of PR IDs in order\"\n    },\n    \"pr_theme_assignments\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Theme names for each PR ID (parallel to pr_ids_list)\"\n    },\n    \"reasoning\":
+        {\n      \"type\": \"string\",\n      \"description\": \"Step by step reasoning
+        process\"\n    }\n  },\n  \"required\": [\n    \"theme_names\",\n    \"theme_descriptions\",\n    \"theme_pr_ids\",\n    \"pr_ids_list\",\n    \"pr_theme_assignments\",\n    \"reasoning\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Analyze a batch of pull requests to identify themes and relationships.
+        Think step by step."},{"role":"user","content":"## Input Values\n```json\n{\n  \"pr_batch\":
+        [\n    {\n      \"pr\": 3312,\n      \"title\": \"GitHub runner performance
+        improvements\",\n      \"description\": \"Optimizes runner startup time and
+        resource allocation\",\n      \"ellipsis_summary\": \"Faster GitHub runner
+        provisioning\"\n    },\n    {\n      \"pr\": 3366,\n      \"title\": \"Add
+        runner location preferences\",\n      \"description\": \"Allows users to specify
+        preferred geographic locations for runners\",\n      \"ellipsis_summary\":
+        \"Geographic preference support for runners\"\n    }\n  ]\n}\n```\n\nRespond
+        with the corresponding output schema fields wrapped in a ```json ``` block,\nstarting
+        with the heading `## Output values`."}],"temperature":0.0,"response_format":{"type":"json_schema","json_schema":{"name":"dspy_output_1753384474","strict":true,"schema":{"type":"object","properties":{"theme_names":{"type":"array","items":{"type":"string"},"description":"Names
+        of themes discovered from the PR batch"},"theme_descriptions":{"type":"array","items":{"type":"string"},"description":"Descriptions
+        for each theme"},"theme_pr_ids":{"type":"array","items":{"type":"array","items":{"type":"integer"}},"description":"PR
+        IDs belonging to each theme"},"pr_ids_list":{"type":"array","items":{"type":"integer"},"description":"List
+        of PR IDs in order"},"pr_theme_assignments":{"type":"array","items":{"type":"string"},"description":"Theme
+        names for each PR ID (parallel to pr_ids_list)"},"reasoning":{"type":"string","description":"Step
+        by step reasoning process"}},"required":["theme_names","theme_descriptions","theme_pr_ids","pr_ids_list","pr_theme_assignments","reasoning"],"additionalProperties":false}}}}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '4717'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 24 Jul 2025 19:14:45 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '3184'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '3195'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9996'
+      X-Ratelimit-Remaining-Tokens:
+      - '199176'
+      X-Ratelimit-Reset-Requests:
+      - 26.92s
+      X-Ratelimit-Reset-Tokens:
+      - 247ms
+      X-Request-Id:
+      - req_3ce1a1f97dfd5dbdbf4f5fa6328b8bd6
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=TaVD._HO7paa1eB8yeUzgYrDbjcsT2c0oX3BCmp_HAo-1753384485-1.0.1.1-vTTsuS1kzS5kp5JacY3HhtIhMSsmDvpzZ7DjQQPSIkwsNzx3Tjq_XCX76bjlYItaQHYwHbK_g2A0QXpwIgZJShqmeogBPnLOm_Uyk8qJ1S8;
+        path=/; expires=Thu, 24-Jul-25 19:44:45 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=_7O8BzDfKWt3nSwwyksCWkK6UpQuG5ihQUNUCiPI8Mg-1753384485988-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9645bdf8dc048c36-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-Bwvgo8xwaO8xDbK2AADo9ujP1hk8Z",
+          "object": "chat.completion",
+          "created": 1753384482,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "{\"theme_names\":[\"Performance Improvements\",\"Geographic Preferences\"],\"theme_descriptions\":[\"Improvements made to enhance the speed and efficiency of GitHub runners.\",\"Feature added to allow users to choose preferred locations for their GitHub runners.\"],\"theme_pr_ids\":[[3312],[3366]],\"pr_ids_list\":[3312,3366],\"pr_theme_assignments\":[\"Performance Improvements\",\"Geographic Preferences\"],\"reasoning\":\"The first pull request focuses on enhancing the performance of GitHub runners, which can be categorized under 'Performance Improvements'. The second pull request introduces a feature for geographic preferences, thus it falls under 'Geographic Preferences'. Each PR is assigned to its respective theme based on the content of the title and description.\"}",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 989,
+            "completion_tokens": 146,
+            "total_tokens": 1135,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": null
+        }
+  recorded_at: Thu, 24 Jul 2025 19:14:46 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"pr_batch\": {\n      \"type\": \"array\",\n      \"items\":
+        {\n        \"type\": \"object\",\n        \"properties\": {\n          \"_type\":
+        {\n            \"type\": \"string\",\n            \"const\": \"PullRequest\"\n          },\n          \"pr\":
+        {\n            \"type\": \"integer\"\n          },\n          \"title\": {\n            \"type\":
+        \"string\"\n          },\n          \"description\": {\n            \"type\":
+        \"string\"\n          },\n          \"ellipsis_summary\": {\n            \"type\":
+        \"string\"\n          }\n        },\n        \"required\": [\n          \"_type\",\n          \"pr\",\n          \"title\",\n          \"description\",\n          \"ellipsis_summary\"\n        ],\n        \"description\":
+        \"ChangelogGenerator::PullRequest struct\"\n      },\n      \"description\":
+        \"Batch of pull requests to analyze together\"\n    }\n  },\n  \"required\":
+        [\n    \"pr_batch\"\n  ]\n}\n```\nYour output schema fields are:\n```json\n{\n  \"$schema\":
+        \"http://json-schema.org/draft-06/schema#\",\n  \"type\": \"object\",\n  \"properties\":
+        {\n    \"theme_names\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\":
+        \"string\"\n      },\n      \"description\": \"Names of themes discovered
+        from the PR batch\"\n    },\n    \"theme_descriptions\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions for each theme\"\n    },\n    \"theme_pr_ids\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs belonging to each theme\"\n    },\n    \"pr_ids_list\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"integer\"\n      },\n      \"description\":
+        \"List of PR IDs in order\"\n    },\n    \"pr_theme_assignments\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Theme names for each PR ID (parallel to pr_ids_list)\"\n    },\n    \"reasoning\":
+        {\n      \"type\": \"string\",\n      \"description\": \"Step by step reasoning
+        process\"\n    }\n  },\n  \"required\": [\n    \"theme_names\",\n    \"theme_descriptions\",\n    \"theme_pr_ids\",\n    \"pr_ids_list\",\n    \"pr_theme_assignments\",\n    \"reasoning\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Analyze a batch of pull requests to identify themes and relationships.
+        Think step by step."},{"role":"user","content":"## Input Values\n```json\n{\n  \"pr_batch\":
+        [\n    {\n      \"pr\": 3170,\n      \"title\": \"Add PostgreSQL metrics dashboard\",\n      \"description\":
+        \"Implements built-in metrics for CPU, memory, and disk usage tracking\",\n      \"ellipsis_summary\":
+        \"Added comprehensive metrics dashboard for PostgreSQL instances\"\n    },\n    {\n      \"pr\":
+        3202,\n      \"title\": \"Enhance metrics API endpoints\",\n      \"description\":
+        \"Adds new API endpoints for retrieving PostgreSQL performance metrics\",\n      \"ellipsis_summary\":
+        \"Extended metrics API with additional endpoints\"\n    }\n  ]\n}\n```\n\nRespond
+        with the corresponding output schema fields wrapped in a ```json ``` block,\nstarting
+        with the heading `## Output values`."}],"temperature":0.0,"response_format":{"type":"json_schema","json_schema":{"name":"dspy_output_1753384635","strict":true,"schema":{"type":"object","properties":{"theme_names":{"type":"array","items":{"type":"string"},"description":"Names
+        of themes discovered from the PR batch"},"theme_descriptions":{"type":"array","items":{"type":"string"},"description":"Descriptions
+        for each theme"},"theme_pr_ids":{"type":"array","items":{"type":"array","items":{"type":"integer"}},"description":"PR
+        IDs belonging to each theme"},"pr_ids_list":{"type":"array","items":{"type":"integer"},"description":"List
+        of PR IDs in order"},"pr_theme_assignments":{"type":"array","items":{"type":"string"},"description":"Theme
+        names for each PR ID (parallel to pr_ids_list)"},"reasoning":{"type":"string","description":"Step
+        by step reasoning process"}},"required":["theme_names","theme_descriptions","theme_pr_ids","pr_ids_list","pr_theme_assignments","reasoning"],"additionalProperties":false}}}}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '4760'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 24 Jul 2025 19:17:21 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '2453'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '2459'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9998'
+      X-Ratelimit-Remaining-Tokens:
+      - '199166'
+      X-Ratelimit-Reset-Requests:
+      - 14.259s
+      X-Ratelimit-Reset-Tokens:
+      - 250ms
+      X-Request-Id:
+      - req_b335ef1748af40dcd68a1d610d5f0544
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=imuO9GmBu0S13zt.IXpwoPLc98t.nzfVPONPCBOnorc-1753384641-1.0.1.1-zt4Hhh02iHErP7gfl1OmRCtYdyTTkCnaKTDmsartTSWM_9EGWIK6B3e9m2Rx3uOAXtLiK3l0mBptfsKVuJUgl_kmpwmaZlxjh8Q2ghq0kUg;
+        path=/; expires=Thu, 24-Jul-25 19:47:21 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=61lRQnuCaVWNsdNnSv4TQbeWo4cK51.PtRHml0OhGGQ-1753384641051-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9645c1c3fe647c78-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-BwvjKG5IpHyLIyfCi8D1GlTKn7c64",
+          "object": "chat.completion",
+          "created": 1753384638,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "{\"theme_names\":[\"PostgreSQL Metrics\",\"API Enhancements\"],\"theme_descriptions\":[\"Improvements related to monitoring PostgreSQL performance through metrics dashboards.\",\"Enhancements to the API for better access to performance metrics.\"],\"theme_pr_ids\":[[3170],[3202]],\"pr_ids_list\":[3170,3202],\"pr_theme_assignments\":[\"PostgreSQL Metrics\",\"API Enhancements\"],\"reasoning\":\"The first PR focuses on adding a metrics dashboard for PostgreSQL, which falls under the theme of PostgreSQL Metrics. The second PR enhances the API endpoints related to performance metrics, which aligns with the theme of API Enhancements. Each PR is assigned to its respective theme based on its title and description.\"}",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 999,
+            "completion_tokens": 144,
+            "total_tokens": 1143,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": null
+        }
+  recorded_at: Thu, 24 Jul 2025 19:17:21 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"pr_batch\": {\n      \"type\": \"array\",\n      \"items\":
+        {\n        \"type\": \"object\",\n        \"properties\": {\n          \"_type\":
+        {\n            \"type\": \"string\",\n            \"const\": \"PullRequest\"\n          },\n          \"pr\":
+        {\n            \"type\": \"integer\"\n          },\n          \"title\": {\n            \"type\":
+        \"string\"\n          },\n          \"description\": {\n            \"type\":
+        \"string\"\n          },\n          \"ellipsis_summary\": {\n            \"type\":
+        \"string\"\n          }\n        },\n        \"required\": [\n          \"_type\",\n          \"pr\",\n          \"title\",\n          \"description\",\n          \"ellipsis_summary\"\n        ],\n        \"description\":
+        \"ChangelogGenerator::PullRequest struct\"\n      },\n      \"description\":
+        \"Batch of pull requests to analyze together\"\n    }\n  },\n  \"required\":
+        [\n    \"pr_batch\"\n  ]\n}\n```\nYour output schema fields are:\n```json\n{\n  \"$schema\":
+        \"http://json-schema.org/draft-06/schema#\",\n  \"type\": \"object\",\n  \"properties\":
+        {\n    \"theme_names\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\":
+        \"string\"\n      },\n      \"description\": \"Names of themes discovered
+        from the PR batch\"\n    },\n    \"theme_descriptions\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Descriptions for each theme\"\n    },\n    \"theme_pr_ids\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"array\",\n        \"items\":
+        {\n          \"type\": \"integer\"\n        }\n      },\n      \"description\":
+        \"PR IDs belonging to each theme\"\n    },\n    \"pr_ids_list\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"integer\"\n      },\n      \"description\":
+        \"List of PR IDs in order\"\n    },\n    \"pr_theme_assignments\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Theme names for each PR ID (parallel to pr_ids_list)\"\n    },\n    \"reasoning\":
+        {\n      \"type\": \"string\",\n      \"description\": \"Step by step reasoning
+        process\"\n    }\n  },\n  \"required\": [\n    \"theme_names\",\n    \"theme_descriptions\",\n    \"theme_pr_ids\",\n    \"pr_ids_list\",\n    \"pr_theme_assignments\",\n    \"reasoning\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Analyze a batch of pull requests to identify themes and relationships.
+        Think step by step."},{"role":"user","content":"## Input Values\n```json\n{\n  \"pr_batch\":
+        [\n    {\n      \"pr\": 3312,\n      \"title\": \"GitHub runner performance
+        improvements\",\n      \"description\": \"Optimizes runner startup time and
+        resource allocation\",\n      \"ellipsis_summary\": \"Faster GitHub runner
+        provisioning\"\n    },\n    {\n      \"pr\": 3366,\n      \"title\": \"Add
+        runner location preferences\",\n      \"description\": \"Allows users to specify
+        preferred geographic locations for runners\",\n      \"ellipsis_summary\":
+        \"Geographic preference support for runners\"\n    }\n  ]\n}\n```\n\nRespond
+        with the corresponding output schema fields wrapped in a ```json ``` block,\nstarting
+        with the heading `## Output values`."}],"temperature":0.0,"response_format":{"type":"json_schema","json_schema":{"name":"dspy_output_1753384635","strict":true,"schema":{"type":"object","properties":{"theme_names":{"type":"array","items":{"type":"string"},"description":"Names
+        of themes discovered from the PR batch"},"theme_descriptions":{"type":"array","items":{"type":"string"},"description":"Descriptions
+        for each theme"},"theme_pr_ids":{"type":"array","items":{"type":"array","items":{"type":"integer"}},"description":"PR
+        IDs belonging to each theme"},"pr_ids_list":{"type":"array","items":{"type":"integer"},"description":"List
+        of PR IDs in order"},"pr_theme_assignments":{"type":"array","items":{"type":"string"},"description":"Theme
+        names for each PR ID (parallel to pr_ids_list)"},"reasoning":{"type":"string","description":"Step
+        by step reasoning process"}},"required":["theme_names","theme_descriptions","theme_pr_ids","pr_ids_list","pr_theme_assignments","reasoning"],"additionalProperties":false}}}}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '4717'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 24 Jul 2025 19:17:24 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '3343'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '3359'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9997'
+      X-Ratelimit-Remaining-Tokens:
+      - '199176'
+      X-Ratelimit-Reset-Requests:
+      - 20.262s
+      X-Ratelimit-Reset-Tokens:
+      - 247ms
+      X-Request-Id:
+      - req_6e8ea676dc86451608e000c7f3d55e31
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=HYK5Rvm3Va4TtoDlbHezHllDzCOtpEBlnLZWXYZldRQ-1753384644-1.0.1.1-wLZbEd8qxrajDTduuL_SWyTQJUprCGExGTlooydCkvSjd3juNH4a1FOQ78ETEH0RqQUy9GLvDqQOx9VkrapzwGioTFPVFflE_gMjKWiYvO8;
+        path=/; expires=Thu, 24-Jul-25 19:47:24 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=fz9RMvFAwqWoIAxHuJUOV1zXXIYLygD51q6jGdIWVC0-1753384644592-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9645c1d6f9837c78-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-BwvjNlDzHntZT4Rd9njO4NNxK1GEf",
+          "object": "chat.completion",
+          "created": 1753384641,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "{\"theme_names\":[\"Performance Improvements\",\"Geographic Preferences\"],\"theme_descriptions\":[\"Improvements made to the performance of GitHub runners, focusing on startup time and resource allocation.\",\"Feature allowing users to specify geographic preferences for GitHub runners.\"],\"theme_pr_ids\":[[3312],[3366]],\"pr_ids_list\":[3312,3366],\"pr_theme_assignments\":[\"Performance Improvements\",\"Geographic Preferences\"],\"reasoning\":\"The first pull request focuses on enhancing the performance of GitHub runners, which can be categorized under 'Performance Improvements'. The second pull request introduces a feature for geographic preferences, which is a distinct theme. Each PR is assigned to its respective theme based on the content of the title and description.\"}",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 989,
+            "completion_tokens": 145,
+            "total_tokens": 1134,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": null
+        }
+  recorded_at: Thu, 24 Jul 2025 19:17:24 GMT
+recorded_with: VCR 6.3.1

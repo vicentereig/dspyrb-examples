@@ -27,8 +27,13 @@ module ChangelogGenerator
           )
         end
         
-        # Convert string keys to integer keys in pr_theme_mapping
-        pr_theme_mapping = result.pr_theme_mapping.transform_keys(&:to_i)
+        # Build pr_theme_mapping from parallel arrays
+        pr_theme_mapping = {}
+        if result.pr_ids_list && result.pr_theme_assignments
+          result.pr_ids_list.zip(result.pr_theme_assignments).each do |pr_id, theme_name|
+            pr_theme_mapping[pr_id] = theme_name if pr_id && theme_name
+          end
+        end
         
         OpenStruct.new(
           themes: themes,

@@ -20,6 +20,10 @@ module Pricing
       input: 3.00,    # $3 per 1M input tokens
       output: 15.00   # $15 per 1M output tokens
     },
+    'anthropic/claude-3-5-haiku-latest' => {
+      input: 1.00,    # $1 per 1M input tokens
+      output: 5.00    # $5 per 1M output tokens
+    },
     
     # Anthropic models - Claude 3
     'anthropic/claude-3-opus-20240229' => {
