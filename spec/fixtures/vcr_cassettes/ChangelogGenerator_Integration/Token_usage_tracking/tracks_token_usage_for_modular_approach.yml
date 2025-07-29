@@ -1,0 +1,551 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"pull_request\": {\n      \"type\":
+        \"object\",\n      \"properties\": {\n        \"_type\": {\n          \"type\":
+        \"string\",\n          \"const\": \"PullRequest\"\n        },\n        \"pr\":
+        {\n          \"type\": \"integer\"\n        },\n        \"title\": {\n          \"type\":
+        \"string\"\n        },\n        \"description\": {\n          \"type\": \"string\"\n        },\n        \"ellipsis_summary\":
+        {\n          \"type\": \"string\"\n        }\n      },\n      \"required\":
+        [\n        \"_type\",\n        \"pr\",\n        \"title\",\n        \"description\",\n        \"ellipsis_summary\"\n      ],\n      \"description\":
+        \"Pull request with title, description, and summary\"\n    }\n  },\n  \"required\":
+        [\n    \"pull_request\"\n  ]\n}\n```\nYour output schema fields are:\n```json\n{\n  \"$schema\":
+        \"http://json-schema.org/draft-06/schema#\",\n  \"type\": \"object\",\n  \"properties\":
+        {\n    \"category\": {\n      \"type\": \"string\",\n      \"enum\": [\n        \"customer_facing_available\",\n        \"customer_facing_not_released\",\n        \"bug_fix_maintenance\",\n        \"internal_improvement\"\n      ],\n      \"description\":
+        \"Category of the PR (customer-facing available, not released, bug fix, internal)\"\n    },\n    \"service\":
+        {\n      \"type\": \"string\",\n      \"enum\": [\n        \"Managed PostgreSQL\",\n        \"GitHub
+        Runners\",\n        \"Ubicloud Kubernetes\",\n        \"AI & GPUs\",\n        \"Compute\",\n        \"Load
+        Balancers\",\n        \"Platform Improvements\",\n        \"Developer Experience\",\n        \"Other\"\n      ],\n      \"description\":
+        \"Service this PR belongs to\"\n    },\n    \"reasoning\": {\n      \"type\":
+        \"string\",\n      \"description\": \"Step by step reasoning process\"\n    }\n  },\n  \"required\":
+        [\n    \"category\",\n    \"service\",\n    \"reasoning\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Categorize a pull request based on its content and determine
+        if it''s customer-facing. Think step by step."},{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"pull_request\": {\n    \"pr\": 2632,\n    \"title\":
+        \"Add kubernetes cluster and node pool upgrades\",\n    \"description\": \"This
+        patch implements the upgrade logic for kubernetes clusters.\\n\\nUpgrade is
+        done sequentially, node-by-node, in the order of creation time.\\nUpgrade
+        operation starts with the CP nodes.\\n\\nNodepools need to \\\"incr_upgrade\\\"d
+        separately to start their upgrade process.\\n\\nFor upgrading a node, it creates
+        a new node with upgraded version of k8s, adds it to\\nthe cluster and drains/removes
+        the corresponding old node. There''s no actual relation\\nbetween the old
+        node and new node in reality.\",\n    \"ellipsis_summary\": \"Adds sequential
+        upgrade logic for Kubernetes clusters and node pools, including new methods
+        and tests for handling node upgrades.\\n> \\n>   - **Behavior**:\\n>     -
+        Implements sequential node upgrade logic for Kubernetes clusters, starting
+        with control plane nodes.\\n>     - Node pools require separate `incr_upgrade`
+        to initiate upgrades.\\n>     - New nodes are created with upgraded Kubernetes
+        versions, old nodes are drained and removed.\\n>   - **Functions**:\\n>     -
+        Adds `version` and `delete_node` methods to `Kubernetes::Client`.\\n>     -
+        Adds `all_vms` and `worker_vms` methods to `KubernetesCluster`.\\n>     -
+        Adds `d_restart` method to `Sshable`.\\n>   - **Programs**:\\n>     - Adds
+        `upgrade` and `wait_upgrade` labels to `KubernetesClusterNexus` and `KubernetesNodepoolNexus`.\\n>     -
+        New `Prog::Kubernetes::UpgradeKubernetesNode` class for handling node upgrades.\\n>   -
+        **Tests**:\\n>     - Adds tests for new methods in `client_spec.rb`, `kubernetes_cluster_spec.rb`,
+        and `sshable_spec.rb`.\\n>     - Adds tests for upgrade logic in `kubernetes_cluster_nexus_spec.rb`,
+        `kubernetes_nodepool_nexus_spec.rb`, and `upgrade_kubernetes_node_spec.rb`.\\n>
+        \\n>\"\n  }\n}\n```\n\nRespond with the corresponding output schema fields
+        wrapped in a ```json ``` block,\nstarting with the heading `## Output values`.\n\nIMPORTANT:
+        You must respond with valid JSON that matches this structure:\n```json\n{\n  \"category\":
+        \"Category of the PR (customer-facing available, not released, bug fix, internal)\",\n  \"service\":
+        \"Service this PR belongs to\",\n  \"reasoning\": \"Step by step reasoning
+        process\"\n}\n```\n\nRequired fields: category, service, reasoning\n\nEnsure
+        your response:\n1. Is valid JSON (properly quoted strings, no trailing commas)\n2.
+        Includes all required fields\n3. Uses the correct data types for each field\n4.
+        Is wrapped in ```json``` markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '5162'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 29 Jul 2025 20:10:03 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '2689'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '2694'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9991'
+      X-Ratelimit-Remaining-Tokens:
+      - '198818'
+      X-Ratelimit-Reset-Requests:
+      - 1m13.38s
+      X-Ratelimit-Reset-Tokens:
+      - 354ms
+      X-Request-Id:
+      - 594d74f0-3fcc-497f-a91c-13b28b08c95f
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=FOUz0LVwQ86Mgh8YgkCrSKgA1kg0nSNWhgJHHCHfq78-1753819803-1.0.1.1-nZqrjyf00Otmzm9Gm0YPGhcY2Clm3_ogJuI3bCiZslTWE_aAXAkauKYUKGqLhgLNiPxka4yL6_3w_js2Jr4EDkAxmSuyUzUbzAtCKYhnXDI;
+        path=/; expires=Tue, 29-Jul-25 20:40:03 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=uKhOIzP0Eix0XNPdFAgEUpvDNiVvOK4yGxU738Ho0uA-1753819803846-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 966f41dc7f2ed123-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-Bykw5JbMf9X6C7o2TZ0Ze8h3IiBfw",
+          "object": "chat.completion",
+          "created": 1753819801,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"category\": \"internal_improvement\",\n  \"service\": \"Ubicloud Kubernetes\",\n  \"reasoning\": \"The pull request focuses on implementing upgrade logic for Kubernetes clusters and node pools, which is an internal improvement to the existing infrastructure. It does not introduce any customer-facing features or changes, but rather enhances the internal workings of the Kubernetes service. The detailed description and summary indicate that this is a technical enhancement rather than a customer-facing release.\"\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 1155,
+            "completion_tokens": 100,
+            "total_tokens": 1255,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_34a54ae93c"
+        }
+  recorded_at: Tue, 29 Jul 2025 20:10:04 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"pull_request\": {\n      \"type\":
+        \"object\",\n      \"properties\": {\n        \"_type\": {\n          \"type\":
+        \"string\",\n          \"const\": \"PullRequest\"\n        },\n        \"pr\":
+        {\n          \"type\": \"integer\"\n        },\n        \"title\": {\n          \"type\":
+        \"string\"\n        },\n        \"description\": {\n          \"type\": \"string\"\n        },\n        \"ellipsis_summary\":
+        {\n          \"type\": \"string\"\n        }\n      },\n      \"required\":
+        [\n        \"_type\",\n        \"pr\",\n        \"title\",\n        \"description\",\n        \"ellipsis_summary\"\n      ],\n      \"description\":
+        \"Pull request with title, description, and summary\"\n    }\n  },\n  \"required\":
+        [\n    \"pull_request\"\n  ]\n}\n```\nYour output schema fields are:\n```json\n{\n  \"$schema\":
+        \"http://json-schema.org/draft-06/schema#\",\n  \"type\": \"object\",\n  \"properties\":
+        {\n    \"category\": {\n      \"type\": \"string\",\n      \"enum\": [\n        \"customer_facing_available\",\n        \"customer_facing_not_released\",\n        \"bug_fix_maintenance\",\n        \"internal_improvement\"\n      ],\n      \"description\":
+        \"Category of the PR (customer-facing available, not released, bug fix, internal)\"\n    },\n    \"service\":
+        {\n      \"type\": \"string\",\n      \"enum\": [\n        \"Managed PostgreSQL\",\n        \"GitHub
+        Runners\",\n        \"Ubicloud Kubernetes\",\n        \"AI & GPUs\",\n        \"Compute\",\n        \"Load
+        Balancers\",\n        \"Platform Improvements\",\n        \"Developer Experience\",\n        \"Other\"\n      ],\n      \"description\":
+        \"Service this PR belongs to\"\n    },\n    \"reasoning\": {\n      \"type\":
+        \"string\",\n      \"description\": \"Step by step reasoning process\"\n    }\n  },\n  \"required\":
+        [\n    \"category\",\n    \"service\",\n    \"reasoning\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Categorize a pull request based on its content and determine
+        if it''s customer-facing. Think step by step."},{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"pull_request\": {\n    \"pr\": 3073,\n    \"title\":
+        \"Rewrite Scheduling::Dispatcher (bin/respirate)\",\n    \"description\":
+        \"Previous, respirate spun up a thread and created 4 IOs per strand run, and
+        used IO.select to handle timeouts.\\r\\n\\r\\nThis changes respirate to use
+        a fixed-size thread pool, fed using a single queue (the strand queue).  The
+        thread pool is made up of pairs of strand/apoptosis threads.  The strand threads
+        pop from the strand queue.  Once they get a strand, the signal their related
+        apoptosis thread via their shared start queue.  The apoptosis thread does
+        a timed pop of the finish queue (timed pop is a new feature added in Ruby
+        3.2).  If the strand thread doesn''t finish the strand run and push to the
+        finish queue before the apoptosis timeout, then the apoptosis thread kills
+        the process.\\r\\n\\r\\nThis changes the database query to get strands to
+        run to use a prepared statement, to save parsing/planning time.  The database
+        query now avoids selecting strands that the thread pool is currently running.\",\n    \"ellipsis_summary\":
+        \"\"\n  }\n}\n```\n\nRespond with the corresponding output schema fields wrapped
+        in a ```json ``` block,\nstarting with the heading `## Output values`.\n\nIMPORTANT:
+        You must respond with valid JSON that matches this structure:\n```json\n{\n  \"category\":
+        \"Category of the PR (customer-facing available, not released, bug fix, internal)\",\n  \"service\":
+        \"Service this PR belongs to\",\n  \"reasoning\": \"Step by step reasoning
+        process\"\n}\n```\n\nRequired fields: category, service, reasoning\n\nEnsure
+        your response:\n1. Is valid JSON (properly quoted strings, no trailing commas)\n2.
+        Includes all required fields\n3. Uses the correct data types for each field\n4.
+        Is wrapped in ```json``` markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '4390'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 29 Jul 2025 20:10:09 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '2623'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '2630'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9991'
+      X-Ratelimit-Remaining-Tokens:
+      - '199006'
+      X-Ratelimit-Reset-Requests:
+      - 1m16.619s
+      X-Ratelimit-Reset-Tokens:
+      - 298ms
+      X-Request-Id:
+      - 5305162b-b7aa-432d-be52-1c1ebd5184e8
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=PqeH84HoyM6pvC8.dHTwZeUn8zLnKd9eqvlY8nDi6ok-1753819809-1.0.1.1-RehzYe2XMaw3zTl_XxcT.eah9v4tatZIrZ5IiwcR4BFvjx2tEDWqKA2pH8nEtmfgEXklPp2Pzn5veXgLsVA_b2YdjXC9AviJ4HET4GTc0wo;
+        path=/; expires=Tue, 29-Jul-25 20:40:09 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=AktLgxuy3BaijxookA2P_FzrnJ6it5HJsrcS0yNUC.E-1753819809160-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 966f41efba29d123-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-BykwAF3tuVYLpThKSHoylM1UQ0ukP",
+          "object": "chat.completion",
+          "created": 1753819806,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"category\": \"internal_improvement\",\n  \"service\": \"Other\",\n  \"reasoning\": \"The pull request focuses on rewriting the scheduling dispatcher for a background process, which is an internal improvement to the system's performance and efficiency. It does not introduce new customer-facing features or bug fixes that would affect users directly. The changes are technical in nature, aimed at optimizing the thread management and database interactions within the application.\"\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 940,
+            "completion_tokens": 96,
+            "total_tokens": 1036,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_34a54ae93c"
+        }
+  recorded_at: Tue, 29 Jul 2025 20:10:09 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"service_changelogs\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\":
+        {\n          \"_type\": {\n            \"type\": \"string\",\n            \"const\":
+        \"ServiceChangelog\"\n          },\n          \"service\": {\n            \"type\":
+        \"string\",\n            \"enum\": [\n              \"Managed PostgreSQL\",\n              \"GitHub
+        Runners\",\n              \"Ubicloud Kubernetes\",\n              \"AI & GPUs\",\n              \"Compute\",\n              \"Load
+        Balancers\",\n              \"Platform Improvements\",\n              \"Developer
+        Experience\",\n              \"Other\"\n            ]\n          },\n          \"features\":
+        {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\":
+        \"object\",\n              \"properties\": {\n                \"_type\": {\n                  \"type\":
+        \"string\",\n                  \"const\": \"Feature\"\n                },\n                \"title\":
+        {\n                  \"type\": \"string\"\n                },\n                \"description\":
+        {\n                  \"type\": \"string\"\n                },\n                \"pr_ids\":
+        {\n                  \"type\": \"array\",\n                  \"items\": {\n                    \"type\":
+        \"integer\"\n                  }\n                },\n                \"image_path\":
+        {\n                  \"type\": \"string\"\n                }\n              },\n              \"required\":
+        [\n                \"_type\",\n                \"title\",\n                \"description\",\n                \"pr_ids\"\n              ],\n              \"description\":
+        \"ChangelogGenerator::Feature struct\"\n            }\n          }\n        },\n        \"required\":
+        [\n          \"_type\",\n          \"service\",\n          \"features\"\n        ],\n        \"description\":
+        \"ChangelogGenerator::ServiceChangelog struct\"\n      },\n      \"description\":
+        \"All service changelogs with features\"\n    },\n    \"month\": {\n      \"type\":
+        \"string\",\n      \"description\": \"Month of the changelog (e.g., ''May'')\"\n    },\n    \"year\":
+        {\n      \"type\": \"integer\",\n      \"description\": \"Year of the changelog
+        (e.g., 2025)\"\n    }\n  },\n  \"required\": [\n    \"service_changelogs\",\n    \"month\",\n    \"year\"\n  ]\n}\n```\nYour
+        output schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"mdx_content\": {\n      \"type\":
+        \"string\",\n      \"description\": \"Complete MDX-formatted changelog\"\n    }\n  },\n  \"required\":
+        [\n    \"mdx_content\"\n  ]\n}\n```\n\nAll interactions will be structured
+        in the following way, with the appropriate values filled in.\n## Input values\n```json\n{input_values}\n```\n##
+        Output values\nRespond exclusively with the output schema fields in the json
+        block below.\n```json\n{output_values}\n```\n\nIn adhering to this structure,
+        your objective is: Format the changelog entries into proper MDX format."},{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"service_changelogs\": [],\n  \"month\": \"May\",\n  \"year\":
+        2025\n}\n```\n\nRespond with the corresponding output schema fields wrapped
+        in a ```json ``` block,\nstarting with the heading `## Output values`.\n\nIMPORTANT:
+        You must respond with valid JSON that matches this structure:\n```json\n{\n  \"mdx_content\":
+        \"Complete MDX-formatted changelog\"\n}\n```\n\nRequired fields: mdx_content\n\nEnsure
+        your response:\n1. Is valid JSON (properly quoted strings, no trailing commas)\n2.
+        Includes all required fields\n3. Uses the correct data types for each field\n4.
+        Is wrapped in ```json``` markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '3954'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 29 Jul 2025 20:10:12 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '1821'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '1824'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9990'
+      X-Ratelimit-Remaining-Tokens:
+      - '199124'
+      X-Ratelimit-Reset-Requests:
+      - 1m21.113s
+      X-Ratelimit-Reset-Tokens:
+      - 262ms
+      X-Request-Id:
+      - 54cd3972-49ca-4762-ae7c-b33ca492e606
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=M6N11esCbqPm79uqnWMy64r3zoCoAS3wdXHvOCvf3KA-1753819812-1.0.1.1-_rScGK2wlMuEuC.Q9FWrQrEIHoh2GM1n_tqtI_Kp2sVNk31WfsGoldRcHV6xnZv.oi4r73eWTWZNV2.uOUpoSDptheay8JLr0HNf7TtZmOI;
+        path=/; expires=Tue, 29-Jul-25 20:40:12 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=R_QkkcX.MzLml3wwoRJkSjUjHTjSRVMiBF6iODKyRWY-1753819812494-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 966f42106dfad123-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-BykwE9m0u3DLElTqfFoK3bSackOGW",
+          "object": "chat.completion",
+          "created": 1753819810,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"mdx_content\": \"# Changelog for May 2025\\n\\nNo changes were made in this month.\"\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 794,
+            "completion_tokens": 34,
+            "total_tokens": 828,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_34a54ae93c"
+        }
+  recorded_at: Tue, 29 Jul 2025 20:10:12 GMT
+recorded_with: VCR 6.3.1

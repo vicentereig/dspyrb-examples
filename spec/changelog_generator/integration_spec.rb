@@ -4,7 +4,7 @@ require 'json'
 
 RSpec.describe 'ChangelogGenerator Integration' do
   let(:fixture_path) { File.join(__dir__, '../../fixtures/llm-changelog-generator/data/may-pull-requests.json') }
-  let(:sample_prs_json) { File.read(fixture_path) }
+  let(:sample_prs_json) { File.read(fixture_path, encoding: 'UTF-8') }
   let(:sample_prs_data) { JSON.parse(sample_prs_json) }
   
   # Convert JSON data to PullRequest structs

@@ -343,4 +343,1068 @@ http_interactions:
           "system_fingerprint": null
         }
   recorded_at: Thu, 24 Jul 2025 18:39:07 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"pull_request\": {\n      \"type\":
+        \"object\",\n      \"properties\": {\n        \"_type\": {\n          \"type\":
+        \"string\",\n          \"const\": \"PullRequest\"\n        },\n        \"pr\":
+        {\n          \"type\": \"integer\"\n        },\n        \"title\": {\n          \"type\":
+        \"string\"\n        },\n        \"description\": {\n          \"type\": \"string\"\n        },\n        \"ellipsis_summary\":
+        {\n          \"type\": \"string\"\n        }\n      },\n      \"required\":
+        [\n        \"_type\",\n        \"pr\",\n        \"title\",\n        \"description\",\n        \"ellipsis_summary\"\n      ],\n      \"description\":
+        \"Pull request with title, description, and summary\"\n    }\n  },\n  \"required\":
+        [\n    \"pull_request\"\n  ]\n}\n```\nYour output schema fields are:\n```json\n{\n  \"$schema\":
+        \"http://json-schema.org/draft-06/schema#\",\n  \"type\": \"object\",\n  \"properties\":
+        {\n    \"category\": {\n      \"type\": \"string\",\n      \"enum\": [\n        \"customer_facing_available\",\n        \"customer_facing_not_released\",\n        \"bug_fix_maintenance\",\n        \"internal_improvement\"\n      ],\n      \"description\":
+        \"Category of the PR (customer-facing available, not released, bug fix, internal)\"\n    },\n    \"service\":
+        {\n      \"type\": \"string\",\n      \"enum\": [\n        \"Managed PostgreSQL\",\n        \"GitHub
+        Runners\",\n        \"Ubicloud Kubernetes\",\n        \"AI & GPUs\",\n        \"Compute\",\n        \"Load
+        Balancers\",\n        \"Platform Improvements\",\n        \"Developer Experience\",\n        \"Other\"\n      ],\n      \"description\":
+        \"Service this PR belongs to\"\n    },\n    \"reasoning\": {\n      \"type\":
+        \"string\",\n      \"description\": \"Step by step reasoning process\"\n    }\n  },\n  \"required\":
+        [\n    \"category\",\n    \"service\",\n    \"reasoning\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Categorize a pull request based on its content and determine
+        if it''s customer-facing. Think step by step."},{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"pull_request\": {\n    \"pr\": 3366,\n    \"title\":
+        \"Add inline edit functionality for PostgreSQL firewall rules\",\n    \"description\":
+        \"This PR adds the ability to edit firewall rules inline in the PostgreSQL
+        management interface.\",\n    \"ellipsis_summary\": \"Adds inline editing
+        for PostgreSQL firewall rules with description support\"\n  }\n}\n```\n\nRespond
+        with the corresponding output schema fields wrapped in a ```json ``` block,\nstarting
+        with the heading `## Output values`.\n\nIMPORTANT: You must respond with valid
+        JSON that matches this structure:\n```json\n{\n  \"category\": \"Category
+        of the PR (customer-facing available, not released, bug fix, internal)\",\n  \"service\":
+        \"Service this PR belongs to\",\n  \"reasoning\": \"Step by step reasoning
+        process\"\n}\n```\n\nRequired fields: category, service, reasoning\n\nEnsure
+        your response:\n1. Is valid JSON (properly quoted strings, no trailing commas)\n2.
+        Includes all required fields\n3. Uses the correct data types for each field\n4.
+        Is wrapped in ```json``` markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '3660'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 29 Jul 2025 20:09:16 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '1569'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '1573'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9997'
+      X-Ratelimit-Remaining-Tokens:
+      - '199186'
+      X-Ratelimit-Reset-Requests:
+      - 24.04s
+      X-Ratelimit-Reset-Tokens:
+      - 244ms
+      X-Request-Id:
+      - 36dd4b32-ae3d-4c84-849a-81ae7d8096f5
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=IOuQX2R1JQgve9KN3W._M7HPQGDa4rEC9SS9sj2MmHg-1753819756-1.0.1.1-sXbzZvD84nVQEEd0I7Nx4xsSPZhSH7u5TK3oahIA1u7loc8PiXPdqzSUmYNvXFZ61O1VP4jEvDzZahCk16KH1newOdKaZ4cbVO__nkmibXM;
+        path=/; expires=Tue, 29-Jul-25 20:39:16 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=TAUBqfJkPabjddsG44oWaMfaXlNtqrM88lgbb7kh2W4-1753819756997-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 966f40bc4c15f797-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-BykvLBVYTbMV6mtAModJ1Arca1lXi",
+          "object": "chat.completion",
+          "created": 1753819755,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"category\": \"customer_facing_available\",\n  \"service\": \"Managed PostgreSQL\",\n  \"reasoning\": \"The pull request adds inline editing functionality for PostgreSQL firewall rules, which enhances the user experience in managing PostgreSQL services. This feature is customer-facing as it directly impacts how users interact with the PostgreSQL management interface.\"\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 770,
+            "completion_tokens": 78,
+            "total_tokens": 848,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_34a54ae93c"
+        }
+  recorded_at: Tue, 29 Jul 2025 20:09:17 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"pull_request\": {\n      \"type\":
+        \"object\",\n      \"properties\": {\n        \"_type\": {\n          \"type\":
+        \"string\",\n          \"const\": \"PullRequest\"\n        },\n        \"pr\":
+        {\n          \"type\": \"integer\"\n        },\n        \"title\": {\n          \"type\":
+        \"string\"\n        },\n        \"description\": {\n          \"type\": \"string\"\n        },\n        \"ellipsis_summary\":
+        {\n          \"type\": \"string\"\n        }\n      },\n      \"required\":
+        [\n        \"_type\",\n        \"pr\",\n        \"title\",\n        \"description\",\n        \"ellipsis_summary\"\n      ],\n      \"description\":
+        \"Pull request with title, description, and summary\"\n    }\n  },\n  \"required\":
+        [\n    \"pull_request\"\n  ]\n}\n```\nYour output schema fields are:\n```json\n{\n  \"$schema\":
+        \"http://json-schema.org/draft-06/schema#\",\n  \"type\": \"object\",\n  \"properties\":
+        {\n    \"category\": {\n      \"type\": \"string\",\n      \"enum\": [\n        \"customer_facing_available\",\n        \"customer_facing_not_released\",\n        \"bug_fix_maintenance\",\n        \"internal_improvement\"\n      ],\n      \"description\":
+        \"Category of the PR (customer-facing available, not released, bug fix, internal)\"\n    },\n    \"service\":
+        {\n      \"type\": \"string\",\n      \"enum\": [\n        \"Managed PostgreSQL\",\n        \"GitHub
+        Runners\",\n        \"Ubicloud Kubernetes\",\n        \"AI & GPUs\",\n        \"Compute\",\n        \"Load
+        Balancers\",\n        \"Platform Improvements\",\n        \"Developer Experience\",\n        \"Other\"\n      ],\n      \"description\":
+        \"Service this PR belongs to\"\n    },\n    \"reasoning\": {\n      \"type\":
+        \"string\",\n      \"description\": \"Step by step reasoning process\"\n    }\n  },\n  \"required\":
+        [\n    \"category\",\n    \"service\",\n    \"reasoning\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Categorize a pull request based on its content and determine
+        if it''s customer-facing. Think step by step."},{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"pull_request\": {\n    \"pr\": 3001,\n    \"title\":
+        \"Refactor internal logging system\",\n    \"description\": \"Refactors the
+        internal logging to use structured logs\",\n    \"ellipsis_summary\": \"Internal
+        refactoring of logging system\"\n  }\n}\n```\n\nRespond with the corresponding
+        output schema fields wrapped in a ```json ``` block,\nstarting with the heading
+        `## Output values`.\n\nIMPORTANT: You must respond with valid JSON that matches
+        this structure:\n```json\n{\n  \"category\": \"Category of the PR (customer-facing
+        available, not released, bug fix, internal)\",\n  \"service\": \"Service this
+        PR belongs to\",\n  \"reasoning\": \"Step by step reasoning process\"\n}\n```\n\nRequired
+        fields: category, service, reasoning\n\nEnsure your response:\n1. Is valid
+        JSON (properly quoted strings, no trailing commas)\n2. Includes all required
+        fields\n3. Uses the correct data types for each field\n4. Is wrapped in ```json```
+        markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '3556'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 29 Jul 2025 20:09:19 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '1923'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '1971'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9996'
+      X-Ratelimit-Remaining-Tokens:
+      - '199212'
+      X-Ratelimit-Reset-Requests:
+      - 30.909s
+      X-Ratelimit-Reset-Tokens:
+      - 236ms
+      X-Request-Id:
+      - req_39aa9fe295608fdf073d2ce568c3b15a
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=H.k0PPVh4.9S_TPTgPf7goCmGIZFYltoqdF0Ae5PBTA-1753819759-1.0.1.1-0NOfP20NMFjhLBmTPNgXCFOLJUJn..eygjKs75UtmzmjVt5wacLuyq4G4ipEPXd6Gn70o0hMduTQq2plcJzEpba6oXKSDGz7UHCt26KtRe8;
+        path=/; expires=Tue, 29-Jul-25 20:39:19 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=wpeR3653VISStmpswqQukjRzBIdjAJLtLzAkf3GTSAg-1753819759174-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 966f40c9ec74f797-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-BykvN5cp11LlLXOsJ3liVuwNYD9s2",
+          "object": "chat.completion",
+          "created": 1753819757,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"category\": \"internal_improvement\",\n  \"service\": \"Other\",\n  \"reasoning\": \"The pull request is focused on refactoring the internal logging system, which is an internal improvement rather than a customer-facing feature. It does not introduce new functionality for users or fix a bug, hence it falls under the category of internal improvement. The service is categorized as 'Other' since it does not specifically relate to any of the listed services.\"\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 754,
+            "completion_tokens": 101,
+            "total_tokens": 855,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_34a54ae93c"
+        }
+  recorded_at: Tue, 29 Jul 2025 20:09:19 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"categorized_prs\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\":
+        {\n          \"_type\": {\n            \"type\": \"string\",\n            \"const\":
+        \"CategorizedPR\"\n          },\n          \"pull_request\": {\n            \"type\":
+        \"object\",\n            \"properties\": {\n              \"_type\": {\n                \"type\":
+        \"string\",\n                \"const\": \"PullRequest\"\n              },\n              \"pr\":
+        {\n                \"type\": \"integer\"\n              },\n              \"title\":
+        {\n                \"type\": \"string\"\n              },\n              \"description\":
+        {\n                \"type\": \"string\"\n              },\n              \"ellipsis_summary\":
+        {\n                \"type\": \"string\"\n              }\n            },\n            \"required\":
+        [\n              \"_type\",\n              \"pr\",\n              \"title\",\n              \"description\",\n              \"ellipsis_summary\"\n            ],\n            \"description\":
+        \"ChangelogGenerator::PullRequest struct\"\n          },\n          \"category\":
+        {\n            \"type\": \"string\",\n            \"enum\": [\n              \"customer_facing_available\",\n              \"customer_facing_not_released\",\n              \"bug_fix_maintenance\",\n              \"internal_improvement\"\n            ]\n          },\n          \"service\":
+        {\n            \"type\": \"string\",\n            \"enum\": [\n              \"Managed
+        PostgreSQL\",\n              \"GitHub Runners\",\n              \"Ubicloud
+        Kubernetes\",\n              \"AI & GPUs\",\n              \"Compute\",\n              \"Load
+        Balancers\",\n              \"Platform Improvements\",\n              \"Developer
+        Experience\",\n              \"Other\"\n            ]\n          },\n          \"reasoning\":
+        {\n            \"type\": \"string\"\n          }\n        },\n        \"required\":
+        [\n          \"_type\",\n          \"pull_request\",\n          \"category\",\n          \"service\",\n          \"reasoning\"\n        ],\n        \"description\":
+        \"ChangelogGenerator::CategorizedPR struct\"\n      },\n      \"description\":
+        \"List of categorized PRs for a single service\"\n    }\n  },\n  \"required\":
+        [\n    \"categorized_prs\"\n  ]\n}\n```\nYour output schema fields are:\n```json\n{\n  \"$schema\":
+        \"http://json-schema.org/draft-06/schema#\",\n  \"type\": \"object\",\n  \"properties\":
+        {\n    \"grouped_features\": {\n      \"type\": \"array\",\n      \"items\":
+        {\n        \"type\": \"array\",\n        \"items\": {\n          \"type\":
+        \"integer\"\n        }\n      },\n      \"description\": \"Arrays of PR IDs
+        that should be grouped together\"\n    },\n    \"grouping_rationale\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"Explanation for each grouping\"\n    },\n    \"reasoning\": {\n      \"type\":
+        \"string\",\n      \"description\": \"Step by step reasoning process\"\n    }\n  },\n  \"required\":
+        [\n    \"grouped_features\",\n    \"grouping_rationale\",\n    \"reasoning\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Group related pull requests into cohesive features for the changelog.
+        Think step by step."},{"role":"user","content":"## Input Values\n```json\n{\n  \"categorized_prs\":
+        [\n    {\n      \"pull_request\": {\n        \"pr\": 3366,\n        \"title\":
+        \"Add inline edit functionality for PostgreSQL firewall rules\",\n        \"description\":
+        \"This PR adds the ability to edit firewall rules inline in the PostgreSQL
+        management interface.\",\n        \"ellipsis_summary\": \"Adds inline editing
+        for PostgreSQL firewall rules with description support\"\n      },\n      \"category\":
+        \"customer_facing_available\",\n      \"service\": \"Managed PostgreSQL\",\n      \"reasoning\":
+        \"The pull request adds inline editing functionality for PostgreSQL firewall
+        rules, which enhances the user experience in managing PostgreSQL services.
+        This feature is customer-facing as it directly impacts how users interact
+        with the PostgreSQL management interface.\"\n    }\n  ]\n}\n```\n\nRespond
+        with the corresponding output schema fields wrapped in a ```json ``` block,\nstarting
+        with the heading `## Output values`.\n\nIMPORTANT: You must respond with valid
+        JSON that matches this structure:\n```json\n{\n  \"grouped_features\": [\n    \"example
+        item\"\n  ],\n  \"grouping_rationale\": [\n    \"example item\"\n  ],\n  \"reasoning\":
+        \"Step by step reasoning process\"\n}\n```\n\nRequired fields: grouped_features,
+        grouping_rationale, reasoning\n\nEnsure your response:\n1. Is valid JSON (properly
+        quoted strings, no trailing commas)\n2. Includes all required fields\n3. Uses
+        the correct data types for each field\n4. Is wrapped in ```json``` markdown
+        code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '5354'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 29 Jul 2025 20:09:23 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '4284'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '4290'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9995'
+      X-Ratelimit-Remaining-Tokens:
+      - '198799'
+      X-Ratelimit-Reset-Requests:
+      - 37.395s
+      X-Ratelimit-Reset-Tokens:
+      - 360ms
+      X-Request-Id:
+      - req_e156dcc454272367e02ebae7f232a44e
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=sCMdarD_0wP7i7WWb3spdgVoSlnkUwXiLKoGL1gpxiI-1753819763-1.0.1.1-8N7iOymtDaCKaqQmERBahufZpvqB5_i8AFiSWdyCynrs7ytwme9uy1Fsu44UP3ozVJEsGThTTGxwmXV2iPSKwYsL0uKGAASOzb5HjynPey4;
+        path=/; expires=Tue, 29-Jul-25 20:39:23 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=f0Z.2OWWAWfXRn5KG4PS6R7Hnf3cLCxanZNi2lTFrSs-1753819763649-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 966f40d76e01f797-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-BykvPKxkGJWq8NcP1HAkSd7VWeJ7d",
+          "object": "chat.completion",
+          "created": 1753819759,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"grouped_features\": [\n    [3366]\n  ],\n  \"grouping_rationale\": [\n    \"The pull request is focused on enhancing the PostgreSQL management interface by adding inline editing for firewall rules, which is a distinct feature that improves user interaction.\"\n  ],\n  \"reasoning\": \"The only categorized pull request is for adding inline edit functionality for PostgreSQL firewall rules. Since there are no other related pull requests, it stands alone as a feature. The rationale for grouping is based on the specific enhancement it provides to the PostgreSQL service, making it customer-facing and directly relevant to users.\"\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 1050,
+            "completion_tokens": 133,
+            "total_tokens": 1183,
+            "prompt_tokens_details": {
+              "cached_tokens": 1024,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_34a54ae93c"
+        }
+  recorded_at: Tue, 29 Jul 2025 20:09:23 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"pr_group\": {\n      \"type\": \"array\",\n      \"items\":
+        {\n        \"type\": \"object\",\n        \"properties\": {\n          \"_type\":
+        {\n            \"type\": \"string\",\n            \"const\": \"PullRequest\"\n          },\n          \"pr\":
+        {\n            \"type\": \"integer\"\n          },\n          \"title\": {\n            \"type\":
+        \"string\"\n          },\n          \"description\": {\n            \"type\":
+        \"string\"\n          },\n          \"ellipsis_summary\": {\n            \"type\":
+        \"string\"\n          }\n        },\n        \"required\": [\n          \"_type\",\n          \"pr\",\n          \"title\",\n          \"description\",\n          \"ellipsis_summary\"\n        ],\n        \"description\":
+        \"ChangelogGenerator::PullRequest struct\"\n      },\n      \"description\":
+        \"Group of related PRs\"\n    }\n  },\n  \"required\": [\n    \"pr_group\"\n  ]\n}\n```\nYour
+        output schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"feature_title\": {\n      \"type\":
+        \"string\",\n      \"description\": \"Clear, benefit-focused title for the
+        feature\"\n    },\n    \"title_rationale\": {\n      \"type\": \"string\",\n      \"description\":
+        \"Explanation of title choice\"\n    }\n  },\n  \"required\": [\n    \"feature_title\",\n    \"title_rationale\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Generate user-friendly feature titles from technical PR titles."},{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"pr_group\": [\n    {\n      \"pr\": 3366,\n      \"title\":
+        \"Add inline edit functionality for PostgreSQL firewall rules\",\n      \"description\":
+        \"This PR adds the ability to edit firewall rules inline in the PostgreSQL
+        management interface.\",\n      \"ellipsis_summary\": \"Adds inline editing
+        for PostgreSQL firewall rules with description support\"\n    }\n  ]\n}\n```\n\nRespond
+        with the corresponding output schema fields wrapped in a ```json ``` block,\nstarting
+        with the heading `## Output values`.\n\nIMPORTANT: You must respond with valid
+        JSON that matches this structure:\n```json\n{\n  \"feature_title\": \"Clear,
+        benefit-focused title for the feature\",\n  \"title_rationale\": \"Explanation
+        of title choice\"\n}\n```\n\nRequired fields: feature_title, title_rationale\n\nEnsure
+        your response:\n1. Is valid JSON (properly quoted strings, no trailing commas)\n2.
+        Includes all required fields\n3. Uses the correct data types for each field\n4.
+        Is wrapped in ```json``` markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '3089'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 29 Jul 2025 20:09:25 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '1474'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '1482'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9995'
+      X-Ratelimit-Remaining-Tokens:
+      - '199316'
+      X-Ratelimit-Reset-Requests:
+      - 41.187s
+      X-Ratelimit-Reset-Tokens:
+      - 205ms
+      X-Request-Id:
+      - 79aed150-551d-43d9-a7e6-d6184303cbef
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=zPAsHT.RqFGYrwdgzFH5bqh6_ATsStYqkXYZPB.gQoA-1753819765-1.0.1.1-NocjZ7LLRGbyFghP14NOLRlP1fqQw6eseNqJ1t3ZXhfW9vsBaJT6vkeCM0JY10gWQaeD3d7.ucaaICQP.seFpdPpPL5lEH29S6BjQpg.Uds;
+        path=/; expires=Tue, 29-Jul-25 20:39:25 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=lSG5LJPx7Lxu7hekIQocK4TgUpmZWrn4pPlZAfhNN3Y-1753819765677-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 966f40f38e39f797-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-BykvUVwme1GYWlTXiP92dNf4Y9CVj",
+          "object": "chat.completion",
+          "created": 1753819764,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"feature_title\": \"Inline Editing for PostgreSQL Firewall Rules\",\n  \"title_rationale\": \"The title clearly indicates the new functionality being introduced, which allows users to edit firewall rules directly within the PostgreSQL interface, enhancing user experience and efficiency.\"\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 643,
+            "completion_tokens": 61,
+            "total_tokens": 704,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_62a23a81ef"
+        }
+  recorded_at: Tue, 29 Jul 2025 20:09:25 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"pr_group\": {\n      \"type\": \"array\",\n      \"items\":
+        {\n        \"type\": \"object\",\n        \"properties\": {\n          \"_type\":
+        {\n            \"type\": \"string\",\n            \"const\": \"PullRequest\"\n          },\n          \"pr\":
+        {\n            \"type\": \"integer\"\n          },\n          \"title\": {\n            \"type\":
+        \"string\"\n          },\n          \"description\": {\n            \"type\":
+        \"string\"\n          },\n          \"ellipsis_summary\": {\n            \"type\":
+        \"string\"\n          }\n        },\n        \"required\": [\n          \"_type\",\n          \"pr\",\n          \"title\",\n          \"description\",\n          \"ellipsis_summary\"\n        ],\n        \"description\":
+        \"ChangelogGenerator::PullRequest struct\"\n      },\n      \"description\":
+        \"Group of related PRs\"\n    },\n    \"feature_title\": {\n      \"type\":
+        \"string\",\n      \"description\": \"User-friendly title for the feature\"\n    },\n    \"service\":
+        {\n      \"type\": \"string\",\n      \"enum\": [\n        \"Managed PostgreSQL\",\n        \"GitHub
+        Runners\",\n        \"Ubicloud Kubernetes\",\n        \"AI & GPUs\",\n        \"Compute\",\n        \"Load
+        Balancers\",\n        \"Platform Improvements\",\n        \"Developer Experience\",\n        \"Other\"\n      ],\n      \"description\":
+        \"Service this feature belongs to\"\n    }\n  },\n  \"required\": [\n    \"pr_group\",\n    \"feature_title\",\n    \"service\"\n  ]\n}\n```\nYour
+        output schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"description\": {\n      \"type\":
+        \"string\",\n      \"description\": \"Engaging description focusing on customer
+        benefits and usage\"\n    },\n    \"suggested_image_name\": {\n      \"type\":
+        \"string\",\n      \"description\": \"Suggested image filename if screenshot
+        would be helpful\"\n    }\n  },\n  \"required\": [\n    \"description\",\n    \"suggested_image_name\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Write engaging, customer-focused descriptions for features."},{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"pr_group\": [\n    {\n      \"pr\": 3366,\n      \"title\":
+        \"Add inline edit functionality for PostgreSQL firewall rules\",\n      \"description\":
+        \"This PR adds the ability to edit firewall rules inline in the PostgreSQL
+        management interface.\",\n      \"ellipsis_summary\": \"Adds inline editing
+        for PostgreSQL firewall rules with description support\"\n    }\n  ],\n  \"feature_title\":
+        \"Inline Editing for PostgreSQL Firewall Rules\",\n  \"service\": \"Managed
+        PostgreSQL\"\n}\n```\n\nRespond with the corresponding output schema fields
+        wrapped in a ```json ``` block,\nstarting with the heading `## Output values`.\n\nIMPORTANT:
+        You must respond with valid JSON that matches this structure:\n```json\n{\n  \"description\":
+        \"Engaging description focusing on customer benefits and usage\",\n  \"suggested_image_name\":
+        \"Suggested image filename if screenshot would be helpful\"\n}\n```\n\nRequired
+        fields: description, suggested_image_name\n\nEnsure your response:\n1. Is
+        valid JSON (properly quoted strings, no trailing commas)\n2. Includes all
+        required fields\n3. Uses the correct data types for each field\n4. Is wrapped
+        in ```json``` markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '3873'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 29 Jul 2025 20:09:28 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '2240'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '2265'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9994'
+      X-Ratelimit-Remaining-Tokens:
+      - '199139'
+      X-Ratelimit-Reset-Requests:
+      - 48.236s
+      X-Ratelimit-Reset-Tokens:
+      - 258ms
+      X-Request-Id:
+      - req_b74c1be91870c6280d10b8e9f3dd7526
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=C9wQsZ8z_FZn51eAPhd9o78FXKk5mgXq0_UE6uckQig-1753819768-1.0.1.1-UQl4uNG03mh6RNCmyvAlaVUvoUBnB7Ketyknvoo7cOUZQgacegoAPiZctNOH_yRzNKjOkUhD7f3v7S2Mp4g6I12ghKFS14UuvQD5ayyGtdM;
+        path=/; expires=Tue, 29-Jul-25 20:39:28 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=l8Dr1lHhi1AyQm_kuoiUDepJrd5Ff_0E6AiS.Fmp2Rg-1753819768061-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 966f40ffb906f797-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-BykvVK5gAVsfFuxFTkYoqdyrVaUMU",
+          "object": "chat.completion",
+          "created": 1753819765,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"description\": \"Experience seamless management of your PostgreSQL firewall rules with our new inline editing feature. No more navigating through multiple screens; now you can edit your firewall rules directly within the management interface. This enhancement not only saves you time but also reduces the risk of errors, ensuring your database remains secure and accessible. Enjoy a more efficient workflow and greater control over your database security settings.\",\n  \"suggested_image_name\": \"inline_edit_postgresql_firewall_rules.png\"\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 791,
+            "completion_tokens": 105,
+            "total_tokens": 896,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_62a23a81ef"
+        }
+  recorded_at: Tue, 29 Jul 2025 20:09:28 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"service_changelogs\": {\n      \"type\":
+        \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\":
+        {\n          \"_type\": {\n            \"type\": \"string\",\n            \"const\":
+        \"ServiceChangelog\"\n          },\n          \"service\": {\n            \"type\":
+        \"string\",\n            \"enum\": [\n              \"Managed PostgreSQL\",\n              \"GitHub
+        Runners\",\n              \"Ubicloud Kubernetes\",\n              \"AI & GPUs\",\n              \"Compute\",\n              \"Load
+        Balancers\",\n              \"Platform Improvements\",\n              \"Developer
+        Experience\",\n              \"Other\"\n            ]\n          },\n          \"features\":
+        {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\":
+        \"object\",\n              \"properties\": {\n                \"_type\": {\n                  \"type\":
+        \"string\",\n                  \"const\": \"Feature\"\n                },\n                \"title\":
+        {\n                  \"type\": \"string\"\n                },\n                \"description\":
+        {\n                  \"type\": \"string\"\n                },\n                \"pr_ids\":
+        {\n                  \"type\": \"array\",\n                  \"items\": {\n                    \"type\":
+        \"integer\"\n                  }\n                },\n                \"image_path\":
+        {\n                  \"type\": \"string\"\n                }\n              },\n              \"required\":
+        [\n                \"_type\",\n                \"title\",\n                \"description\",\n                \"pr_ids\"\n              ],\n              \"description\":
+        \"ChangelogGenerator::Feature struct\"\n            }\n          }\n        },\n        \"required\":
+        [\n          \"_type\",\n          \"service\",\n          \"features\"\n        ],\n        \"description\":
+        \"ChangelogGenerator::ServiceChangelog struct\"\n      },\n      \"description\":
+        \"All service changelogs with features\"\n    },\n    \"month\": {\n      \"type\":
+        \"string\",\n      \"description\": \"Month of the changelog (e.g., ''May'')\"\n    },\n    \"year\":
+        {\n      \"type\": \"integer\",\n      \"description\": \"Year of the changelog
+        (e.g., 2025)\"\n    }\n  },\n  \"required\": [\n    \"service_changelogs\",\n    \"month\",\n    \"year\"\n  ]\n}\n```\nYour
+        output schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"mdx_content\": {\n      \"type\":
+        \"string\",\n      \"description\": \"Complete MDX-formatted changelog\"\n    }\n  },\n  \"required\":
+        [\n    \"mdx_content\"\n  ]\n}\n```\n\nAll interactions will be structured
+        in the following way, with the appropriate values filled in.\n## Input values\n```json\n{input_values}\n```\n##
+        Output values\nRespond exclusively with the output schema fields in the json
+        block below.\n```json\n{output_values}\n```\n\nIn adhering to this structure,
+        your objective is: Format the changelog entries into proper MDX format."},{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"service_changelogs\": [\n    {\n      \"service\":
+        \"Managed PostgreSQL\",\n      \"features\": [\n        {\n          \"title\":
+        \"Inline Editing for PostgreSQL Firewall Rules\",\n          \"description\":
+        \"Experience seamless management of your PostgreSQL firewall rules with our
+        new inline editing feature. No more navigating through multiple screens; now
+        you can edit your firewall rules directly within the management interface.
+        This enhancement not only saves you time but also reduces the risk of errors,
+        ensuring your database remains secure and accessible. Enjoy a more efficient
+        workflow and greater control over your database security settings.\",\n          \"pr_ids\":
+        [\n            3366\n          ],\n          \"image_path\": \"inline_edit_postgresql_firewall_rules.png\"\n        }\n      ]\n    }\n  ],\n  \"month\":
+        \"May\",\n  \"year\": 2025\n}\n```\n\nRespond with the corresponding output
+        schema fields wrapped in a ```json ``` block,\nstarting with the heading `##
+        Output values`.\n\nIMPORTANT: You must respond with valid JSON that matches
+        this structure:\n```json\n{\n  \"mdx_content\": \"Complete MDX-formatted changelog\"\n}\n```\n\nRequired
+        fields: mdx_content\n\nEnsure your response:\n1. Is valid JSON (properly quoted
+        strings, no trailing commas)\n2. Includes all required fields\n3. Uses the
+        correct data types for each field\n4. Is wrapped in ```json``` markdown code
+        blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - x64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - Linux
+      X-Stainless-Package-Version:
+      - 0.13.1
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.8
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '4753'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 29 Jul 2025 20:09:31 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '3455'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '3464'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9993'
+      X-Ratelimit-Remaining-Tokens:
+      - '198933'
+      X-Ratelimit-Reset-Requests:
+      - 54.196s
+      X-Ratelimit-Reset-Tokens:
+      - 320ms
+      X-Request-Id:
+      - req_decb33aa626fbfd2401c653d37c507ce
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=Pu4av_wL9URM2HiyWvdAvGDCA_8ztjv3z3W9jENDfMw-1753819771-1.0.1.1-sRne0YNV7GRLOfwocolOKXAVUYzLUbiArBR1nVUW3JVgv3Mp9mi3PBs.UbPMc7NlMoNCxe21YMaLdthcnP90YqZzWbjbUm7nZ.Jj3iAHZf0;
+        path=/; expires=Tue, 29-Jul-25 20:39:31 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=jGTXoEkb4wXcjqTnc52VC3cipZoeEQMt5RVhSIM1u5M-1753819771940-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 966f410f1af3f797-EWR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-BykvY7JShiwRGiqNrEtwXnyXxpNw9",
+          "object": "chat.completion",
+          "created": 1753819768,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"mdx_content\": \"# Changelog for May 2025\\n\\n## Managed PostgreSQL\\n\\n### Inline Editing for PostgreSQL Firewall Rules\\n\\n![Inline Editing for PostgreSQL Firewall Rules](inline_edit_postgresql_firewall_rules.png)\\n\\nExperience seamless management of your PostgreSQL firewall rules with our new inline editing feature. No more navigating through multiple screens; now you can edit your firewall rules directly within the management interface. This enhancement not only saves you time but also reduces the risk of errors, ensuring your database remains secure and accessible. Enjoy a more efficient workflow and greater control over your database security settings.\\n\\n*PR IDs: [3366]*\"\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 939,
+            "completion_tokens": 146,
+            "total_tokens": 1085,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_34a54ae93c"
+        }
+  recorded_at: Tue, 29 Jul 2025 20:09:32 GMT
 recorded_with: VCR 6.3.1
