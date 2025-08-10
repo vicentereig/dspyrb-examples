@@ -83,8 +83,8 @@ RSpec.configure do |config|
       dspy_config.lm = DSPy::LM.new('openai/gpt-4o-mini', api_key: ENV.fetch('OPENAI_API_KEY', 'test-key'))
       
       # Enable instrumentation for testing
-      dspy_config.instrumentation.enabled = true
-      dspy_config.instrumentation.subscribers = [:logger]
+      # dspy_config.instrumentation.enabled = true
+      # dspy_config.instrumentation.subscribers = [:logger]
     end
   end
 end
