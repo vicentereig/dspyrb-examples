@@ -1,0 +1,51 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://datasets-server.huggingface.co/parquet?dataset=ade-benchmark-corpus/ade_corpus_v2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - datasets-server.huggingface.co
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Date:
+      - Sun, 10 Aug 2025 23:09:13 GMT
+      Vary:
+      - Accept-Encoding
+      Server:
+      - uvicorn
+      Cache-Control:
+      - max-age=120
+      X-Revision:
+      - 4ba01c71687dd7c996597042449448ea312126cf
+      X-Cache:
+      - Miss from cloudfront
+      Via:
+      - 1.1 2399fabba5604964966b51873c00a582.cloudfront.net (CloudFront)
+      X-Amz-Cf-Pop:
+      - MAD53-P1
+      X-Amz-Cf-Id:
+      - 8O1606zn4Ag-_JGYlFKiaJ7qkCR9OcKlGSH3JO_ZNDRxZ0WrqLuuCg==
+    body:
+      encoding: ASCII-8BIT
+      string: '{"parquet_files":[{"dataset":"ade-benchmark-corpus/ade_corpus_v2","config":"Ade_corpus_v2_classification","split":"train","url":"https://huggingface.co/datasets/ade-benchmark-corpus/ade_corpus_v2/resolve/refs%2Fconvert%2Fparquet/Ade_corpus_v2_classification/train/0000.parquet","filename":"0000.parquet","size":1706476},{"dataset":"ade-benchmark-corpus/ade_corpus_v2","config":"Ade_corpus_v2_drug_ade_relation","split":"train","url":"https://huggingface.co/datasets/ade-benchmark-corpus/ade_corpus_v2/resolve/refs%2Fconvert%2Fparquet/Ade_corpus_v2_drug_ade_relation/train/0000.parquet","filename":"0000.parquet","size":491362},{"dataset":"ade-benchmark-corpus/ade_corpus_v2","config":"Ade_corpus_v2_drug_dosage_relation","split":"train","url":"https://huggingface.co/datasets/ade-benchmark-corpus/ade_corpus_v2/resolve/refs%2Fconvert%2Fparquet/Ade_corpus_v2_drug_dosage_relation/train/0000.parquet","filename":"0000.parquet","size":33004}],"pending":[],"failed":[],"partial":false}'
+  recorded_at: Sun, 10 Aug 2025 23:09:13 GMT
+recorded_with: VCR 6.3.1
