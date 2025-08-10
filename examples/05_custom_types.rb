@@ -36,7 +36,7 @@ class TaskAnalyzer < DSPy::Signature
     const :title, String
     const :category, Category
     const :priority, Priority
-    const :estimated_hours, Float
+    const :estimated_hours, T.any(Float, Integer)
     const :tags, T::Array[String]
     const :complexity_score, Integer  # 1-10 scale
   end

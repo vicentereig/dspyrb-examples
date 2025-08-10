@@ -2,9 +2,11 @@
 
 source "https://rubygems.org"
 
-ruby "3.3.8"
+ruby "3.3.5"
 
-gem 'dspy', '~> 0.15.2'
+gem 'dspy', '~> 0.18.0'
+gem 'base64'
+
 gem 'dotenv'
 
 group :test do

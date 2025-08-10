@@ -9,17 +9,19 @@ require_relative '../setup'
 # Calculator Tool
 class CalculatorTool < DSPy::Tools::Base
   tool_name 'calculator'
-  tool_description 'Performs mathematical calculations and evaluates expressions'
+  tool_description 'Performs arithmetic operations'
   
-  sig { params(expression: String).returns(T.any(Float, String)) }
-  def call(expression:)
-    begin
-      # Simple safe evaluation for basic math expressions
-      sanitized = expression.gsub(/[^0-9+\-*\/\(\)\s\.]/, '')
-      result = eval(sanitized)
-      result.is_a?(Numeric) ? result.to_f : "Error: Invalid expression"
-    rescue StandardError => e
-      "Error: #{e.message}"
+  sig { params(operation: String, num1: Float, num2: Float).returns(T.any(Float, String)) }
+  def call(operation:, num1:, num2:)
+    case operation.downcase
+    when 'add' then num1 + num2
+    when 'subtract' then num1 - num2
+    when 'multiply' then num1 * num2
+    when 'divide'
+      return "Error: Cannot divide by zero" if num2 == 0
+      num1 / num2
+    else
+      "Error: Unknown operation '#{operation}'"
     end
   end
 end
@@ -37,6 +39,8 @@ class UnitConverterTool < DSPy::Tools::Base
       'feet_to_meters' => ->(v) { v / 3.28084 },
       'miles_to_km' => ->(v) { v * 1.60934 },
       'km_to_miles' => ->(v) { v / 1.60934 },
+      'miles_to_kilometers' => ->(v) { v * 1.60934 },
+      'kilometers_to_miles' => ->(v) { v / 1.60934 },
       
       # Temperature
       'celsius_to_fahrenheit' => ->(v) { (v * 9.0/5.0) + 32 },
@@ -44,14 +48,16 @@ class UnitConverterTool < DSPy::Tools::Base
       
       # Weight
       'kg_to_pounds' => ->(v) { v * 2.20462 },
-      'pounds_to_kg' => ->(v) { v / 2.20462 }
+      'pounds_to_kg' => ->(v) { v / 2.20462 },
+      'kilograms_to_pounds' => ->(v) { v * 2.20462 },
+      'pounds_to_kilograms' => ->(v) { v / 2.20462 }
     }
     
     key = "#{from_unit.downcase}_to_#{to_unit.downcase}"
     conversion = conversions[key]
     
     if conversion
-      conversion.call(value).round(4)
+      conversion.call(value.to_f).round(4)
     else
       "Error: Conversion from #{from_unit} to #{to_unit} not supported"
     end
@@ -65,7 +71,7 @@ class DateTimeTool < DSPy::Tools::Base
   
   sig { params(format: String).returns(String) }
   def call(format: 'default')
-    case format.downcase
+    case format.to_s.downcase
     when 'iso'
       Time.now.iso8601
     when 'date'
