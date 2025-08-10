@@ -13,4 +13,21 @@ class ADEPredictor < DSPy::Signature
       SevereADE = new('severe_adverse_event')
     end
   end
+  
+  class DrugSymptomPair < T::Struct
+    const :drug, String
+    const :symptom, String
+  end
+  
+  input do
+    const :patient_report, String, description: "The patient's medical report text"
+    const :medications, T::Array[String], description: "List of medications mentioned"
+    const :symptoms, String, description: "Symptoms described by the patient"
+  end
+  
+  output do
+    const :ade_status, ADEStatus, description: "Severity level of adverse drug event"
+    const :confidence, Float, description: "Confidence score between 0 and 1"
+    const :drug_symptom_pairs, T::Array[DrugSymptomPair], description: "Pairs of drugs and related symptoms"
+  end
 end
