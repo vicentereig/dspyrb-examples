@@ -132,6 +132,35 @@ class DatasetLoader
     Dir.exist?(@data_dir) && !Dir.glob(File.join(@data_dir, '*.parquet')).empty?
   end
   
+  # Helper method for creating synthetic examples for integration testing
+  def synthetic_examples_to_dspy(synthetic_examples)
+    synthetic_examples.map do |example|
+      # Extract medications and symptoms from sentence
+      medications = extract_medications(example[:sentence])
+      symptoms = extract_symptoms(example[:sentence])
+      
+      # Map to ADE status
+      ade_status = map_label_to_status(example[:label])
+      
+      # Create drug-symptom pairs
+      drug_symptom_pairs = create_drug_symptom_pairs(medications, symptoms)
+      
+      DSPy::Example.new(
+        signature_class: ADEPredictor,
+        input: {
+          patient_report: example[:sentence],
+          medications: medications,
+          symptoms: symptoms
+        },
+        expected: {
+          ade_status: ade_status,
+          confidence: example[:label] == 1 ? 0.8 : 0.9, # Higher confidence for no ADE
+          drug_symptom_pairs: drug_symptom_pairs
+        }
+      )
+    end
+  end
+  
   private
   
   def fetch_from_api
