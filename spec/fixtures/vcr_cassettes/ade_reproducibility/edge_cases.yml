@@ -1,0 +1,507 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"patient_report\": {\n      \"type\":
+        \"string\",\n      \"description\": \"The patient''s medical report text\"\n    },\n    \"medications\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"List of medications mentioned\"\n    },\n    \"symptoms\": {\n      \"type\":
+        \"string\",\n      \"description\": \"Symptoms described by the patient\"\n    }\n  },\n  \"required\":
+        [\n    \"patient_report\",\n    \"medications\",\n    \"symptoms\"\n  ]\n}\n```\nYour
+        output schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"ade_status\": {\n      \"type\": \"string\",\n      \"enum\":
+        [\n        \"no_adverse_event\",\n        \"mild_adverse_event\",\n        \"severe_adverse_event\"\n      ],\n      \"description\":
+        \"Severity level of adverse drug event\"\n    },\n    \"confidence\": {\n      \"type\":
+        \"number\",\n      \"description\": \"Confidence score between 0 and 1\"\n    },\n    \"drug_symptom_pairs\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\":
+        {\n          \"_type\": {\n            \"type\": \"string\",\n            \"const\":
+        \"DrugSymptomPair\"\n          },\n          \"drug\": {\n            \"type\":
+        \"string\"\n          },\n          \"symptom\": {\n            \"type\":
+        \"string\"\n          }\n        },\n        \"required\": [\n          \"_type\",\n          \"drug\",\n          \"symptom\"\n        ],\n        \"description\":
+        \"ADEPredictor::DrugSymptomPair struct\"\n      },\n      \"description\":
+        \"Pairs of drugs and related symptoms\"\n    }\n  },\n  \"required\": [\n    \"ade_status\",\n    \"confidence\",\n    \"drug_symptom_pairs\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Predict if a patient report contains an adverse drug event"},{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"patient_report\": \"\",\n  \"medications\":
+        [],\n  \"symptoms\": \"\"\n}\n```\n\nRespond with the corresponding output
+        schema fields wrapped in a ```json ``` block,\nstarting with the heading `##
+        Output values`.\n\nIMPORTANT: You must respond with valid JSON that matches
+        this structure:\n```json\n{\n  \"ade_status\": \"Severity level of adverse
+        drug event\",\n  \"confidence\": 3.14,\n  \"drug_symptom_pairs\": [\n    \"example
+        item\"\n  ]\n}\n```\n\nRequired fields: ade_status, confidence, drug_symptom_pairs\n\nEnsure
+        your response:\n1. Is valid JSON (properly quoted strings, no trailing commas)\n2.
+        Includes all required fields\n3. Uses the correct data types for each field\n4.
+        Is wrapped in ```json``` markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - arm64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - MacOS
+      X-Stainless-Package-Version:
+      - 0.16.0
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.5
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '3231'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 11 Aug 2025 10:12:18 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '956'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '970'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9989'
+      X-Ratelimit-Remaining-Tokens:
+      - '199291'
+      X-Ratelimit-Reset-Requests:
+      - 1m27.94s
+      X-Ratelimit-Reset-Tokens:
+      - 212ms
+      X-Request-Id:
+      - req_39351a7564584ece8c0bd1f6f203e515
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=UE9IyAmSdJ144Ovo3WfltJ5N8iiXoDRpXJdvC63Tos0-1754907138-1.0.1.1-fgNWs9AY6gd6GZGdunoJd.11NtFdBhfy0OHnCD4RqdfoYmasbJ5srPgfQgfcEn_kcbi_2d1Rhyp80TknyCvk1WTRLRFKtlKD7sF_oF4dlBI;
+        path=/; expires=Mon, 11-Aug-25 10:42:18 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=f8zgEBxiCSWeyeh_TUkwUz8ojbZXpegwBKna6DP79cs-1754907138909-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 96d6f42b38d8f9df-MAD
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-C3Jnl9PiUD6yXB6RSs5LIwmzzmypz",
+          "object": "chat.completion",
+          "created": 1754907137,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"ade_status\": \"no_adverse_event\",\n  \"confidence\": 1.0,\n  \"drug_symptom_pairs\": []\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 707,
+            "completion_tokens": 38,
+            "total_tokens": 745,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_34a54ae93c"
+        }
+  recorded_at: Mon, 11 Aug 2025 10:12:18 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"patient_report\": {\n      \"type\":
+        \"string\",\n      \"description\": \"The patient''s medical report text\"\n    },\n    \"medications\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"List of medications mentioned\"\n    },\n    \"symptoms\": {\n      \"type\":
+        \"string\",\n      \"description\": \"Symptoms described by the patient\"\n    }\n  },\n  \"required\":
+        [\n    \"patient_report\",\n    \"medications\",\n    \"symptoms\"\n  ]\n}\n```\nYour
+        output schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"ade_status\": {\n      \"type\": \"string\",\n      \"enum\":
+        [\n        \"no_adverse_event\",\n        \"mild_adverse_event\",\n        \"severe_adverse_event\"\n      ],\n      \"description\":
+        \"Severity level of adverse drug event\"\n    },\n    \"confidence\": {\n      \"type\":
+        \"number\",\n      \"description\": \"Confidence score between 0 and 1\"\n    },\n    \"drug_symptom_pairs\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\":
+        {\n          \"_type\": {\n            \"type\": \"string\",\n            \"const\":
+        \"DrugSymptomPair\"\n          },\n          \"drug\": {\n            \"type\":
+        \"string\"\n          },\n          \"symptom\": {\n            \"type\":
+        \"string\"\n          }\n        },\n        \"required\": [\n          \"_type\",\n          \"drug\",\n          \"symptom\"\n        ],\n        \"description\":
+        \"ADEPredictor::DrugSymptomPair struct\"\n      },\n      \"description\":
+        \"Pairs of drugs and related symptoms\"\n    }\n  },\n  \"required\": [\n    \"ade_status\",\n    \"confidence\",\n    \"drug_symptom_pairs\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Predict if a patient report contains an adverse drug event"},{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"patient_report\": \"   \",\n  \"medications\":
+        [\n    \"\"\n  ],\n  \"symptoms\": \"   \"\n}\n```\n\nRespond with the corresponding
+        output schema fields wrapped in a ```json ``` block,\nstarting with the heading
+        `## Output values`.\n\nIMPORTANT: You must respond with valid JSON that matches
+        this structure:\n```json\n{\n  \"ade_status\": \"Severity level of adverse
+        drug event\",\n  \"confidence\": 3.14,\n  \"drug_symptom_pairs\": [\n    \"example
+        item\"\n  ]\n}\n```\n\nRequired fields: ade_status, confidence, drug_symptom_pairs\n\nEnsure
+        your response:\n1. Is valid JSON (properly quoted strings, no trailing commas)\n2.
+        Includes all required fields\n3. Uses the correct data types for each field\n4.
+        Is wrapped in ```json``` markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - arm64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - MacOS
+      X-Stainless-Package-Version:
+      - 0.16.0
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.5
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '3251'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 11 Aug 2025 10:12:19 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '897'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '912'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9988'
+      X-Ratelimit-Remaining-Tokens:
+      - '199287'
+      X-Ratelimit-Reset-Requests:
+      - 1m35.443s
+      X-Ratelimit-Reset-Tokens:
+      - 213ms
+      X-Request-Id:
+      - req_195a5f38a0a149b39187ad1c40b8f26e
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=4znIzFHYAX09uv3rrWZxR_K8XAkmM3piSwEYsjdOhnQ-1754907139-1.0.1.1-6Iin72AjCdWIqs1I4wdR2dUzkFIAe7t5uT1olyQXIQjoWciS10gVFuCZCZu5XXN.TjbxQXVKX.6B_m3Xl1m75C6z.7dGhz0QuTsdTpefYAU;
+        path=/; expires=Mon, 11-Aug-25 10:42:19 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=GkMmyuF0BHOHReWPhtQeLp19rVNi3g9sf3xKx.GDXmI-1754907139987-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 96d6f4324f04f9df-MAD
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-C3Jnn3xqytKYEgENst8DRn9uABO7R",
+          "object": "chat.completion",
+          "created": 1754907139,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"ade_status\": \"no_adverse_event\",\n  \"confidence\": 0.0,\n  \"drug_symptom_pairs\": []\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 715,
+            "completion_tokens": 38,
+            "total_tokens": 753,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_34a54ae93c"
+        }
+  recorded_at: Mon, 11 Aug 2025 10:12:19 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"patient_report\": {\n      \"type\":
+        \"string\",\n      \"description\": \"The patient''s medical report text\"\n    },\n    \"medications\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\":
+        \"List of medications mentioned\"\n    },\n    \"symptoms\": {\n      \"type\":
+        \"string\",\n      \"description\": \"Symptoms described by the patient\"\n    }\n  },\n  \"required\":
+        [\n    \"patient_report\",\n    \"medications\",\n    \"symptoms\"\n  ]\n}\n```\nYour
+        output schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"ade_status\": {\n      \"type\": \"string\",\n      \"enum\":
+        [\n        \"no_adverse_event\",\n        \"mild_adverse_event\",\n        \"severe_adverse_event\"\n      ],\n      \"description\":
+        \"Severity level of adverse drug event\"\n    },\n    \"confidence\": {\n      \"type\":
+        \"number\",\n      \"description\": \"Confidence score between 0 and 1\"\n    },\n    \"drug_symptom_pairs\":
+        {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\":
+        {\n          \"_type\": {\n            \"type\": \"string\",\n            \"const\":
+        \"DrugSymptomPair\"\n          },\n          \"drug\": {\n            \"type\":
+        \"string\"\n          },\n          \"symptom\": {\n            \"type\":
+        \"string\"\n          }\n        },\n        \"required\": [\n          \"_type\",\n          \"drug\",\n          \"symptom\"\n        ],\n        \"description\":
+        \"ADEPredictor::DrugSymptomPair struct\"\n      },\n      \"description\":
+        \"Pairs of drugs and related symptoms\"\n    }\n  },\n  \"required\": [\n    \"ade_status\",\n    \"confidence\",\n    \"drug_symptom_pairs\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Predict if a patient report contains an adverse drug event"},{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"patient_report\": \"Single word\",\n  \"medications\":
+        [\n    \"X\"\n  ],\n  \"symptoms\": \"Y\"\n}\n```\n\nRespond with the corresponding
+        output schema fields wrapped in a ```json ``` block,\nstarting with the heading
+        `## Output values`.\n\nIMPORTANT: You must respond with valid JSON that matches
+        this structure:\n```json\n{\n  \"ade_status\": \"Severity level of adverse
+        drug event\",\n  \"confidence\": 3.14,\n  \"drug_symptom_pairs\": [\n    \"example
+        item\"\n  ]\n}\n```\n\nRequired fields: ade_status, confidence, drug_symptom_pairs\n\nEnsure
+        your response:\n1. Is valid JSON (properly quoted strings, no trailing commas)\n2.
+        Includes all required fields\n3. Uses the correct data types for each field\n4.
+        Is wrapped in ```json``` markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - arm64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - MacOS
+      X-Stainless-Package-Version:
+      - 0.16.0
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.5
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '3258'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 11 Aug 2025 10:12:21 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '1492'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '1509'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9988'
+      X-Ratelimit-Remaining-Tokens:
+      - '199285'
+      X-Ratelimit-Reset-Requests:
+      - 1m43.019s
+      X-Ratelimit-Reset-Tokens:
+      - 214ms
+      X-Request-Id:
+      - req_2ae42d0e92e940efbc5d29aec69ee7c5
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=qBOi2sMrtpik_Mn3619UQr3Nj9VqEAc7iPAKtgdF6ZE-1754907141-1.0.1.1-Cv1VKF2xkMuKjKLMHW5rBtILK3kaNHK1pNTJwBol3BfxlWMkfOA3nxmmJWkb10blfG7gnd0gFuFI7sE7vAirsAqGKYc2_A3zGa51ZflGMX0;
+        path=/; expires=Mon, 11-Aug-25 10:42:21 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=O4JDGDpolHLcn7gAkb0.CCYuZhbsTwFxX6GSVAaCQ6o-1754907141630-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 96d6f4391c8bf9df-MAD
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-C3JnoCuRZuOu5t8OWXUItXmB7HUJP",
+          "object": "chat.completion",
+          "created": 1754907140,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"ade_status\": \"no_adverse_event\",\n  \"confidence\": 0.9,\n  \"drug_symptom_pairs\": [\n    {\n      \"_type\": \"DrugSymptomPair\",\n      \"drug\": \"X\",\n      \"symptom\": \"Y\"\n    }\n  ]\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 718,
+            "completion_tokens": 69,
+            "total_tokens": 787,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_34a54ae93c"
+        }
+  recorded_at: Mon, 11 Aug 2025 10:12:21 GMT
+recorded_with: VCR 6.3.1
