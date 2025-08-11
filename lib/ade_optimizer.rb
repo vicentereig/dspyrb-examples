@@ -13,6 +13,7 @@ class ADEOptimizer
       display_progress: true,
       optimization_mode: 'balanced'
     }.merge(config)
+    @optimization_costs = { total_cost: 0.0, baseline_cost: 0.0, optimization_cost: 0.0 }
   end
   
   # Optimize using DSPy SimpleOptimizer
@@ -22,8 +23,11 @@ class ADEOptimizer
       validation_result = validate_training_examples(training_examples)
       return validation_result if validation_result[:error]
       
-      # Evaluate baseline performance
+      # Evaluate baseline performance and track costs
+      baseline_start_cost = current_total_cost
       baseline_metrics = evaluate_program(baseline_program, training_examples)
+      baseline_end_cost = current_total_cost
+      @optimization_costs[:baseline_cost] += (baseline_end_cost - baseline_start_cost)
       
       # Set up optimizer configuration
       optimizer_config = DSPy::Teleprompt::SimpleOptimizer::OptimizerConfig.new
@@ -40,8 +44,12 @@ class ADEOptimizer
       )
       optimized_program = optimization_result.optimized_program
       
-      # Evaluate optimized performance
+      # Evaluate optimized performance and track costs
+      optimization_start_cost = current_total_cost
       optimized_metrics = evaluate_program(optimized_program, training_examples)
+      optimization_end_cost = current_total_cost
+      @optimization_costs[:optimization_cost] += (optimization_end_cost - optimization_start_cost)
+      @optimization_costs[:total_cost] = @optimization_costs[:baseline_cost] + @optimization_costs[:optimization_cost]
       
       # Calculate improvement
       improvement = calculate_improvement(baseline_metrics, optimized_metrics)
@@ -61,6 +69,7 @@ class ADEOptimizer
           k_demos: num_examples || [training_examples.size, 5].min,
           timestamp: Time.now.iso8601
         },
+        cost_analysis: generate_cost_analysis('SimpleOptimizer'),
         safety_metrics: safety_analysis
       }
       
@@ -142,6 +151,7 @@ class ADEOptimizer
           bootstrap_samples: k_demos * num_candidates,
           timestamp: Time.now.iso8601
         },
+        cost_analysis: generate_cost_analysis('MIPROv2'),
         safety_analysis: optimization_mode == 'recall_focused' ? safety_analysis : nil,
         safety_metrics: safety_analysis
       }
@@ -222,6 +232,22 @@ class ADEOptimizer
     evaluate_program(optimized_program, test_examples)
   end
   
+  # Cost tracking methods
+  def optimization_cost_summary
+    @optimization_costs.merge({
+      cost_per_example: @optimization_costs[:total_cost] > 0 ? 
+        (@optimization_costs[:total_cost] / ([baseline_examples_processed, 1].max)).round(6) : 0.0,
+      gpt_4o_mini_pricing: {
+        input_per_1k: 0.00015,
+        output_per_1k: 0.0006
+      }
+    })
+  end
+
+  def reset_cost_tracking
+    @optimization_costs = { total_cost: 0.0, baseline_cost: 0.0, optimization_cost: 0.0 }
+  end
+
   private
   
   def validate_training_examples(examples, type = "training")
@@ -339,5 +365,31 @@ class ADEOptimizer
   def calculate_missed_ades(metrics)
     cm = metrics[:confusion_matrix] || {}
     cm[:fn] || 0
+  end
+
+  def generate_cost_analysis(optimizer_type)
+    {
+      optimizer: optimizer_type,
+      total_cost: @optimization_costs[:total_cost].round(6),
+      baseline_evaluation_cost: @optimization_costs[:baseline_cost].round(6),
+      optimization_cost: @optimization_costs[:optimization_cost].round(6),
+      model: 'gpt-4o-mini',
+      cost_breakdown: {
+        input_cost_per_1k: 0.00015,
+        output_cost_per_1k: 0.0006
+      }
+    }
+  end
+
+  def current_total_cost
+    # This would ideally integrate with BaselinePredictor's cost tracking
+    # For now, return 0 as a placeholder - in real implementation,
+    # we'd need a shared cost tracking system
+    0.0
+  end
+
+  def baseline_examples_processed
+    # Track number of examples processed for cost-per-example calculation
+    @baseline_examples_count ||= 0
   end
 end
