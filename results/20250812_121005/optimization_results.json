@@ -1,0 +1,23 @@
+{
+  "timestamp": "20250812_121005",
+  "configuration": {
+    "optimizer": "simple",
+    "data_size": 30,
+    "output_dir": "results"
+  },
+  "dataset_info": {
+    "train_size": 21,
+    "val_size": 4,
+    "test_size": 4,
+    "extraction_examples": {
+      "drug_extraction": 6821,
+      "effect_extraction": 6821
+    }
+  },
+  "results": {
+    "simple_optimizer": {
+      "error": "wrong number of arguments (given 2, expected 1)",
+      "optimizer": "SimpleOptimizer"
+    }
+  }
+}

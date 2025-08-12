@@ -1,0 +1,5 @@
+ADE Pipeline Optimization Summary
+========================================
+Timestamp: 20250812_121005
+Configuration: {:optimizer=>"simple", :data_size=>30, :output_dir=>"results"}
+

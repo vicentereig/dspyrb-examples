@@ -2,11 +2,17 @@
 
 # Metrics for evaluating extraction performance (drugs and effects)
 class ExtractionMetrics
-  # Calculate precision, recall, F1 for extraction tasks
+  # Calculate precision, recall, F1 for extraction tasks using macro-averaging
   def self.calculate_metrics(predictions, ground_truth)
-    total_precision = 0.0
-    total_recall = 0.0
-    total_f1 = 0.0
+    # Collect all individual precision/recall/f1 scores for macro-averaging
+    precision_scores = []
+    recall_scores = []
+    f1_scores = []
+    
+    # Also track micro-averaging components
+    total_tp = 0
+    total_fp = 0  
+    total_fn = 0
     valid_examples = 0
 
     predictions.zip(ground_truth).each do |pred_list, true_list|
@@ -21,29 +27,53 @@ class ExtractionMetrics
 
       # Calculate intersection
       intersection = pred_set & true_set
+      
+      # Individual example metrics
+      tp = intersection.size
+      fp = pred_set.size - tp
+      fn = true_set.size - tp
+      
+      # Accumulate for micro-averaging
+      total_tp += tp
+      total_fp += fp
+      total_fn += fn
 
-      # Precision: how many predicted items are correct
-      precision = pred_set.empty? ? 0.0 : intersection.size.to_f / pred_set.size
-
-      # Recall: how many true items were found
-      recall = true_set.empty? ? 0.0 : intersection.size.to_f / true_set.size
-
-      # F1: harmonic mean
+      # Individual precision/recall for macro-averaging
+      precision = pred_set.empty? ? 0.0 : tp.to_f / pred_set.size
+      recall = true_set.empty? ? 0.0 : tp.to_f / true_set.size
       f1 = (precision + recall).zero? ? 0.0 : 2 * precision * recall / (precision + recall)
-
-      total_precision += precision
-      total_recall += recall
-      total_f1 += f1
+      
+      precision_scores << precision
+      recall_scores << recall
+      f1_scores << f1
     end
 
     return { precision: 0.0, recall: 0.0, f1: 0.0, valid_examples: 0 } if valid_examples.zero?
 
+    # Macro-averaging (standard for imbalanced data)
+    macro_precision = precision_scores.sum / precision_scores.size
+    macro_recall = recall_scores.sum / recall_scores.size
+    macro_f1 = f1_scores.sum / f1_scores.size
+    
+    # Micro-averaging for comparison
+    micro_precision = total_tp.zero? ? 0.0 : total_tp.to_f / (total_tp + total_fp)
+    micro_recall = total_tp.zero? ? 0.0 : total_tp.to_f / (total_tp + total_fn)
+    micro_f1 = (micro_precision + micro_recall).zero? ? 0.0 : 2 * micro_precision * micro_recall / (micro_precision + micro_recall)
+
     {
-      precision: total_precision / valid_examples,
-      recall: total_recall / valid_examples,
-      f1: total_f1 / valid_examples,
+      # Primary metrics (macro-averaged - standard for medical ML)
+      precision: macro_precision,
+      recall: macro_recall,
+      f1: macro_f1,
+      
+      # Additional metrics for transparency
+      micro_precision: micro_precision,
+      micro_recall: micro_recall,
+      micro_f1: micro_f1,
+      
       valid_examples: valid_examples,
-      total_examples: predictions.size
+      total_examples: predictions.size,
+      averaging_method: 'macro'
     }
   end
 

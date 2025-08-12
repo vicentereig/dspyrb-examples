@@ -176,6 +176,16 @@ example_id                                                          | status  | 
 ./spec/lib/storage_persistence_spec.rb[1:1:3]                       | passed  | 0.00198 seconds |
 ./spec/lib/storage_persistence_spec.rb[1:1:4]                       | passed  | 0.00056 seconds |
 ./spec/lib/storage_persistence_spec.rb[1:2:1]                       | passed  | 0.0111 seconds  |
+./spec/pipeline/ade_direct_pipeline_spec.rb[1:1:1]                  | passed  | 0.00046 seconds |
+./spec/pipeline/ade_direct_pipeline_spec.rb[1:2:1:1]                | passed  | 2.4 seconds     |
+./spec/pipeline/ade_direct_pipeline_spec.rb[1:2:2:1]                | passed  | 1.51 seconds    |
+./spec/pipeline/ade_direct_pipeline_spec.rb[1:2:3:1]                | passed  | 1.41 seconds    |
+./spec/pipeline/ade_direct_pipeline_spec.rb[1:2:4:1]                | passed  | 1.44 seconds    |
+./spec/pipeline/ade_direct_pipeline_spec.rb[1:3:1]                  | passed  | 2.63 seconds    |
+./spec/signatures/ade_direct_classifier_spec.rb[1:1:1]              | failed  | 0.00209 seconds |
+./spec/signatures/ade_direct_classifier_spec.rb[1:2:1:1]            | passed  | 0.00228 seconds |
+./spec/signatures/ade_direct_classifier_spec.rb[1:2:2:1]            | passed  | 0.00206 seconds |
+./spec/signatures/ade_direct_classifier_spec.rb[1:2:3:1]            | passed  | 0.02509 seconds |
 ./spec/vcr/ade_reproducibility_spec.rb[1:1:1]                       | passed  | 0.00292 seconds |
 ./spec/vcr/ade_reproducibility_spec.rb[1:1:2]                       | passed  | 0.00793 seconds |
 ./spec/vcr/ade_reproducibility_spec.rb[1:1:3]                       | passed  | 0.00323 seconds |

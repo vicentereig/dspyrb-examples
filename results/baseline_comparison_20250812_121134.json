@@ -1,0 +1,46 @@
+{
+  "timestamp": "20250812_121134",
+  "model": "gpt-4o-mini",
+  "pipeline_type": "baseline_only",
+  "results": {
+    "baseline": {
+      "drug_extraction": {
+        "precision": 0.9166666666666666,
+        "recall": 1.0,
+        "f1": 0.9444444444444443,
+        "valid_examples": 6,
+        "total_examples": 20
+      },
+      "effect_extraction": {
+        "precision": 1.0,
+        "recall": 0.9166666666666666,
+        "f1": 0.9444444444444445,
+        "valid_examples": 6,
+        "total_examples": 20
+      },
+      "classification": {
+        "accuracy": 0.75,
+        "precision": 0.5454545454545454,
+        "recall": 1.0,
+        "f1": 0.7058823529411764,
+        "specificity": 0.6428571428571429,
+        "confusion_matrix": {
+          "tp": 6,
+          "fp": 5,
+          "tn": 9,
+          "fn": 0
+        },
+        "total_examples": 20
+      },
+      "safety": {
+        "false_negative_rate": 0.0,
+        "positive_predictive_value": 0.5454545454545454,
+        "negative_predictive_value": 1.0,
+        "matthews_correlation": 0.5921565254637922,
+        "missed_ades": 0,
+        "false_alarms": 5
+      },
+      "examples_evaluated": 20
+    }
+  }
+}

@@ -18,7 +18,21 @@ class ClassificationMetrics
     { tp: tp, fp: fp, tn: tn, fn: fn }
   end
 
-  # Calculate all classification metrics
+  # Calculate Wilson score interval for confidence intervals  
+  def self.wilson_score_interval(successes, trials, confidence_level = 0.95)
+    return [0.0, 0.0] if trials.zero?
+    
+    z = confidence_level == 0.95 ? 1.96 : 2.576  # 95% or 99% confidence
+    p_hat = successes.to_f / trials
+    
+    denominator = 1 + (z**2 / trials)
+    center = (p_hat + z**2 / (2 * trials)) / denominator
+    margin = z * Math.sqrt((p_hat * (1 - p_hat) + z**2 / (4 * trials)) / trials) / denominator
+    
+    [(center - margin).clamp(0.0, 1.0), (center + margin).clamp(0.0, 1.0)]
+  end
+
+  # Calculate all classification metrics with confidence intervals
   def self.calculate_metrics(predictions, ground_truth)
     cm = confusion_matrix(predictions, ground_truth)
     
@@ -34,6 +48,12 @@ class ClassificationMetrics
     
     f1 = (precision + recall).zero? ? 0.0 : 2 * precision * recall / (precision + recall)
 
+    # Calculate 95% confidence intervals
+    accuracy_ci = wilson_score_interval(cm[:tp] + cm[:tn], total)
+    precision_ci = (cm[:tp] + cm[:fp]).zero? ? [0.0, 0.0] : wilson_score_interval(cm[:tp], cm[:tp] + cm[:fp])
+    recall_ci = (cm[:tp] + cm[:fn]).zero? ? [0.0, 0.0] : wilson_score_interval(cm[:tp], cm[:tp] + cm[:fn])
+    specificity_ci = (cm[:tn] + cm[:fp]).zero? ? [0.0, 0.0] : wilson_score_interval(cm[:tn], cm[:tn] + cm[:fp])
+
     {
       accuracy: accuracy,
       precision: precision,
@@ -41,7 +61,13 @@ class ClassificationMetrics
       f1: f1,
       specificity: specificity,
       confusion_matrix: cm,
-      total_examples: total
+      total_examples: total,
+      confidence_intervals: {
+        accuracy: accuracy_ci,
+        precision: precision_ci,
+        recall: recall_ci,
+        specificity: specificity_ci
+      }
     }
   end
 
