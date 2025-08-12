@@ -1,0 +1,110 @@
+{
+  "evaluation_type": "dspy_native_200_examples",
+  "timestamp": "20250812_143528",
+  "model": "gpt-4o-mini",
+  "sample_size": 200,
+  "evaluation_framework": "DSPy.rb native evaluation",
+  "results": {
+    "multi_stage": {
+      "dspy_score": 0.0,
+      "dspy_pass_rate": 0.0,
+      "confusion_matrix": {
+        "tp": 3,
+        "fp": 2,
+        "tn": 4,
+        "fn": 1
+      },
+      "accuracy": 0.7,
+      "precision": 0.6,
+      "recall": 0.75,
+      "f1": 0.6666666666666665,
+      "false_negative_rate": 0.25,
+      "missed_ades": 1,
+      "false_alarms": 2,
+      "average_confidence": 0.5,
+      "low_confidence_predictions": 10,
+      "false_negatives": [
+        {
+          "index": 5,
+          "expected": true,
+          "predicted": false,
+          "confidence": 0.5,
+          "text": "During the first days of arsenic trioxide treatment a rapid decrease in the D-dimers was seen (normal values reached until day 7), together with a slight decrease in peripheral blood leukocytes."
+        }
+      ],
+      "false_positives": [
+        {
+          "index": 1,
+          "expected": false,
+          "predicted": true,
+          "confidence": 0.5,
+          "text": "We report two cases of central venous catheter-related Rhodotorula rubra fungemia that occurred in patients with acute myeloblastic leukemia."
+        },
+        {
+          "index": 6,
+          "expected": false,
+          "predicted": true,
+          "confidence": 0.5,
+          "text": "While the patient had evidence of underlying kidney disease, the timing of his renal failure indicates that TDF played a central role."
+        }
+      ],
+      "total_examples": 10,
+      "evaluation_time": 31.208326,
+      "timestamp": "2025-08-12T14:35:11+02:00"
+    },
+    "direct": {
+      "dspy_score": 0.0,
+      "dspy_pass_rate": 0.0,
+      "confusion_matrix": {
+        "tp": 3,
+        "fp": 3,
+        "tn": 3,
+        "fn": 1
+      },
+      "accuracy": 0.6,
+      "precision": 0.5,
+      "recall": 0.75,
+      "f1": 0.6,
+      "false_negative_rate": 0.25,
+      "missed_ades": 1,
+      "false_alarms": 3,
+      "average_confidence": 0.5,
+      "low_confidence_predictions": 10,
+      "false_negatives": [
+        {
+          "index": 5,
+          "expected": true,
+          "predicted": false,
+          "confidence": 0.5,
+          "text": "During the first days of arsenic trioxide treatment a rapid decrease in the D-dimers was seen (normal values reached until day 7), together with a slight decrease in peripheral blood leukocytes."
+        }
+      ],
+      "false_positives": [
+        {
+          "index": 1,
+          "expected": false,
+          "predicted": true,
+          "confidence": 0.5,
+          "text": "We report two cases of central venous catheter-related Rhodotorula rubra fungemia that occurred in patients with acute myeloblastic leukemia."
+        },
+        {
+          "index": 2,
+          "expected": false,
+          "predicted": true,
+          "confidence": 0.5,
+          "text": "Aquagenic pruritus responding to intermittent photochemotherapy."
+        },
+        {
+          "index": 6,
+          "expected": false,
+          "predicted": true,
+          "confidence": 0.5,
+          "text": "While the patient had evidence of underlying kidney disease, the timing of his renal failure indicates that TDF played a central role."
+        }
+      ],
+      "total_examples": 10,
+      "evaluation_time": 16.806027,
+      "timestamp": "2025-08-12T14:35:28+02:00"
+    }
+  }
+}
