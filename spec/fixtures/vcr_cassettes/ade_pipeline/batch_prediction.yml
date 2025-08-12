@@ -1,0 +1,942 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"text\": {\n      \"type\": \"string\",\n      \"description\":
+        \"Medical text containing drug mentions\"\n    }\n  },\n  \"required\": [\n    \"text\"\n  ]\n}\n```\nYour
+        output schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"drugs\": {\n      \"type\": \"array\",\n      \"items\":
+        {\n        \"type\": \"string\"\n      },\n      \"description\": \"List of
+        drug names found in the text\"\n    }\n  },\n  \"required\": [\n    \"drugs\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Extract drug names mentioned in medical text"},{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"text\": \"Patient experienced nausea after taking
+        metformin.\"\n}\n```\n\nRespond with the corresponding output schema fields
+        wrapped in a ```json ``` block,\nstarting with the heading `## Output values`.\n\nIMPORTANT:
+        You must respond with valid JSON that matches this structure:\n```json\n{\n  \"drugs\":
+        [\n    \"example item\"\n  ]\n}\n```\n\nRequired fields: drugs\n\nEnsure your
+        response:\n1. Is valid JSON (properly quoted strings, no trailing commas)\n2.
+        Includes all required fields\n3. Uses the correct data types for each field\n4.
+        Is wrapped in ```json``` markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - arm64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - MacOS
+      X-Stainless-Package-Version:
+      - 0.16.0
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.5
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '1808'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 12 Aug 2025 10:03:01 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '654'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '668'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9904'
+      X-Ratelimit-Remaining-Tokens:
+      - '199607'
+      X-Ratelimit-Reset-Requests:
+      - 13m47.818s
+      X-Ratelimit-Reset-Tokens:
+      - 117ms
+      X-Request-Id:
+      - req_96c409030bb544be80514254aa7504e7
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=u04i1Td.BX8Qmvl73OlPsoz0iTr4rr1oIDe8MrW6ISY-1754992981-1.0.1.1-LcYW6fF1opa.j9MYbzuBC1fvuy2SocYoost2U.CZpb6JyYIQpnBsGDGko8TiY_WzxKwPjQbw2bBWXrYlsptpliGQ3MijUST4kfdUACfC2DI;
+        path=/; expires=Tue, 12-Aug-25 10:33:01 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=ffJ0sOXiexN3iMfql2O6XPYDVz54cmC6p7H3tg5S0.U-1754992981979-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 96df23f47e8dcc4d-MAD
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-C3g8L909bRwWFrKxHRfs4E06m4ZOD",
+          "object": "chat.completion",
+          "created": 1754992981,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"drugs\": [\n    \"metformin\"\n  ]\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 398,
+            "completion_tokens": 23,
+            "total_tokens": 421,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_34a54ae93c"
+        }
+  recorded_at: Tue, 12 Aug 2025 10:03:01 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"text\": {\n      \"type\": \"string\",\n      \"description\":
+        \"Medical text containing adverse effects\"\n    }\n  },\n  \"required\":
+        [\n    \"text\"\n  ]\n}\n```\nYour output schema fields are:\n```json\n{\n  \"$schema\":
+        \"http://json-schema.org/draft-06/schema#\",\n  \"type\": \"object\",\n  \"properties\":
+        {\n    \"effects\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\":
+        \"string\"\n      },\n      \"description\": \"List of adverse effects found
+        in the text\"\n    }\n  },\n  \"required\": [\n    \"effects\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Extract adverse drug effects mentioned in medical text"},{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"text\": \"Patient experienced nausea after taking
+        metformin.\"\n}\n```\n\nRespond with the corresponding output schema fields
+        wrapped in a ```json ``` block,\nstarting with the heading `## Output values`.\n\nIMPORTANT:
+        You must respond with valid JSON that matches this structure:\n```json\n{\n  \"effects\":
+        [\n    \"example item\"\n  ]\n}\n```\n\nRequired fields: effects\n\nEnsure
+        your response:\n1. Is valid JSON (properly quoted strings, no trailing commas)\n2.
+        Includes all required fields\n3. Uses the correct data types for each field\n4.
+        Is wrapped in ```json``` markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - arm64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - MacOS
+      X-Stainless-Package-Version:
+      - 0.16.0
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.5
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '1833'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 12 Aug 2025 10:03:02 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '542'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '578'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9903'
+      X-Ratelimit-Remaining-Tokens:
+      - '199601'
+      X-Ratelimit-Reset-Requests:
+      - 13m55.636s
+      X-Ratelimit-Reset-Tokens:
+      - 119ms
+      X-Request-Id:
+      - req_029f5a5da0fc4759bce0d7c832be9df0
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=f8OgVGTt0WPRrgeqdhlOoBszqjF_qEIA7FjPmL0.YrU-1754992982-1.0.1.1-sRirCvvOzQAeHTTrBqcoY8wqOEpWG3x9M6arMHgfpWnhVTeuWWJosWoIrFHajxdS0oFR9xfOlgF1fWT0ynu2enFqIa9WYPkLUbJdkv7_v6k;
+        path=/; expires=Tue, 12-Aug-25 10:33:02 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=8BLB9G47DWjzXM13KHDEhFgOtHQpTm8C5SJgGLZ4G7M-1754992982720-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 96df23f99a32cc4d-MAD
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-C3g8MsE3x9UH7EJA1rA1qEa8EIFoc",
+          "object": "chat.completion",
+          "created": 1754992982,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"effects\": [\n    \"nausea\"\n  ]\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 396,
+            "completion_tokens": 23,
+            "total_tokens": 419,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_34a54ae93c"
+        }
+  recorded_at: Tue, 12 Aug 2025 10:03:02 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"text\": {\n      \"type\": \"string\",\n      \"description\":
+        \"Original medical text\"\n    },\n    \"drugs\": {\n      \"type\": \"array\",\n      \"items\":
+        {\n        \"type\": \"string\"\n      },\n      \"description\": \"Extracted
+        drug names\"\n    },\n    \"effects\": {\n      \"type\": \"array\",\n      \"items\":
+        {\n        \"type\": \"string\"\n      },\n      \"description\": \"Extracted
+        adverse effects\"\n    }\n  },\n  \"required\": [\n    \"text\",\n    \"drugs\",\n    \"effects\"\n  ]\n}\n```\nYour
+        output schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"has_ade\": {\n      \"type\": \"boolean\",\n      \"description\":
+        \"True if adverse drug event is present, false otherwise\"\n    },\n    \"confidence\":
+        {\n      \"type\": \"number\",\n      \"description\": \"Confidence score
+        between 0.0 and 1.0\"\n    }\n  },\n  \"required\": [\n    \"has_ade\",\n    \"confidence\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Classify whether extracted drugs and effects indicate an adverse
+        drug event"},{"role":"user","content":"## Input Values\n```json\n{\n  \"text\":
+        \"Patient experienced nausea after taking metformin.\",\n  \"drugs\": [\n    \"metformin\"\n  ],\n  \"effects\":
+        [\n    \"nausea\"\n  ]\n}\n```\n\nRespond with the corresponding output schema
+        fields wrapped in a ```json ``` block,\nstarting with the heading `## Output
+        values`.\n\nIMPORTANT: You must respond with valid JSON that matches this
+        structure:\n```json\n{\n  \"has_ade\": true,\n  \"confidence\": 3.14\n}\n```\n\nRequired
+        fields: has_ade, confidence\n\nEnsure your response:\n1. Is valid JSON (properly
+        quoted strings, no trailing commas)\n2. Includes all required fields\n3. Uses
+        the correct data types for each field\n4. Is wrapped in ```json``` markdown
+        code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - arm64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - MacOS
+      X-Stainless-Package-Version:
+      - 0.16.0
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.5
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '2398'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 12 Aug 2025 10:03:03 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '747'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '770'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9902'
+      X-Ratelimit-Remaining-Tokens:
+      - '199478'
+      X-Ratelimit-Reset-Requests:
+      - 14m3.508s
+      X-Ratelimit-Reset-Tokens:
+      - 156ms
+      X-Request-Id:
+      - req_f13d51ea0a994275b45764f0e2c77980
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=tY.yAmWm_tljOAzbmyAFB_lbHWMZLMgWBTbe4JGxJng-1754992983-1.0.1.1-QvEUX09cSkjJuVFwqWWlOcaEqK7403pdHKgvZiiyKlqHPxR1YZDyTHcj.4tNcYAswj1YPW42d5oFCHNqkoPXY6n.B4kv4AYxTcKq9c8fSPQ;
+        path=/; expires=Tue, 12-Aug-25 10:33:03 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=y1eQQ.hlOH5znQz6si8zjC05UetFCsvmtXXlOaAiTNc-1754992983683-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 96df23fe3dbdcc4d-MAD
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-C3g8MXazdl1RQIBVwl9ORsOqcqktJ",
+          "object": "chat.completion",
+          "created": 1754992982,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"has_ade\": true,\n  \"confidence\": 0.85\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 547,
+            "completion_tokens": 27,
+            "total_tokens": 574,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_34a54ae93c"
+        }
+  recorded_at: Tue, 12 Aug 2025 10:03:03 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"text\": {\n      \"type\": \"string\",\n      \"description\":
+        \"Medical text containing drug mentions\"\n    }\n  },\n  \"required\": [\n    \"text\"\n  ]\n}\n```\nYour
+        output schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"drugs\": {\n      \"type\": \"array\",\n      \"items\":
+        {\n        \"type\": \"string\"\n      },\n      \"description\": \"List of
+        drug names found in the text\"\n    }\n  },\n  \"required\": [\n    \"drugs\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Extract drug names mentioned in medical text"},{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"text\": \"No adverse effects reported with current
+        medication.\"\n}\n```\n\nRespond with the corresponding output schema fields
+        wrapped in a ```json ``` block,\nstarting with the heading `## Output values`.\n\nIMPORTANT:
+        You must respond with valid JSON that matches this structure:\n```json\n{\n  \"drugs\":
+        [\n    \"example item\"\n  ]\n}\n```\n\nRequired fields: drugs\n\nEnsure your
+        response:\n1. Is valid JSON (properly quoted strings, no trailing commas)\n2.
+        Includes all required fields\n3. Uses the correct data types for each field\n4.
+        Is wrapped in ```json``` markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - arm64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - MacOS
+      X-Stainless-Package-Version:
+      - 0.16.0
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.5
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '1810'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 12 Aug 2025 10:03:04 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '595'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '610'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9901'
+      X-Ratelimit-Remaining-Tokens:
+      - '199606'
+      X-Ratelimit-Reset-Requests:
+      - 14m11.128s
+      X-Ratelimit-Reset-Tokens:
+      - 118ms
+      X-Request-Id:
+      - req_c7dd3fc449034d80a5bba62f64c2a9b9
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=FtIffGSPdfEJ.IYhUbQkEgL6mnMbozM0fM0bOlj2Ya0-1754992984-1.0.1.1-Qa71hdxVN0Cz1f1AdZoVniI.4W16r.iciU2owrbWmsL7rlkjqznD8M0bKUTzGTaYbj6V.E4qtU05t.YKCw6iNCoc2n.Mp7oRCawDdey.iK8;
+        path=/; expires=Tue, 12-Aug-25 10:33:04 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=7QoCKGCFJX.q5n_LW4Z5Eqhcipeoi2Y2RgN_hmsmIn4-1754992984529-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 96df2404cc3ecc4d-MAD
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-C3g8N9rg90dmvSmTgzuwpWxjPsbbe",
+          "object": "chat.completion",
+          "created": 1754992983,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"drugs\": []\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 398,
+            "completion_tokens": 16,
+            "total_tokens": 414,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_34a54ae93c"
+        }
+  recorded_at: Tue, 12 Aug 2025 10:03:04 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"text\": {\n      \"type\": \"string\",\n      \"description\":
+        \"Medical text containing adverse effects\"\n    }\n  },\n  \"required\":
+        [\n    \"text\"\n  ]\n}\n```\nYour output schema fields are:\n```json\n{\n  \"$schema\":
+        \"http://json-schema.org/draft-06/schema#\",\n  \"type\": \"object\",\n  \"properties\":
+        {\n    \"effects\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\":
+        \"string\"\n      },\n      \"description\": \"List of adverse effects found
+        in the text\"\n    }\n  },\n  \"required\": [\n    \"effects\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Extract adverse drug effects mentioned in medical text"},{"role":"user","content":"##
+        Input Values\n```json\n{\n  \"text\": \"No adverse effects reported with current
+        medication.\"\n}\n```\n\nRespond with the corresponding output schema fields
+        wrapped in a ```json ``` block,\nstarting with the heading `## Output values`.\n\nIMPORTANT:
+        You must respond with valid JSON that matches this structure:\n```json\n{\n  \"effects\":
+        [\n    \"example item\"\n  ]\n}\n```\n\nRequired fields: effects\n\nEnsure
+        your response:\n1. Is valid JSON (properly quoted strings, no trailing commas)\n2.
+        Includes all required fields\n3. Uses the correct data types for each field\n4.
+        Is wrapped in ```json``` markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - arm64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - MacOS
+      X-Stainless-Package-Version:
+      - 0.16.0
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.5
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '1835'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 12 Aug 2025 10:03:05 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '668'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '689'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9900'
+      X-Ratelimit-Remaining-Tokens:
+      - '199600'
+      X-Ratelimit-Reset-Requests:
+      - 14m18.96s
+      X-Ratelimit-Reset-Tokens:
+      - 120ms
+      X-Request-Id:
+      - req_90580907c092442d90946f10abd3f7be
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=pizH3cTF3DpODUr_lgude8jbbcJn2E5.mBpvQzP_kHc-1754992985-1.0.1.1-9bELI_jVZ9MegDyPQo1Zuw6cpTt.FCt6FPDouoXjz6dSgOnn2O73rixocHs9YFBMMnRo3eXH.VxoHGtZEIonOgoTqiu8pE0RBJH9_yIC2II;
+        path=/; expires=Tue, 12-Aug-25 10:33:05 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=mNz2IaxWgHo_XWy2x6NgTmvC1W7KZVOPT1DOhNBOw9g-1754992985431-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 96df2409cfd5cc4d-MAD
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-C3g8OtbwUl3XxIlamJKYdlDDupair",
+          "object": "chat.completion",
+          "created": 1754992984,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"effects\": []\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 396,
+            "completion_tokens": 15,
+            "total_tokens": 411,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_34a54ae93c"
+        }
+  recorded_at: Tue, 12 Aug 2025 10:03:05 GMT
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4o-mini","messages":[{"role":"system","content":"Your
+        input schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"text\": {\n      \"type\": \"string\",\n      \"description\":
+        \"Original medical text\"\n    },\n    \"drugs\": {\n      \"type\": \"array\",\n      \"items\":
+        {\n        \"type\": \"string\"\n      },\n      \"description\": \"Extracted
+        drug names\"\n    },\n    \"effects\": {\n      \"type\": \"array\",\n      \"items\":
+        {\n        \"type\": \"string\"\n      },\n      \"description\": \"Extracted
+        adverse effects\"\n    }\n  },\n  \"required\": [\n    \"text\",\n    \"drugs\",\n    \"effects\"\n  ]\n}\n```\nYour
+        output schema fields are:\n```json\n{\n  \"$schema\": \"http://json-schema.org/draft-06/schema#\",\n  \"type\":
+        \"object\",\n  \"properties\": {\n    \"has_ade\": {\n      \"type\": \"boolean\",\n      \"description\":
+        \"True if adverse drug event is present, false otherwise\"\n    },\n    \"confidence\":
+        {\n      \"type\": \"number\",\n      \"description\": \"Confidence score
+        between 0.0 and 1.0\"\n    }\n  },\n  \"required\": [\n    \"has_ade\",\n    \"confidence\"\n  ]\n}\n```\n\nAll
+        interactions will be structured in the following way, with the appropriate
+        values filled in.\n## Input values\n```json\n{input_values}\n```\n## Output
+        values\nRespond exclusively with the output schema fields in the json block
+        below.\n```json\n{output_values}\n```\n\nIn adhering to this structure, your
+        objective is: Classify whether extracted drugs and effects indicate an adverse
+        drug event"},{"role":"user","content":"## Input Values\n```json\n{\n  \"text\":
+        \"No adverse effects reported with current medication.\",\n  \"drugs\": [],\n  \"effects\":
+        []\n}\n```\n\nRespond with the corresponding output schema fields wrapped
+        in a ```json ``` block,\nstarting with the heading `## Output values`.\n\nIMPORTANT:
+        You must respond with valid JSON that matches this structure:\n```json\n{\n  \"has_ade\":
+        true,\n  \"confidence\": 3.14\n}\n```\n\nRequired fields: has_ade, confidence\n\nEnsure
+        your response:\n1. Is valid JSON (properly quoted strings, no trailing commas)\n2.
+        Includes all required fields\n3. Uses the correct data types for each field\n4.
+        Is wrapped in ```json``` markdown code blocks\n"}],"temperature":0.0}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.openai.com
+      X-Stainless-Arch:
+      - arm64
+      X-Stainless-Lang:
+      - ruby
+      X-Stainless-Os:
+      - MacOS
+      X-Stainless-Package-Version:
+      - 0.16.0
+      X-Stainless-Runtime:
+      - ruby
+      X-Stainless-Runtime-Version:
+      - 3.3.5
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <REDACTED>
+      X-Stainless-Retry-Count:
+      - '0'
+      X-Stainless-Timeout:
+      - '600.0'
+      Content-Length:
+      - '2357'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 12 Aug 2025 10:03:06 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - user-ftp1nrq85er9xnlu0la8snte
+      Openai-Processing-Ms:
+      - '796'
+      Openai-Project:
+      - proj_n52OL5vlzVaXGnYDaGWmVX5F
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '814'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '200000'
+      X-Ratelimit-Remaining-Requests:
+      - '9899'
+      X-Ratelimit-Remaining-Tokens:
+      - '199486'
+      X-Ratelimit-Reset-Requests:
+      - 14m26.738s
+      X-Ratelimit-Reset-Tokens:
+      - 154ms
+      X-Request-Id:
+      - req_fcf64e77a8904f26b4c3f5e98418108c
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=06eDQ3G5Ua9l5P__0PokiEkZ5Oa_AhuQRc.9xP0AFKQ-1754992986-1.0.1.1-fToIGPkPK99EgQK1ipI3wOcrmqIwW3uSWnGl.Ep39FRRruXtdIO8Zblikz1pUelzqbcs8mySf5IY3E5kfws.yCildgTtFkXEIqNHY1a2mMc;
+        path=/; expires=Tue, 12-Aug-25 10:33:06 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=8J85nbPUxP3fi24lSJoomby.zXb7ULNGP8RYmnrYBZc-1754992986419-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 96df240f1c6fcc4d-MAD
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "id": "chatcmpl-C3g8PH28T7547fCBVw2kvrBjMovQd",
+          "object": "chat.completion",
+          "created": 1754992985,
+          "model": "gpt-4o-mini-2024-07-18",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "## Output values\n```json\n{\n  \"has_ade\": false,\n  \"confidence\": 0.95\n}\n```",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 532,
+            "completion_tokens": 27,
+            "total_tokens": 559,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_34a54ae93c"
+        }
+  recorded_at: Tue, 12 Aug 2025 10:03:06 GMT
+recorded_with: VCR 6.3.1

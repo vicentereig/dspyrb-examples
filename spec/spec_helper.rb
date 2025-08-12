@@ -6,8 +6,8 @@ require 'vcr'
 require 'webmock/rspec'
 require 'dotenv/load'
 
-# Require all files in changelog_generator
-Dir[File.join(__dir__, '..', 'changelog_generator', '*.rb')].each { |f| require f }
+# Load lib files for testing
+Dir[File.join(__dir__, '..', 'lib', '**', '*.rb')].each { |f| require f }
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
