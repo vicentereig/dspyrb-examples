@@ -1,0 +1,121 @@
+{
+  "timestamp": "2025-08-12T12:37:45+02:00",
+  "test_sample_size": 25,
+  "approaches": {
+    "multi_stage_baseline": {
+      "classification": {
+        "accuracy": 0.88,
+        "precision": 0.7272727272727273,
+        "recall": 1.0,
+        "f1": 0.8421052631578948,
+        "specificity": 0.8235294117647058,
+        "confusion_matrix": {
+          "tp": 8,
+          "fp": 3,
+          "tn": 14,
+          "fn": 0
+        },
+        "total_examples": 25,
+        "confidence_intervals": {
+          "accuracy": [
+            0.7004380781662651,
+            0.9583325864293191
+          ],
+          "precision": [
+            0.4343497069897537,
+            0.9025411942607853
+          ],
+          "recall": [
+            0.6755843804891231,
+            1.0
+          ],
+          "specificity": [
+            0.5897007098262422,
+            0.9380898628745101
+          ]
+        }
+      },
+      "safety": {
+        "false_negative_rate": 0.0,
+        "positive_predictive_value": 0.7272727272727273,
+        "negative_predictive_value": 1.0,
+        "matthews_correlation": 0.773905989951895,
+        "missed_ades": 0,
+        "false_alarms": 3
+      },
+      "performance": {
+        "examples_evaluated": 25,
+        "total_api_calls": 75,
+        "api_calls_per_prediction": 3.0,
+        "processing_errors": 0,
+        "avg_processing_time": 2.803,
+        "estimated_cost_usd": 0.01125
+      }
+    },
+    "direct_baseline": {
+      "classification": {
+        "accuracy": 0.8,
+        "precision": 0.6153846153846154,
+        "recall": 1.0,
+        "f1": 0.761904761904762,
+        "specificity": 0.7058823529411765,
+        "confusion_matrix": {
+          "tp": 8,
+          "fp": 5,
+          "tn": 12,
+          "fn": 0
+        },
+        "total_examples": 25,
+        "confidence_intervals": {
+          "accuracy": [
+            0.6086866446346177,
+            0.9113954589934752
+          ],
+          "precision": [
+            0.35522480972268555,
+            0.8229055341876319
+          ],
+          "recall": [
+            0.6755843804891231,
+            1.0
+          ],
+          "specificity": [
+            0.468664666737861,
+            0.8672020613444361
+          ]
+        }
+      },
+      "safety": {
+        "false_negative_rate": 0.0,
+        "positive_predictive_value": 0.6153846153846154,
+        "negative_predictive_value": 1.0,
+        "matthews_correlation": 0.6590820436573077,
+        "missed_ades": 0,
+        "false_alarms": 5
+      },
+      "performance": {
+        "examples_evaluated": 25,
+        "total_api_calls": 25,
+        "api_calls_per_prediction": 1.0,
+        "processing_errors": 0,
+        "avg_processing_time": 1.619,
+        "estimated_cost_usd": 0.00375
+      }
+    },
+    "direct_optimized": {
+      "error": "wrong number of arguments (given 2, expected 1)",
+      "optimization_method": "SimpleOptimizer",
+      "fallback_to_baseline": true
+    }
+  },
+  "comparison": {
+    "cost_efficiency": {
+      "api_call_ratio": 3.0,
+      "cost_savings_pct": 67,
+      "performance_trade_off_pct": -9.5
+    },
+    "performance_comparison": {},
+    "architecture_insights": {}
+  },
+  "recommendations": []
+}
