@@ -1,0 +1,105 @@
+{
+  "timestamp": "2025-08-12T09:42:43+02:00",
+  "options": {
+    "data_dir": "./data",
+    "examples": 3,
+    "train_ratio": 0.7,
+    "val_ratio": 0.15,
+    "test_ratio": 0.15,
+    "max_errors": 3,
+    "output_dir": "./optimization_results",
+    "download": false
+  },
+  "baseline": {
+    "validation": {
+      "accuracy": 1.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "correct": 1,
+      "total": 1,
+      "confusion_matrix": {
+        "matrix": {
+          "#<ADEPredictor::ADEStatus::NoADE>": {
+            "#<ADEPredictor::ADEStatus::NoADE>": 1
+          }
+        },
+        "tp": 0,
+        "fp": 0,
+        "tn": 1,
+        "fn": 0,
+        "per_class": {
+          "#<ADEPredictor::ADEStatus::NoADE>": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          }
+        }
+      }
+    },
+    "test": {
+      "accuracy": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "correct": 0,
+      "total": 0,
+      "confusion_matrix": {
+        "matrix": {},
+        "tp": 0,
+        "fp": 0,
+        "tn": 0,
+        "fn": 0,
+        "per_class": {}
+      }
+    }
+  },
+  "optimized": {
+    "validation": {
+      "accuracy": 1.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "correct": 1,
+      "total": 1,
+      "confusion_matrix": {
+        "matrix": {
+          "#<ADEPredictor::ADEStatus::NoADE>": {
+            "#<ADEPredictor::ADEStatus::NoADE>": 1
+          }
+        },
+        "tp": 0,
+        "fp": 0,
+        "tn": 1,
+        "fn": 0,
+        "per_class": {
+          "#<ADEPredictor::ADEStatus::NoADE>": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          }
+        }
+      }
+    },
+    "test": {
+      "accuracy": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "correct": 0,
+      "total": 0,
+      "confusion_matrix": {
+        "matrix": {},
+        "tp": 0,
+        "fp": 0,
+        "tn": 0,
+        "fn": 0,
+        "per_class": {}
+      }
+    }
+  },
+  "optimization": {
+    "improvement": null,
+    "costs": null
+  }
+}

@@ -4,6 +4,7 @@ require 'net/http'
 require 'json'
 require 'fileutils'
 require 'uri'
+require 'parquet'
 require_relative 'ade_predictor'
 require 'dspy'
 
@@ -46,38 +47,74 @@ class DatasetLoader
   def load_examples
     return [] unless data_files_exist?
     
-    # For now, return empty array - will implement parquet reading later
-    []
+    all_examples = []
+    
+    # Load all parquet files in the data directory
+    Dir.glob(File.join(@data_dir, '*.parquet')).each do |parquet_file|
+      puts "Loading parquet file: #{parquet_file}"
+      examples = load_parquet_file(parquet_file)
+      all_examples.concat(examples) if examples
+    end
+    
+    puts "Loaded #{all_examples.size} examples from parquet files"
+    all_examples
+  end
+  
+  def load_parquet_file(parquet_file)
+    examples = []
+    
+    begin
+      # Use red-parquet to read the file
+      table = Arrow::Table.load(parquet_file)
+      
+      # Convert to Ruby array of hashes
+      table.each_record_batch do |batch|
+        batch.each do |record|
+          # Try to extract the fields based on common ADE dataset structures
+          examples << {
+            'text' => record['text'] || record['sentence'] || record['content'],
+            'label' => (record['label'] || record['ade_label'] || 0).to_i,
+            'drug' => record['drug'] || record['medication'] || extract_medications(record['text'] || '').first,
+            'effect' => record['effect'] || record['symptom'] || record['adverse_effect']
+          }
+        end
+      end
+    rescue StandardError => e
+      puts "Error loading parquet file #{parquet_file}: #{e.message}"
+      return []
+    end
+    
+    examples
   end
   
   def transform_to_examples(raw_data)
     return [] if raw_data.nil? || raw_data.empty?
     
+    # Load the extractor signature for creating examples
+    require_relative 'medical_text_extractor'
+    
     raw_data.map do |item|
       next nil unless valid_data_item?(item)
       
-      # Extract medications and symptoms from text
+      # Get the raw text
       text = item['text'] || ''
-      medications = extract_medications(text, item['drug'])
-      symptoms = extract_symptoms(text, item['effect'])
       
-      # Map label to ADEStatus
+      # Map label to ADEStatus (for expected output)
       ade_status = map_label_to_status(item['label'])
       
-      # Create DSPy::Example
-      DSPy::Example.new(
-        signature_class: ADEPredictor,
+      # For the pipeline, we'll just provide the raw text as input
+      # The extraction will happen in the pipeline
+      # Create a minimal example structure
+      {
         input: {
-          patient_report: text,
-          medications: medications,
-          symptoms: symptoms
+          text: text  # Just raw text - extraction happens in pipeline
         },
         expected: {
           ade_status: ade_status,
           confidence: 1.0,  # Ground truth has full confidence
-          drug_symptom_pairs: create_drug_symptom_pairs(medications, symptoms)
+          drug_symptom_pairs: []  # Will be extracted by pipeline
         }
-      )
+      }
     rescue StandardError => e
       puts "Error transforming item: #{e.message}"
       nil
@@ -175,22 +212,37 @@ class DatasetLoader
     }
   end
   
-  def download_file(url, local_path = nil)
+  def download_file(url, local_path = nil, max_redirects = 5)
     uri = URI(url)
     local_path ||= File.join(@data_dir, File.basename(uri.path))
+    redirects = 0
     
-    Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
-      request = Net::HTTP::Get.new(uri)
-      http.request(request) do |response|
-        File.open(local_path, 'wb') do |file|
-          response.read_body do |chunk|
-            file.write(chunk)
+    while redirects < max_redirects
+      Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
+        request = Net::HTTP::Get.new(uri)
+        response = http.request(request)
+        
+        case response
+        when Net::HTTPRedirection
+          # Follow redirect
+          redirects += 1
+          new_url = response['location']
+          puts "Following redirect to: #{new_url}" if redirects == 1
+          uri = URI(new_url)
+        when Net::HTTPSuccess
+          # Save the file
+          File.open(local_path, 'wb') do |file|
+            file.write(response.body)
           end
+          puts "Downloaded: #{local_path}"
+          return
+        else
+          raise "Download failed: #{response.code} #{response.message}"
         end
       end
     end
     
-    puts "Downloaded: #{local_path}"
+    raise "Too many redirects while downloading #{url}"
   end
   
   def valid_data_item?(item)

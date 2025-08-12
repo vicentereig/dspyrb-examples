@@ -17,15 +17,21 @@ def configure_dspy
     return false
   end
   
-  # Configure DSPy with default logging (stdout)
+  # Ensure log directory exists
+  require 'fileutils'
+  FileUtils.mkdir_p('log')
+  
+  # Configure DSPy with file logging
   DSPy.configure do |config|
     # Configure language model
     config.lm = DSPy::LM.new('openai/gpt-4o-mini', api_key: api_key)
-    # Use default logger that outputs to stdout
+    # Log to file
+    config.logger = Logger.new('log/test.log')
+    config.log_level = :info
   end
   
   puts "✅ DSPy configured with OpenAI GPT-4o-mini"
-  puts "📝 Logging to stdout"
+  puts "📝 Logging to log/test.log"
   true
 end
 

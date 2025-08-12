@@ -17,15 +17,18 @@ class ADEOptimizer
   end
   
   # Optimize using DSPy SimpleOptimizer
-  def run_simple_optimization(baseline_program:, training_examples:, num_examples: nil)
+  def run_simple_optimization(baseline_program:, training_examples:, validation_examples: nil, num_examples: nil)
     begin
       # Validate training examples
       validation_result = validate_training_examples(training_examples)
       return validation_result if validation_result[:error]
       
+      # If no validation set provided, use training set as validation (not ideal but works for testing)
+      validation_examples ||= training_examples
+      
       # Evaluate baseline performance and track costs
       baseline_start_cost = current_total_cost
-      baseline_metrics = evaluate_program(baseline_program, training_examples)
+      baseline_metrics = evaluate_program(baseline_program, validation_examples)
       baseline_end_cost = current_total_cost
       @optimization_costs[:baseline_cost] += (baseline_end_cost - baseline_start_cost)
       
@@ -40,7 +43,8 @@ class ADEOptimizer
       # Run optimization
       optimization_result = optimizer.compile(
         baseline_program,
-        trainset: training_examples
+        trainset: training_examples,
+        valset: validation_examples
       )
       optimized_program = optimization_result.optimized_program
       
@@ -300,13 +304,13 @@ class ADEOptimizer
       {
         ade_status: result.ade_status,
         confidence: result.respond_to?(:confidence) ? result.confidence : 0.8,
-        drug_symptom_pairs: result.respond_to?(:drug_symptom_pairs) ? result.drug_symptom_pairs : []
+        drug_symptom_pairs: result.respond_to?(:drug_symptom_pairs) ? parse_drug_symptom_pairs(result.drug_symptom_pairs) : []
       }
     elsif result.is_a?(Hash)
       {
         ade_status: parse_ade_status(result[:ade_status]),
         confidence: result[:confidence] || 0.8,
-        drug_symptom_pairs: result[:drug_symptom_pairs] || []
+        drug_symptom_pairs: parse_drug_symptom_pairs(result[:drug_symptom_pairs] || [])
       }
     else
       {
@@ -335,6 +339,28 @@ class ADEOptimizer
     else
       ADEPredictor::ADEStatus::NoADE
     end
+  end
+  
+  def parse_drug_symptom_pairs(pairs_data)
+    return [] unless pairs_data
+    
+    Array(pairs_data).map do |pair|
+      if pair.is_a?(ADEPredictor::DrugSymptomPair)
+        pair
+      elsif pair.is_a?(Hash)
+        # Handle both symbol and string keys, and _type field from LLM responses
+        drug = pair[:drug] || pair['drug'] || ''
+        symptom = pair[:symptom] || pair['symptom'] || ''
+        
+        ADEPredictor::DrugSymptomPair.new(
+          drug: drug.to_s,
+          symptom: symptom.to_s
+        )
+      else
+        # Skip invalid pairs
+        nil
+      end
+    end.compact
   end
   
   def calculate_improvement(baseline_metrics, optimized_metrics)

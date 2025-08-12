@@ -93,10 +93,19 @@ class BaselinePredictor
   private
   
   def validate_and_clean_input(input)
+    # Handle symptoms as array since signature expects T::Array[String]
+    symptoms = if input[:symptoms].is_a?(Array)
+      input[:symptoms].map(&:to_s).compact.reject(&:empty?)
+    elsif input[:symptoms].is_a?(String) && !input[:symptoms].empty?
+      [input[:symptoms]]
+    else
+      []
+    end
+    
     {
       patient_report: input[:patient_report].to_s,
       medications: Array(input[:medications]).compact.map(&:to_s),
-      symptoms: input[:symptoms].to_s
+      symptoms: symptoms
     }
   end
   
@@ -105,7 +114,7 @@ class BaselinePredictor
     if result.respond_to?(:ade_status)
       ade_status = result.ade_status
       confidence = result.respond_to?(:confidence) ? result.confidence : 0.8
-      drug_symptom_pairs = result.respond_to?(:drug_symptom_pairs) ? result.drug_symptom_pairs : []
+      drug_symptom_pairs = result.respond_to?(:drug_symptom_pairs) ? parse_drug_symptom_pairs(result.drug_symptom_pairs) : []
     else
       # Parse from hash if that's what we get back
       ade_status = parse_ade_status(result[:ade_status]) if result.is_a?(Hash)
@@ -155,9 +164,13 @@ class BaselinePredictor
       if pair.is_a?(ADEPredictor::DrugSymptomPair)
         pair
       elsif pair.is_a?(Hash)
+        # Handle both symbol and string keys, and _type field from LLM responses
+        drug = pair[:drug] || pair['drug'] || ''
+        symptom = pair[:symptom] || pair['symptom'] || ''
+        
         ADEPredictor::DrugSymptomPair.new(
-          drug: pair[:drug] || pair['drug'] || '',
-          symptom: pair[:symptom] || pair['symptom'] || ''
+          drug: drug.to_s,
+          symptom: symptom.to_s
         )
       else
         # Skip invalid pairs
