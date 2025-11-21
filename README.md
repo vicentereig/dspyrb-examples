@@ -1,3 +1,6 @@
+
+Moved over to https://github.com/vicentereig/dspy.rb/tree/main/examples
+
 # DSPy.rb Examples Repository
 
 A comprehensive collection of examples demonstrating the power of DSPy.rb - the Ruby framework for programming language models.
